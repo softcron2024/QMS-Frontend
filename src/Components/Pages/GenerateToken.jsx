@@ -6,6 +6,7 @@ import { useReactToPrint } from "react-to-print";
 import Cookies from "js-cookie";
 
 const GenerateToken = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [Token, setToken] = useState({
     name: "",
     mobile: "",
@@ -34,7 +35,10 @@ const GenerateToken = () => {
 
   const handle_CreateToken = async (e) => {
     e.preventDefault();
-
+    if (isSubmitting) {
+      return;
+    }
+    setIsSubmitting(true);
     try {
       const response = await fetch("http://localhost:8000/api/v1/generate-token", {
         method: "POST",
@@ -71,6 +75,8 @@ const GenerateToken = () => {
       setIsModalOpen(true);
     } catch (error) {
       console.error("Error generating token:", error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 

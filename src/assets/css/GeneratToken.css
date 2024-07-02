@@ -217,7 +217,7 @@ h1{
 /* Media queries for tablets */
 @media (max-width: 768px) {
   .container {
-    margin-left: 5%;
+    margin-left: 1%;
     padding: 0 10px;
   }
   
@@ -325,6 +325,18 @@ h1{
     display: flex;
     justify-content: center;
     /* margin-top: 10px; */
+  }
+}
+
+@media (max-width: 320px){
+  .button:nth-child(2){
+    width: 100px;
+  }
+} 
+
+@media (max-width: 375px){
+  .button:nth-child(2){
+    width: 100px;
   }
 }
 

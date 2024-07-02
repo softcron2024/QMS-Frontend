@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import "react-perfect-scrollbar/dist/css/styles.css";
 import Cookies from "js-cookie";
+
 const SideBarMenu = () => {
   const [activeIndexMainMenu, setActiveMainMenu] = useState(null);
   const navigate = useNavigate();
@@ -19,11 +20,8 @@ const SideBarMenu = () => {
 
   return (
     <>
-      <aside
-        id="layout-menu"
-        className="layout-menu menu-vertical menu bg-menu-theme"
-      >
-        <div className="app-brand demo ">
+      <aside id="layout-menu" className="layout-menu menu-vertical menu bg-menu-theme">
+        <div className="app-brand demo">
           <a href="index.html" className="app-brand-link">
             <span className="app-brand-logo demo">
               <svg
@@ -61,12 +59,9 @@ const SideBarMenu = () => {
                 />
               </svg>
             </span>
-            <span className="app-brand-text demo menu-text fw-bold">Softcron</span>
+            <span className="app-brand-text demo menu-text fw-bold text-none">Softcron</span>
           </a>
-          <a
-            href="!#"
-            className="layout-menu-toggle menu-link text-large ms-auto"
-          >
+          <a href="!#" className="layout-menu-toggle menu-link text-large ms-auto">
             <i className="ti menu-toggle-icon d-none d-xl-block ti-sm align-middle" />
             <i className="ti ti-x d-block d-xl-none ti-sm align-middle" />
           </a>
@@ -90,7 +85,7 @@ const SideBarMenu = () => {
               <a href="javascript:void(0)" className="menu-link menu-toggle">
                 <div data-i18n="Token management">Token management</div>
               </a>
-              <ul className="menu-sub">
+              <ul className={`menu-sub ${activeIndexMainMenu === 0 ? "d-block" : "d-none"}`}>
                 <li className="menu-item">
                   <Link to="/generate-token" className="menu-link">
                     <div data-i18n="Generate Token">Generate Token</div>
