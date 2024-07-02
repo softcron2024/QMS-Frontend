@@ -17,7 +17,8 @@ const Dashboard = () => {
   const [report, setReport] = useState({
     TodayTokens: 0,
     TodayScannedTokens: 0,
-    TodayWaitingTokens: 0
+    TodayWaitingTokens: 0,
+    TodayCancelledTokens:0,
   });
 
   // Fetching functions
@@ -111,7 +112,7 @@ const Dashboard = () => {
       const result = await response.json();
       if (result.message.ResponseCode === 1) {
         setTodayTokenList(result.message);
-        setReport({ TodayTokens: result.message.TodayTokens, TodayScannedTokens: result.message.TodayScannedTokens, TodayWaitingTokens: result.message.TodayWaitingTokens });
+        setReport({ TodayTokens: result.message.TodayTokens, TodayScannedTokens: result.message.TodayScannedTokens, TodayWaitingTokens: result.message.TodayWaitingTokens,TodayCancelledTokens: result.message.TodayCancelledTokens });
       } else {
         console.error("Expected an array but got:", result.message);
         setTodayTokenList([]);
@@ -283,8 +284,8 @@ const Dashboard = () => {
           <p>{report.TodayScannedTokens}</p>
         </div>
         <div className="dashboard_token_no waiting">
-          <h4>Waiting Token</h4>
-          <p>{report.TodayWaitingTokens}</p>
+          <h4>Canceled Token</h4>
+          <p>{report.TodayCancelledTokens}</p>
         </div>
       </div>
       <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">

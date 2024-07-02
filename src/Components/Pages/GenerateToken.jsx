@@ -14,7 +14,7 @@ const GenerateToken = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
   const [receiptData, setReceiptData] = useState(null);
-  const [cancelTokenNo, setCancelTokenNo] = useState("");
+  const [token_no, setCancelTokenNo] = useState("");
 
   const navigate = useNavigate();
   const printRef = useRef();
@@ -25,6 +25,7 @@ const GenerateToken = () => {
   const handle_token = (e) => {
     setToken({ ...Token, [e.target.name]: e.target.value });
   };
+
 
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'short', day: 'numeric' };
@@ -73,37 +74,39 @@ const GenerateToken = () => {
     }
   };
 
+
+    const handlecancel= async(e)=>{
+      e.preventDefault()
+      try {
+        const response = await fetch("http://localhost:8000/api/v1/cancel-token", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body:JSON.stringify({token_no}),
+        });
+
+        const result = await response.json();
+        console.log(result);
+
+        if (result.message.ResponseCode === 0) {
+          alert("Token scanned or already cancelled")
+        }
+        
+        if (result.message.ResponseCode === 1) {
+          alert("Token cancelled successfully")
+        }
+        
+
+      } catch (error) {
+        console.error('Error fetching cancel token:', error);
+      }  
+    }
+
+
   const closeModal = () => {
     setIsModalOpen(false);
     setReceiptData(null);
     navigate(''); // Navigate to a different route if needed
-  };
-
-  const handle_CancelToken = async (e) => {
-    e.preventDefault();
-
-    try {
-      const response = await fetch("http://localhost:8000/api/v1/cancel-token", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ token_no: cancelTokenNo }),
-        credentials: "include",
-      });
-      const result = await response.json();
-
-      if (result.message === "Token not found") {
-        alert("Token not found");
-        return;
-      }
-
-      alert("Token cancelled successfully");
-      setIsCancelModalOpen(false);
-      setCancelTokenNo("");
-    } catch (error) {
-      console.error("Error cancelling token:", error);
-    }
   };
 
   const closeCancelModal = () => {
@@ -174,13 +177,13 @@ const GenerateToken = () => {
       <div className="modal">
         <Modal isOpen={isCancelModalOpen} onRequestClose={closeCancelModal} contentLabel="Cancel Token">
           <button onClick={closeCancelModal}>Close</button>
-          <form onSubmit={handle_CancelToken}>
+          <form onSubmit={handlecancel}>
             <h2>Cancel Token</h2>
             <div className="input-container">
               <input
                 type="text"
-                name="cancel_token_no"
-                value={cancelTokenNo}
+                name="token_no"
+                value={token_no}
                 onChange={(e) => setCancelTokenNo(e.target.value)}
                 placeholder="Token Number"
               />
