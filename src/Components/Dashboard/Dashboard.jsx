@@ -272,19 +272,19 @@ const Dashboard = () => {
     <div className="main_dashboard">
       <div className="Token">
         <div className="dashboard_token_no total">
-          <h4>Total Token</h4>
+          <h4>Today Total Token</h4>
           <p>{report.TodayTokens}</p>
         </div>
         <div className="dashboard_token_no pending">
-          <h4>Pending Token</h4>
+          <h4>Today Waiting Token</h4>
           <p>{report.TodayWaitingTokens}</p>
         </div>
         <div className="dashboard_token_no complete">
-          <h4>Complete Token</h4>
+          <h4>Today Completed Token</h4>
           <p>{report.TodayScannedTokens}</p>
         </div>
         <div className="dashboard_token_no waiting">
-          <h4>Canceled Token</h4>
+          <h4>Today Cancelled Token</h4>
           <p>{report.TodayCancelledTokens}</p>
         </div>
       </div>

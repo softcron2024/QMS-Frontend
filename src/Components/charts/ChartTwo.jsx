@@ -41,9 +41,6 @@ const options = {
   dataLabels: {
     enabled: false,
   },
-  xaxis: {
-    categories: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
-  },
   legend: {
     position: 'top',
     horizontalAlign: 'left',
@@ -71,39 +68,60 @@ const ChartTwo = ({ thisWeekData, lastWeekData }) => {
       data: [],
     },
   ]);
+  const [categories, setCategories] = useState([]);
+
+  const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
   useEffect(() => {
     let updatedSeries;
-    if (selectedOption === "thisWeek") {
-      if (thisWeekData) {
-        updatedSeries = series.map((serie) => {
-          if (serie.name === 'Generated') {
-            return { ...serie, data: thisWeekData.map(item => item.today_tokens_count) };
-          }
-          if (serie.name === 'Scanned') {
-            return { ...serie, data: thisWeekData.map(item => item.today_scanned_tokens) };
-          }
-          return serie;
-        });
-      }
-    } else if (selectedOption === "lastWeek") {
-      if (lastWeekData) {
-        updatedSeries = series.map((serie) => {
-          if (serie.name === 'Generated') {
-            return { ...serie, data: lastWeekData.map(item => item.today_tokens_count) };
-          }
-          if (serie.name === 'Scanned') {
-            return { ...serie, data: lastWeekData.map(item => item.today_scanned_tokens) };
-          }
-          return serie;
-        });
-      }
+    let newCategories;
+
+    if (selectedOption === "thisWeek" && thisWeekData) {
+      updatedSeries = series.map((serie) => {
+        if (serie.name === 'Generated') {
+          return { ...serie, data: thisWeekData.map(item => item.today_tokens_count) };
+        }
+        if (serie.name === 'Scanned') {
+          return { ...serie, data: thisWeekData.map(item => item.today_scanned_tokens) };
+        }
+        return serie;
+      });
+
+      newCategories = thisWeekData.map(item => {
+        const date = new Date(item.report_date);
+        return dayNames[date.getDay()];
+      });
+    } else if (selectedOption === "lastWeek" && lastWeekData) {
+      updatedSeries = series.map((serie) => {
+        if (serie.name === 'Generated') {
+          return { ...serie, data: lastWeekData.map(item => item.today_tokens_count) };
+        }
+        if (serie.name === 'Scanned') {
+          return { ...serie, data: lastWeekData.map(item => item.today_scanned_tokens) };
+        }
+        return serie;
+      });
+
+      newCategories = lastWeekData.map(item => {
+        const date = new Date(item.report_date);
+        return dayNames[date.getDay()];
+      });
     }
+
     setSeries(updatedSeries);
+    setCategories(newCategories);
   }, [thisWeekData, lastWeekData, selectedOption]);
 
   const handleChanges = (event) => {
     setSelectedOption(event.target.value);
+  };
+
+  const chartOptions = {
+    ...options,
+    xaxis: {
+      ...options.xaxis,
+      categories: categories,
+    },
   };
 
   return (
@@ -130,7 +148,7 @@ const ChartTwo = ({ thisWeekData, lastWeekData }) => {
 
       <div>
         <div id="chartTwo" className="main_chart">
-          <ReactApexChart options={options} series={series} type="bar" height={250} />
+          <ReactApexChart options={chartOptions} series={series} type="bar" height={250} />
         </div>
       </div>
     </div>

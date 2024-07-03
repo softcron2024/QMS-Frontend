@@ -39,7 +39,9 @@ const ChartOne = ({ thisWeekData, thisMonthData, thisYearData }) => {
 
       const newCategories = thisWeekData.map(item => {
         const date = new Date(item.report_date);
-        const day = dayNames[date.getUTCDay()];
+        console.log(date);
+        const day = dayNames[date.getDay()];
+        console.log("day",day);
         return day;
       });
       setCategories(newCategories);
