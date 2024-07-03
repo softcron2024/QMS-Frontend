@@ -10,6 +10,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import { FaBell, FaUserCircle, FaSearch, FaMoon, FaSun } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import Cookies from "js-cookie";
+import SideBarMenu from '../SideBarMenu';
 
 const NavbarComponent = () => {
     const [darkMode, setDarkMode] = useState(false);
@@ -28,7 +29,7 @@ const NavbarComponent = () => {
 
 
     return (
-        <Navbar expand="lg" className={`bg-body-tertiary mb-3 ${darkMode ? 'navbar-dark bg-dark' : 'navbar-light bg-light'} Nav_navbar shadow-sm`}>
+        <Navbar expand="xl" className={`bg-white mb-3 ${darkMode ? 'navbar-dark bg-dark' : 'navbar-light'} Nav_navbar shadow-sm border`}>
             <Container fluid>
                 <Form className="d-flex me-3">
                     <Form.Control
@@ -38,15 +39,15 @@ const NavbarComponent = () => {
                         aria-label="Search"
                     /><Button variant="outline-primary"><FaSearch /></Button>
                 </Form>
-                <Navbar.Toggle aria-controls="offcanvasNavbar-expand-lg" />
+                <Navbar.Toggle aria-controls="offcanvasNavbar-expand-xl" />
                 <Navbar.Offcanvas
-                    id="offcanvasNavbar-expand-lg"
-                    aria-labelledby="offcanvasNavbarLabel-expand-lg"
+                    id="offcanvasNavbar-expand-xl"
+                    aria-labelledby="offcanvasNavbarLabel-expand-xl"
                     placement="end"
-                    className="d-lg-none"  // Only show offcanvas on small screens
+                    className="d-xl-none"  // Only show offcanvas on small screens
                 >
                     <Offcanvas.Header closeButton>
-                        <Offcanvas.Title id="offcanvasNavbarLabel-expand-lg font-bold">
+                        <Offcanvas.Title id="offcanvasNavbarLabel-expand-xl font-bold">
                             <Link to='/dashboard'>Softcron Tecnology</Link>
                         </Offcanvas.Title>
                     </Offcanvas.Header>
@@ -102,7 +103,7 @@ const NavbarComponent = () => {
                         </Nav>
                     </Offcanvas.Body>
                 </Navbar.Offcanvas>
-                <Nav className="d-none d-lg-flex ms-auto">
+                <Nav className="d-none d-xl-flex ms-auto">
                     <Button variant="outline-secondary" onClick={toggleDarkMode} className="me-2 Color_darkmode">
                         {darkMode ? <FaSun /> : <FaMoon />}
                     </Button>
