@@ -169,7 +169,7 @@ const ProductList = () => {
                     const customer = tableData[tableMeta.rowIndex];
                     const base64Image = customer.qr_b64;
                     return (
-                        <div className="text-center" style={{display:"flex",justifyContent:"center"}}>
+                        <div className="text-center" style={{ display: "flex", justifyContent: "center" }}>
                             <img src={base64Image} alt="QR Code" style={{ width: 64, height: 64 }} />
                         </div>
                     );
