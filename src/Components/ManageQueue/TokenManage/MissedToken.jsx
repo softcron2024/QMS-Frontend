@@ -1,4 +1,3 @@
-// src/Components/ManageQueue/TokenManage/MissedToken.jsx
 import React, { useContext, useEffect, useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { MyContext } from '../../ContextApi/ContextApi'; // Adjust the path based on your structure
@@ -6,6 +5,9 @@ import '../../../assets/css/ManageQueue.css';
 
 const MissedToken = () => {
   const [missed, setMissed] = useState([]);
+  const [showPopup, setShowPopup] = useState(false);
+  const [selectedToken, setSelectedToken] = useState(null);
+  const [newPosition, setNewPosition] = useState('');
 
   const fetchQueue = async () => {
     try {
@@ -38,7 +40,12 @@ const MissedToken = () => {
     fetchQueue();
   }, [missed]);
 
-  const handleMoveBtn = async (token_no) => {
+  const handleMoveBtn = (token_no) => {
+    setSelectedToken(token_no);
+    setShowPopup(true);
+  };
+
+  const handleSubmit = async () => {
     try {
       const response = await fetch("http://localhost:8000/api/v1/recall-missed-token", {
         method: "POST",
@@ -46,17 +53,18 @@ const MissedToken = () => {
           "Content-Type": "application/json",
         },
         credentials: "include",
-        body: JSON.stringify({ token_no })
+        body: JSON.stringify({ token_no: selectedToken, in_at: newPosition })
       });
 
       if (!response.ok) {
-        throw new Error('Failed to fetch data');
+        throw new Error('Failed to recall token');
       }
       const result = await response.json();
       console.log(result);
       alert("Token Moved Successfully");
-    }
-    catch (error) {
+      setShowPopup(false);
+      fetchQueue();
+    } catch (error) {
       console.log(error);
     }
   };
@@ -74,7 +82,6 @@ const MissedToken = () => {
   };
 
   return (
-
     <MyContext.Provider value={{ missed, setMissed, handleMoveBtn }}>
       <div className='missed_token_container'>
         <div className="missed_token">
@@ -97,7 +104,7 @@ const MissedToken = () => {
                           <p>Queue no: <span>{item.token_no}</span></p>
                           <p>Name: <span>{item.customer_name}</span></p>
                           <p>Mobile: <span>{item.customer_mobile}</span></p>
-                          <div className="btn_skip" onClick={() => handleMoveBtn(item.token_no)}>ReCall</div>
+                          <div className="btn_skip" onClick={() => handleMoveBtn(item.token_no, item.in_at)}>Recall</div>
                         </div>
                       )}
                     </Draggable>
@@ -109,6 +116,20 @@ const MissedToken = () => {
           </DragDropContext>
         </div>
       </div>
+      {showPopup && (
+        <div className="popup">
+          <div className="popup-content">
+            <h3>Enter New Position</h3>
+            <input
+              type="number"
+              value={newPosition}
+              onChange={(e) => setNewPosition(e.target.value)}
+            />
+            <button onClick={handleSubmit}>Submit</button>
+            <button onClick={() => setShowPopup(false)}>Cancel</button>
+          </div>
+        </div>
+      )}
     </MyContext.Provider>
   );
 };

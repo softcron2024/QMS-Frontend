@@ -70,53 +70,53 @@ const ChartThree = () => {
 
   return (
     <div class="container_Chart_three">
-    <div class="header">
+      <div class="header">
         <h5 class="title">Visitors Analytics</h5>
         <div class="dropdown-container">
-            <select class="dropdown">
-                <option value="">Monthly</option>
-                <option value="">Yearly</option>
-            </select>
+          <select class="dropdown">
+            <option value="">Monthly</option>
+            <option value="">Yearly</option>
+          </select>
         </div>
-    </div>
+      </div>
 
-    <div class="chart-container">
+      <div class="chart-container">
         <div id="chartThree" class="chart">
-            <ReactApexChart options={options} series={state.series} type="donut" />
+          <ReactApexChart options={options} series={state.series} type="donut" />
         </div>
-    </div>
+      </div>
 
-    <div class="data-container">
+      <div class="data-container">
         <div class="data-item">
-            <span class="indicator bg-primary"></span>
-            <p class="data-text">
-                <span>Desktop</span>
-                <span>65%</span>
-            </p>
+          <span class="indicator bg-primary"></span>
+          <p class="data-text">
+            <span>Desktop</span>
+            <span>65%</span>
+          </p>
         </div>
         <div class="data-item">
-            <span class="indicator bg-secondary"></span>
-            <p class="data-text">
-                <span>Tablet</span>
-                <span>34%</span>
-            </p>
+          <span class="indicator bg-secondary"></span>
+          <p class="data-text">
+            <span>Tablet</span>
+            <span>34%</span>
+          </p>
         </div>
         <div class="data-item">
-            <span class="indicator bg-tertiary"></span>
-            <p class="data-text">
-                <span>Mobile</span>
-                <span>45%</span>
-            </p>
+          <span class="indicator bg-tertiary"></span>
+          <p class="data-text">
+            <span>Mobile</span>
+            <span>45%</span>
+          </p>
         </div>
         <div class="data-item">
-            <span class="indicator bg-quaternary"></span>
-            <p class="data-text">
-                <span>Unknown</span>
-                <span>12%</span>
-            </p>
+          <span class="indicator bg-quaternary"></span>
+          <p class="data-text">
+            <span>Unknown</span>
+            <span>12%</span>
+          </p>
         </div>
+      </div>
     </div>
-</div>
 
   );
 };

@@ -5,7 +5,7 @@ import TokenList from './TokenManage/TokenList';
 import MissedToken from './TokenManage/MissedToken';
 
 const ManageQueue = () => {
-  const [callNextToken, setCallNextToken] = useState(null); // State to hold the next token
+  const [callNextToken, setCallNextToken] = useState(null);
 
   const handleNextBtn = async () => {
     try {
@@ -23,11 +23,11 @@ const ManageQueue = () => {
 
       const result = await response.json();
 
-      if (result.message && Array.isArray(result.message) && result.message.length > 0) {
-        setCallNextToken(result.message[0]); // Set the first token from the response
+      if (result.message && result.message.ResponseCode === 1) {
+        setCallNextToken(result.message);
       } else {
-        setCallNextToken(null); // Reset to null if no tokens available
-        alert('No tokens available.'); // Optionally show an alert or handle as needed
+        setCallNextToken(null);
+        alert('No tokens available.');
       }
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -35,8 +35,9 @@ const ManageQueue = () => {
     }
   };
 
+
   return (
-    <div>
+    <div className='main_queue_container'>
       <div className="calling_buttons">
         <div className='btn1' onClick={handleNextBtn}>Next</div>
       </div>
@@ -45,7 +46,7 @@ const ManageQueue = () => {
           <div className="manage_queue">
             <div className="second_queue_container">
               <div className="logoname">
-                <Link to='/dashboard'> Softcron Technology </Link>
+                <Link className='link_logo' to='/dashboard'> Softcron Technology </Link>
               </div>
 
               <div className="queue_name">
@@ -75,13 +76,13 @@ const ManageQueue = () => {
         </div>
       </div>
       <div className="right_div">
-          <div className="main_right_list_container">
-            <TokenList />
-          </div>
+        <div className="main_right_list_container">
+          <TokenList />
         </div>
         <div className='missed_bottom_token'>
           <MissedToken />
         </div>
+      </div>
     </div>
   );
 }

@@ -19,7 +19,7 @@ const ChartOne = ({ thisWeekData, thisMonthData, thisYearData }) => {
 
   const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   const monthNames = [
-    'January', 'February', 'March', 'April', 'May', 'June', 
+    'January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'
   ];
 
@@ -41,7 +41,7 @@ const ChartOne = ({ thisWeekData, thisMonthData, thisYearData }) => {
         const date = new Date(item.report_date);
         console.log(date);
         const day = dayNames[date.getDay()];
-        console.log("day",day);
+        console.log("day", day);
         return day;
       });
       setCategories(newCategories);

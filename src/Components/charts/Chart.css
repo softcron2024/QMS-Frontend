@@ -44,21 +44,21 @@
 @media (max-width: 768px) {
   .main_chart_one {
     width: 95%;
-      margin: 4px;
-      margin-left: 13px;
-      padding: 10px;
+    margin: 4px;
+    margin-left: 13px;
+    padding: 10px;
   }
 
   .chart_Select_day,
   .chart_Select_week,
   .chart_Select_month {
-      padding: 6px 12px;
-      margin-right: 5px;
+    padding: 6px 12px;
+    margin-right: 5px;
   }
 }
 
-.chart_conainer{
-  display: flex; 
+.chart_conainer {
+  display: flex;
 }
 
 /* Chart two css */
@@ -119,33 +119,33 @@
 
 @media (max-width: 768px) {
   .Chart_main_2 {
-      width: 96%;
-      max-width: none;
-      margin-left: 5px;
-      padding: 15px;
-      height: 100%;
+    width: 96%;
+    max-width: none;
+    margin-left: 5px;
+    padding: 15px;
+    height: 100%;
   }
 
   .chart_profit_main {
-      margin-bottom: 15px;
-      margin-left: 5px;
+    margin-bottom: 15px;
+    margin-left: 5px;
   }
 
   .chart_profit {
-      font-size: 16px;
+    font-size: 16px;
   }
 
   .Chart_two_detailed {
-      padding: 6px 10px;
-      font-size: 12px;
+    padding: 6px 10px;
+    font-size: 12px;
   }
 
   .chart_css {
-      margin-left: 5px;
+    margin-left: 5px;
   }
 
   .main_chart {
-      margin-top: 15px;
+    margin-top: 15px;
   }
 }
 
@@ -268,34 +268,34 @@
 
 @media (max-width: 768px) {
   .container {
-      padding: 15px;
+    padding: 15px;
   }
 
   .title {
-      font-size: 1.125rem;
+    font-size: 1.125rem;
   }
 
   .data-item {
-      width: 100%;
+    width: 100%;
   }
 }
 
 @media (max-width: 480px) {
   .container {
-      padding: 7px;
+    padding: 7px;
   }
 
   .title {
-      font-size: 1rem;
+    font-size: 1rem;
   }
 
   .dropdown {
-      padding: 5px 10px;
-      font-size: 0.75rem;
+    padding: 5px 10px;
+    font-size: 0.75rem;
   }
 
   .data-text {
-      font-size: 0.75rem;
+    font-size: 0.75rem;
   }
 
   .chart_conainer {
@@ -306,19 +306,21 @@
 
 @media (max-width: 768px) {
   .container_Chart_three {
-    width:85%;
+    width: 85%;
     margin-top: 7px;
     margin-left: 5px;
     padding: 15px;
-    
+
   }
-  .data-container{
+
+  .data-container {
     margin-top: -20px;
     display: grid;
-    grid-template-columns: 2fr 1fr ;
-    
+    grid-template-columns: 2fr 1fr;
+
   }
-  .data-text{
+
+  .data-text {
     gap: 60px;
   }
 
@@ -340,45 +342,61 @@
 }
 
 @media (max-width: 430px) {
+
   /* Container Chart Three */
   .container_Chart_three {
-    width: 96%; /* Increased width for better fit */
-    margin-top: 10px; /* Adjusted margin for better spacing */
+    width: 96%;
+    /* Increased width for better fit */
+    margin-top: 10px;
+    /* Adjusted margin for better spacing */
     margin-left: 10px;
-    padding: 10px; /* Reduced padding for smaller screens */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Slightly lighter shadow */
-    border-radius: 6px; /* Slightly smaller border radius */
+    padding: 10px;
+    /* Reduced padding for smaller screens */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Slightly lighter shadow */
+    border-radius: 6px;
+    /* Slightly smaller border radius */
     transition: all 0.3s ease;
   }
 
   /* Data Container */
   .data-container {
-    margin-top: -15px; /* Adjusted margin for better alignment */
+    margin-top: -15px;
+    /* Adjusted margin for better alignment */
     display: grid;
-    grid-template-columns: 1fr; /* Changed to single column for smaller screens */
-    gap: 10px; /* Added gap between grid items */
+    grid-template-columns: 1fr;
+    /* Changed to single column for smaller screens */
+    gap: 10px;
+    /* Added gap between grid items */
   }
 
   /* Data Text */
   .data-text {
-    gap: 40px; /* Adjusted gap for smaller screens */
-    font-size: 0.875rem; /* Smaller font size for better readability */
+    gap: 40px;
+    /* Adjusted gap for smaller screens */
+    font-size: 0.875rem;
+    /* Smaller font size for better readability */
     line-height: 1.4;
   }
 
   /* Header */
   .header {
-    margin-bottom: 10px; /* Reduced margin for smaller screens */
-    padding: 8px; /* Reduced padding */
+    margin-bottom: 10px;
+    /* Reduced margin for smaller screens */
+    padding: 8px;
+    /* Reduced padding */
     background-color: #f9f9f9;
     border-bottom: 1px solid #ddd;
   }
 
   /* Title */
   .title {
-    font-size: 1rem; /* Slightly smaller font size */
-    font-weight: 600; /* Maintained font weight */
-    text-transform: uppercase; /* Uppercase titles for consistency */
+    font-size: 1rem;
+    /* Slightly smaller font size */
+    font-weight: 600;
+    /* Maintained font weight */
+    text-transform: uppercase;
+    /* Uppercase titles for consistency */
   }
 
   .dark .title {
@@ -388,8 +406,10 @@
   /* Data Item */
   .data-item {
     width: 100%;
-    padding: 8px; /* Reduced padding */
-    background-color: #f1f1f1; /* Light background color for data items */
+    padding: 8px;
+    /* Reduced padding */
+    background-color: #f1f1f1;
+    /* Light background color for data items */
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     transition: transform 0.2s ease;
@@ -422,11 +442,13 @@
   }
 
   .rounded {
-    border-radius: 6px; /* Adjusted border radius */
+    border-radius: 6px;
+    /* Adjusted border radius */
   }
 
   .shadow {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Lighter shadow */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Lighter shadow */
   }
 
   .bg-light {
@@ -439,7 +461,12 @@
   }
 
   /* Responsive Typography */
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     line-height: 1.2;
   }
 
