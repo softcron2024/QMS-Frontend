@@ -112,6 +112,14 @@ const SideBarMenu = () => {
             </li>
 
             <li className="menu-item">
+              <Link to="/manage-token-Queue" className="menu-link">
+                <div data-i18n="Dashboards" style={{display:"flex", gap:'10px'}}>
+                <i className="fa-solid fa-people-roof" style={{marginTop:'3px'}} />
+                  Manage Queue Token</div>
+              </Link>
+            </li>
+
+            <li className="menu-item">
               <div onClick={removeCookies} style={{ cursor: "pointer" }} className="menu-link" data-i18n="Order">Logout</div>
             </li>
           </ul>

@@ -11,6 +11,7 @@ import Scanner from "./Components/Pages/Scanner";
 import TodayToken from "./Components/Pages/TodayToken";
 import DisplayQueue from "./Components/Pages/DisplayQueue";
 import AdminLoginPage from "./AdminPages/AdminloginPage"
+import ManageQueue from "./Components/ManageQueue/ManageQueue";
 
 function ProtectedRoutes() {
 
@@ -54,6 +55,7 @@ function ProtectedRoutes() {
                 />
                 <Route path="/scan-token" exact element={<Scanner />} />
                 <Route path="/today-token" exact element={<TodayToken />} />
+                <Route path="/manage-token-Queue" exact element={<ManageQueue />} />
               </Routes>
               <Footer />
             </div>

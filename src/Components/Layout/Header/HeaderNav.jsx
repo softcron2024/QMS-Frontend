@@ -81,6 +81,11 @@ const NavbarComponent = () => {
                                             <i className="fa-solid fa-qrcode" />
                                             QR Scanner</Link>
                                     </li>
+                                    <li className='Link_navbar'>
+                                        <Link to='/manage-token-queue' className='Link_token'>
+                                            <i className="fa-solid fa-qrcode" />
+                                            Manage Queue Token</Link>
+                                    </li>
                                     <li onClick={removeCookies} style={{ cursor: "pointer" }} className="menu-link Link_navbar" data-i18n="Order">
                                         <i className="fa-solid fa-right-from-bracket" />
                                         Logout</li>
