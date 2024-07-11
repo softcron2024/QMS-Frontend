@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import '../../assets/css/ManageQueue.css';
 import { Link } from 'react-router-dom';
 import TokenList from './TokenManage/TokenList';
@@ -6,7 +6,6 @@ import MissedToken from './TokenManage/MissedToken';
 
 const ManageQueue = () => {
   const [callNextToken, setCallNextToken] = useState(null);
-
   const handleNextBtn = async () => {
     try {
       const response = await fetch("http://localhost:8000/api/v1/call-next-token", {
@@ -22,9 +21,8 @@ const ManageQueue = () => {
       }
 
       const result = await response.json();
-
-      if (result.message && result.message.ResponseCode === 1) {
-        setCallNextToken(result.message);
+      if (result.message && result.message[0][0].ResponseCode === 1) {
+        setCallNextToken(result.message[0][0]);
       } else {
         setCallNextToken(null);
         alert('No tokens available.');

@@ -81,32 +81,32 @@ const GenerateToken = () => {
   };
 
 
-    const handlecancel= async(e)=>{
-      e.preventDefault()
-      try {
-        const response = await fetch("http://localhost:8000/api/v1/cancel-token", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body:JSON.stringify({token_no}),
-        });
+  const handlecancel = async (e) => {
+    e.preventDefault()
+    try {
+      const response = await fetch("http://localhost:8000/api/v1/cancel-token", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ token_no }),
+      });
 
-        const result = await response.json();
-        console.log(result);
+      const result = await response.json();
+      console.log(result);
 
-        if (result.message.ResponseCode === 0) {
-          alert("Token scanned or already cancelled")
-        }
-        
-        if (result.message.ResponseCode === 1) {
-          alert("Token cancelled successfully")
-        }
-        
+      if (result.message.ResponseCode === 0) {
+        alert("Token scanned or already cancelled")
+      }
 
-      } catch (error) {
-        console.error('Error fetching cancel token:', error);
-      }  
+      if (result.message.ResponseCode === 1) {
+        alert("Token cancelled successfully")
+      }
+
+
+    } catch (error) {
+      console.error('Error fetching cancel token:', error);
     }
+  }
 
 
   const closeModal = () => {
@@ -144,6 +144,13 @@ const GenerateToken = () => {
         <div className="input-container">
           <input type="text" name="no_of_person" value={Token.no_of_person} onChange={handle_token} placeholder="No. of person" />
         </div>
+        {/* <div className="input-container">
+          <select name="vip/emerg" id="">
+            <option value="">Customer Type</option>
+            <option value="">VIP Customer</option>
+            <option value="">Emergency Customer</option>
+          </select>
+        </div> */}
         <div>
           <button className="button1" onClick={(e) => handle_CreateToken(e)}>Generate Token</button>
         </div>

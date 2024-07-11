@@ -104,6 +104,10 @@ h1{
   margin: 50px 0;
 }
 
+.input-container select{
+  outline: none;
+}
+
 /* Modal styles */
 .ReactModal__Overlay {
   background-color: rgba(0, 0, 0, 0.75);
