@@ -27,7 +27,6 @@ const GenerateToken = () => {
     setToken({ ...Token, [e.target.name]: e.target.value });
   };
 
-
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'short', day: 'numeric' };
     return new Date(dateString).toLocaleDateString('en-US', options);
@@ -80,9 +79,8 @@ const GenerateToken = () => {
     }
   };
 
-
   const handlecancel = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     try {
       const response = await fetch("http://localhost:8000/api/v1/cancel-token", {
         method: "POST",
@@ -95,19 +93,16 @@ const GenerateToken = () => {
       console.log(result);
 
       if (result.message.ResponseCode === 0) {
-        alert("Token scanned or already cancelled")
+        alert("Token scanned or already cancelled");
       }
 
       if (result.message.ResponseCode === 1) {
-        alert("Token cancelled successfully")
+        alert("Token cancelled successfully");
       }
-
-
     } catch (error) {
       console.error('Error fetching cancel token:', error);
     }
-  }
-
+  };
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -144,13 +139,6 @@ const GenerateToken = () => {
         <div className="input-container">
           <input type="text" name="no_of_person" value={Token.no_of_person} onChange={handle_token} placeholder="No. of person" />
         </div>
-        {/* <div className="input-container">
-          <select name="vip/emerg" id="">
-            <option value="">Customer Type</option>
-            <option value="">VIP Customer</option>
-            <option value="">Emergency Customer</option>
-          </select>
-        </div> */}
         <div>
           <button className="button1" onClick={(e) => handle_CreateToken(e)}>Generate Token</button>
         </div>

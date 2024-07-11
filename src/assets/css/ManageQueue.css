@@ -18,14 +18,15 @@
   background-color: #f9f9f9;
   border-radius: 8px;
   padding: 20px;
-  max-height: 415px;
-  width: 350px;
+  max-height: 408px;
+  margin-left: -20px;
+  width: 320px;
 }
 
 .manage_queue {
-  margin-left: -40%;
-  margin-top: 20%;
-  margin-right: 10%;
+  margin-left: -25%;
+  margin-top: 25%;
+  margin-right: 5%;
 }
 
 .Queue_manage {
@@ -39,14 +40,13 @@
 
 .queue_list {
   max-height: 380px;
-  width: 100%;
+  width: 110%;
+  margin-left: -10px;
   overflow-y: auto;
   padding: 10px;
-  border: 1px solid #ddd;
   border-radius: 8px;
-  background-color: #fff;
   scrollbar-width: thin;
-  scrollbar-color: #888 #f9f9f9;
+  scrollbar-color:  #f9f9f9;
 }
 
 .queue_list::-webkit-scrollbar {
@@ -111,7 +111,7 @@
   font-weight: bold;
   text-decoration: none;
   color: black;
-  margin-left: 20px;
+  margin-left: 60px;
 }
 
 /* Calling Buttons */
@@ -139,14 +139,16 @@
 /* Current Serving */
 .queue_name {
   text-align: center;
-  background: #ffffff;
+  /* background: #ffffff; */
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
 }
 
 .queue_name h2 {
   font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 10px;
   color: #333;
 }
 
@@ -187,13 +189,18 @@
 }
 
 /* Missed Tokens */
+
+.right_div .missed_bottom_token{
+ width: 90%;
+}
+
 .missed_token_container {
-  width: 120%;
+  width: 130%;
   /* Adjust width as needed */
   background-color: #f9f9f9;
   border: 1px solid #ddd;
   border-radius: 8px;
-  padding: 20px;
+  padding: 15px;
   margin-top: 30px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -209,9 +216,8 @@
 
 .missed_token_detailed {
   padding: 10px;
-  background: #ffffff;
   border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
 }
 
 .popup {
@@ -270,11 +276,12 @@
 .right_div {
   display: flex;
   gap: 20px;
-  margin-left: -30px;
+  /* margin-left: -30px; */
 }
 
 .right_div .missed_bottom_token {
   margin-top: -5%;
+ 
 }
 
 /* Media Queries for Responsive Design */

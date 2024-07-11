@@ -66,10 +66,10 @@ const ManageQueue = () => {
 
             </div>
 
-            <div className="bottom_container">
+            {/* <div className="bottom_container">
               <h3>Total Scanned Token</h3>
               <p><span>4</span></p>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
