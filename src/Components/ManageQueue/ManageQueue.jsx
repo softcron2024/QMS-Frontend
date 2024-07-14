@@ -6,6 +6,7 @@ import MissedToken from './TokenManage/MissedToken';
 
 const ManageQueue = () => {
   const [callNextToken, setCallNextToken] = useState(null);
+  
   const handleNextBtn = async () => {
     try {
       const response = await fetch("http://localhost:8000/api/v1/call-next-token", {
@@ -15,14 +16,14 @@ const ManageQueue = () => {
         },
         credentials: "include",
       });
-
+  
       if (!response.ok) {
         throw new Error(`Failed to fetch data: ${response.status} ${response.statusText}`);
       }
-
+  
       const result = await response.json();
-      if (result.message && result.message[0][0].ResponseCode === 1) {
-        setCallNextToken(result.message[0][0]);
+      if (result.message && result.message.ResponseCode === 1) {
+        setCallNextToken(result.message);
       } else {
         setCallNextToken(null);
         alert('No tokens available.');
@@ -32,6 +33,7 @@ const ManageQueue = () => {
       alert(`Error: ${error.message}`);
     }
   };
+  
 
 
   return (
