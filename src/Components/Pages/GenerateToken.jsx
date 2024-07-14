@@ -1,6 +1,6 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import '../../assets/css/GeneratToken.css';
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate, } from "react-router-dom";
 import Modal from 'react-modal';
 import { useReactToPrint } from "react-to-print";
 import Cookies from "js-cookie";
@@ -16,14 +16,40 @@ const GenerateToken = () => {
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
   const [receiptData, setReceiptData] = useState(null);
   const [token_no, setCancelTokenNo] = useState("");
+  const [selectOption, setSelectedOption] = useState("");
+  const [Options, setOptions] = useState([]);
+  const [isFocused, setIsFocused] = useState(false);
 
-  const navigate = useNavigate();
+  useEffect(() => {
+    const getCustomerTypes = async () => {
+      try {
+        const response = await fetch('http://localhost:8000/api/v1/get-customer-type', {
+          credentials: 'include',
+        });
+        const results = await response.json();
+
+        if (Array.isArray(results)) {
+          setOptions(results);
+        } else if (results && Array.isArray(results.message)) {
+          setOptions(results.message);
+        } else {
+          setOptions([]);
+          console.error('Expected an array, but got:', results);
+        }
+      } catch (error) {
+        console.error('Error fetching customer types:', error);
+        setOptions([]);
+      }
+    };
+    getCustomerTypes();
+  }, []);
+
   const printRef = useRef();
-  const handle_Print = useReactToPrint({
+  const handlePrint = useReactToPrint({
     content: () => printRef.current,
   });
 
-  const handle_token = (e) => {
+  const handleTokenChange = (e) => {
     setToken({ ...Token, [e.target.name]: e.target.value });
   };
 
@@ -32,12 +58,12 @@ const GenerateToken = () => {
     return new Date(dateString).toLocaleDateString('en-US', options);
   };
 
-  const handle_CreateToken = async (e) => {
+  const handleCreateToken = async (e) => {
     e.preventDefault();
-    if (isSubmitting) {
-      return;
-    }
+    if (isSubmitting) return;
+
     setIsSubmitting(true);
+
     try {
       const response = await fetch("http://localhost:8000/api/v1/generate-token", {
         method: "POST",
@@ -49,21 +75,9 @@ const GenerateToken = () => {
       });
       const result = await response.json();
 
-      setReceiptData(result);
-
       if (result.message === "Mobile is required") {
         alert("Mobile is required");
         return;
-      }
-
-      setToken({
-        name: "",
-        mobile: "",
-        no_of_person: "",
-      });
-
-      if (result.save) {
-        result.save();
       }
 
       if (result.message === "Check your Mobile no") {
@@ -71,6 +85,12 @@ const GenerateToken = () => {
         return;
       }
 
+      setReceiptData(result);
+      setToken({
+        name: "",
+        mobile: "",
+        no_of_person: "",
+      });
       setIsModalOpen(true);
     } catch (error) {
       console.error("Error generating token:", error);
@@ -79,7 +99,7 @@ const GenerateToken = () => {
     }
   };
 
-  const handlecancel = async (e) => {
+  const handleCancelToken = async (e) => {
     e.preventDefault();
     try {
       const response = await fetch("http://localhost:8000/api/v1/cancel-token", {
@@ -88,26 +108,21 @@ const GenerateToken = () => {
         credentials: "include",
         body: JSON.stringify({ token_no }),
       });
-
       const result = await response.json();
-      console.log(result);
 
       if (result.message.ResponseCode === 0) {
         alert("Token scanned or already cancelled");
-      }
-
-      if (result.message.ResponseCode === 1) {
+      } else if (result.message.ResponseCode === 1) {
         alert("Token cancelled successfully");
       }
     } catch (error) {
-      console.error('Error fetching cancel token:', error);
+      console.error('Error cancelling token:', error);
     }
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
     setReceiptData(null);
-    navigate(''); // Navigate to a different route if needed
   };
 
   const closeCancelModal = () => {
@@ -121,6 +136,16 @@ const GenerateToken = () => {
     return <Navigate to="/" replace />;
   }
 
+  const handleFocus = () => {
+    setIsFocused(true);
+  };
+
+  const handleBlur = () => {
+    if (!selectOption) {
+      setIsFocused(false);
+    }
+  };
+
   return (
     <div>
       <div className="container">
@@ -132,69 +157,90 @@ const GenerateToken = () => {
         </div>
         <h1>Softcron Technology</h1>
         <div className="input-container">
-          <input type="text" name="name" value={Token.name} onChange={handle_token} placeholder="Name" />
+          <input type="text" name="name" value={Token.name} onChange={handleTokenChange} placeholder="Name" />
           <p className="mobile_req">*</p>
-          <input type="text" name="mobile" value={Token.mobile} onChange={handle_token} placeholder="Mobile Number" />
+          <input type="text" name="mobile" value={Token.mobile} onChange={handleTokenChange} placeholder="Mobile Number" />
+          <label className={isFocused || selectOption ? 'focused' : ''}>
+            {/* Customer_type: */}
+            <select value={selectOption} onChange={(e) => setSelectedOption(e.target.value)}
+              onFocus={handleFocus}
+              onBlur={handleBlur} >
+              <option value={true} disabled={true}>
+                Select a customer type
+              </option>
+              {Options.map((type) => (
+                <option key={type.id} value={type.id} >
+                  {type.customer_type_name}
+                </option>
+              ))}
+            </select>
+          </label>
         </div>
         <div className="input-container">
-          <input type="text" name="no_of_person" value={Token.no_of_person} onChange={handle_token} placeholder="No. of person" />
+          <input type="text" name="no_of_person" value={Token.no_of_person} onChange={handleTokenChange} placeholder="No. of person" />
         </div>
         <div>
-          <button className="button1" onClick={(e) => handle_CreateToken(e)}>Generate Token</button>
+          <button className="button1" onClick={handleCreateToken}>Generate Token</button>
         </div>
       </div>
-      <div className="modal">
-        <Modal ref={printRef} isOpen={isModalOpen} onRequestClose={closeModal} contentLabel="Receipt">
-          <button onClick={closeModal}>Close</button>
-          <div className="Print_button_receipt">
-            <button className="btn_print" onClick={handle_Print}>Print</button>
+      <Modal
+        isOpen={isModalOpen}
+        onRequestClose={closeModal}
+        contentLabel="Receipt"
+        ariaHideApp={false}
+      >
+        <button onClick={closeModal}>Close</button>
+        <div className="Print_button_receipt">
+          <button className="btn_print" onClick={handlePrint}>Print</button>
+        </div>
+        <div className="pop_up" ref={printRef}>
+          <div>
+            <h2>Softcron Technology</h2>
           </div>
-          <div className="pop_up" ref={printRef}>
+          {receiptData && (
             <div>
-              <h2>Softcron Technology</h2>
-            </div>
-            {receiptData && (
-              <div>
-                <div className="detail_Token_receipt">
-                  <div className="head_date_token">
-                    <p>Token_No: {receiptData.token_no}</p>
-                    <p>Date: {formatDate(receiptData.created_datetime)}</p>
-                  </div>
-                  <div className="detail_of_users">
-                    <p>Name: {receiptData.name}</p>
-                    <p>Mobile: {receiptData.mobile}</p>
-                    <p>No. of Person: {receiptData.no_of_person}</p>
-                    <p>Token ID: {receiptData.token_id}</p>
-                  </div>
-                  <div className="QR_Code">
-                    <img src={receiptData.qr_b64} alt="QRCode" />
-                  </div>
+              <div className="detail_Token_receipt">
+                <div className="head_date_token">
+                  <p>Token_No: {receiptData.token_no}</p>
+                  <p>Date: {formatDate(receiptData.created_datetime)}</p>
+                </div>
+                <div className="detail_of_users">
+                  <p>Name: {receiptData.name}</p>
+                  <p>Mobile: {receiptData.mobile}</p>
+                  <p>No. of Person: {receiptData.no_of_person}</p>
+                  <p>Token ID: {receiptData.token_id}</p>
+                </div>
+                <div className="QR_Code">
+                  <img src={receiptData.qr_b64} alt="QRCode" />
                 </div>
               </div>
-            )}
+            </div>
+          )}
+        </div>
+      </Modal>
+      <Modal
+        isOpen={isCancelModalOpen}
+        onRequestClose={closeCancelModal}
+        contentLabel="Cancel Token"
+        ariaHideApp={false}
+      >
+        <button onClick={closeCancelModal}>Close</button>
+        <form onSubmit={handleCancelToken}>
+          <h2>Cancel Token</h2>
+          <div className="input-container">
+            <input
+              type="text"
+              name="token_no"
+              value={token_no}
+              onChange={(e) => setCancelTokenNo(e.target.value)}
+              placeholder="Token Number"
+            />
           </div>
-        </Modal>
-      </div>
-      <div className="modal">
-        <Modal isOpen={isCancelModalOpen} onRequestClose={closeCancelModal} contentLabel="Cancel Token">
-          <button onClick={closeCancelModal}>Close</button>
-          <form onSubmit={handlecancel}>
-            <h2>Cancel Token</h2>
-            <div className="input-container">
-              <input
-                type="text"
-                name="token_no"
-                value={token_no}
-                onChange={(e) => setCancelTokenNo(e.target.value)}
-                placeholder="Token Number"
-              />
-            </div>
-            <div>
-              <button className="button1" type="submit">Cancel Token</button>
-            </div>
-          </form>
-        </Modal>
-      </div>
+          <div>
+            <button className="button1" type="submit">Cancel Token</button>
+          </div>
+        </form>
+      </Modal>
     </div>
   );
 };
