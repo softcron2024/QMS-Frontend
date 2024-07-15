@@ -175,7 +175,21 @@ const ProductList = () => {
                     );
                 },
             }
-        }
+        },
+        {
+            name: "token_type",
+            label: "Token Type",
+            options: {
+                sort: true,
+                filter: true,
+                customBodyRender: (value, tableMeta, updateValue) => {
+                    const customer = tableData[tableMeta.rowIndex];
+                    return (
+                        <h6 className="text-body text-nowrap mb-0 text-center">{customer.customer_type_name}</h6>
+                    );
+                },
+            }
+        },
     ];
 
     const options = {
@@ -184,18 +198,6 @@ const ProductList = () => {
         sort: true,
         filter: true,
         responsive: 'standard', // Options are 'stacked', 'scrollFullHeight', 'scrollMaxHeight', 'standard'
-        customRowRender: (data, dataIndex, rowIndex) => {
-            const customer = tableData[rowIndex];
-            const rowColor = customer.customer_type_color || "#fff"; // default to white if no color provided
-            const textColor = rowColor ? "black" : "white"; // ensure text is readable
-            return (
-                <tr key={rowIndex} style={{ backgroundColor: rowColor, color: textColor, margin: "5px 0" }}>
-                    {data.map((cell, index) => (
-                        <td key={index} style={{ padding: "8px", border: "1px solid #ccc" }}>{cell}</td>
-                    ))}
-                </tr>
-            );
-        }
     };
 
     const isAuthenticated = Cookies.get("token") !== undefined;
@@ -223,7 +225,7 @@ const ProductList = () => {
                 <MUIDataTable
                     title={
                         <Typography variant="h5" style={{ fontWeight: 'bold', color: "#2a2a2a", textAlign: "left" }}>
-                            Live Queue
+                            Today's All Tokens
                         </Typography>
                     }
                     data={tableData}
