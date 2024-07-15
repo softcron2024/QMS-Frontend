@@ -82,6 +82,11 @@ const NavbarComponent = () => {
                                             QR Scanner</Link>
                                     </li>
                                     <li className='Link_navbar'>
+                                        <Link to='/customer-type' className='Link_token'>
+                                            <i className="fa-solid fa-qrcode" />
+                                            Customer Type Master</Link>
+                                    </li>
+                                    <li className='Link_navbar'>
                                         <Link to='/manage-token-queue' className='Link_token'>
                                             <i className="fa-solid fa-qrcode" />
                                             Manage Queue Token</Link>

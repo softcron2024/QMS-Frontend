@@ -4,6 +4,8 @@ import { Link, Navigate, } from "react-router-dom";
 import Modal from 'react-modal';
 import { useReactToPrint } from "react-to-print";
 import Cookies from "js-cookie";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const GenerateToken = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -77,14 +79,9 @@ const GenerateToken = () => {
       console.log(result);
 
       if (result.ResponseCode === 0) {
-        alert(result.message);
+        toast.error(result.message);
         return;
       }
-
-      // if (result.message.ResponseCode === 0) {
-      //   alert(result.message.ResponseMessage);
-      //   return;
-      // }
 
       setReceiptData(result);
       setToken({
@@ -94,7 +91,7 @@ const GenerateToken = () => {
         customer_type_id:""
       });
       setIsModalOpen(true);
-      alert("Token generate successfully")
+      toast.success("Token generate successfully")
     } catch (error) {
       console.error("Error generating token:", error);
     } finally {
@@ -114,9 +111,9 @@ const GenerateToken = () => {
       const result = await response.json();
 
       if (result.message.ResponseCode === 0) {
-        alert("Token scanned or already cancelled");
+        toast.warning("Token scanned or already cancelled");
       } else if (result.message.ResponseCode === 1) {
-        alert("Token cancelled successfully");
+        toast.success("Token cancelled successfully");
       }
     } catch (error) {
       console.error('Error cancelling token:', error);
@@ -228,9 +225,11 @@ const GenerateToken = () => {
           </div>
           <div>
             <button className="button1" type="submit">Cancel Token</button>
+            
           </div>
         </form>
       </Modal>
+      <ToastContainer />
     </div>
   );
 };

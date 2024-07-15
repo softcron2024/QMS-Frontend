@@ -112,6 +112,12 @@ const SideBarMenu = () => {
             </li>
 
             <li className="menu-item">
+              <Link to="/customer-type" className="menu-link">
+                <div data-i18n="Dashboards">Customer Type Master</div>
+              </Link>
+            </li>
+
+            <li className="menu-item">
               <Link to="/manage-token-Queue" className="menu-link">
                 <div data-i18n="Dashboards" style={{display:"flex", gap:'10px'}}>
                 <i className="fa-solid fa-people-roof" style={{marginTop:'3px'}} />
