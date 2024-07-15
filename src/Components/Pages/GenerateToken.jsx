@@ -18,7 +18,6 @@ const GenerateToken = () => {
   const [token_no, setCancelTokenNo] = useState("");
   const [selectOption, setSelectedOption] = useState("");
   const [Options, setOptions] = useState([]);
-  const [isFocused, setIsFocused] = useState(false);
 
   useEffect(() => {
     const getCustomerTypes = async () => {
@@ -136,15 +135,6 @@ const GenerateToken = () => {
     return <Navigate to="/" replace />;
   }
 
-  const handleFocus = () => {
-    setIsFocused(true);
-  };
-
-  const handleBlur = () => {
-    if (!selectOption) {
-      setIsFocused(false);
-    }
-  };
 
   return (
     <div>
@@ -160,13 +150,10 @@ const GenerateToken = () => {
           <input type="text" name="name" value={Token.name} onChange={handleTokenChange} placeholder="Name" />
           <p className="mobile_req">*</p>
           <input type="text" name="mobile" value={Token.mobile} onChange={handleTokenChange} placeholder="Mobile Number" />
-          <label className={isFocused || selectOption ? 'focused' : ''}>
-            {/* Customer_type: */}
             <select value={selectOption} onChange={(e) => setSelectedOption(e.target.value)}
-              onFocus={handleFocus}
-              onBlur={handleBlur} >
-              <option value={true} disabled={true}>
-                Select a customer type
+              >
+              <option value='' disabled={true}>
+               Customer type
               </option>
               {Options.map((type) => (
                 <option key={type.id} value={type.id} >
@@ -174,7 +161,6 @@ const GenerateToken = () => {
                 </option>
               ))}
             </select>
-          </label>
         </div>
         <div className="input-container">
           <input type="text" name="no_of_person" value={Token.no_of_person} onChange={handleTokenChange} placeholder="No. of person" />
