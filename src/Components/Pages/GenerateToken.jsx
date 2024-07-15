@@ -74,15 +74,17 @@ const GenerateToken = () => {
       });
       const result = await response.json();
 
-      if (result.message === "Mobile is required") {
-        alert("Mobile is required");
+      console.log(result);
+
+      if (result.ResponseCode === 0) {
+        alert(result.message);
         return;
       }
 
-      if (result.message === "Check your Mobile no") {
-        alert("Please check Mobile no");
-        return;
-      }
+      // if (result.message.ResponseCode === 0) {
+      //   alert(result.message.ResponseMessage);
+      //   return;
+      // }
 
       setReceiptData(result);
       setToken({

@@ -121,7 +121,7 @@ const ProductList = () => {
                 customBodyRender: (value, tableMeta, updateValue) => {
                     const customer = tableData[tableMeta.rowIndex];
                     return (
-                        <h6 className="text-body text-nowrap mb-0">{customer.customer_mobile}</h6>
+                        <h6 className="text-body text-nowrap mb-0 text-center">{customer.customer_mobile}</h6>
                     );
                 },
             }
@@ -135,7 +135,7 @@ const ProductList = () => {
                 customBodyRender: (value, tableMeta, updateValue) => {
                     const customer = tableData[tableMeta.rowIndex];
                     return (
-                        <h6 className="text-body text-nowrap mb-0">{customer.no_of_person}</h6>
+                        <h6 className="text-body text-nowrap mb-0 text-center">{customer.no_of_person}</h6>
                     );
                 },
             }
@@ -149,7 +149,7 @@ const ProductList = () => {
                 customBodyRender: (value, tableMeta, updateValue) => {
                     const customer = tableData[tableMeta.rowIndex];
                     return (
-                        <h6 className="text-body text-nowrap mb-0">{customer.token_no}</h6>
+                        <h6 className="text-body text-nowrap mb-0 text-center">{customer.token_no}</h6>
                     );
                 },
             }
@@ -184,6 +184,18 @@ const ProductList = () => {
         sort: true,
         filter: true,
         responsive: 'standard', // Options are 'stacked', 'scrollFullHeight', 'scrollMaxHeight', 'standard'
+        customRowRender: (data, dataIndex, rowIndex) => {
+            const customer = tableData[rowIndex];
+            const rowColor = customer.customer_type_color || "#fff"; // default to white if no color provided
+            const textColor = rowColor ? "black" : "white"; // ensure text is readable
+            return (
+                <tr key={rowIndex} style={{ backgroundColor: rowColor, color: textColor, margin: "5px 0" }}>
+                    {data.map((cell, index) => (
+                        <td key={index} style={{ padding: "8px", border: "1px solid #ccc" }}>{cell}</td>
+                    ))}
+                </tr>
+            );
+        }
     };
 
     const isAuthenticated = Cookies.get("token") !== undefined;
