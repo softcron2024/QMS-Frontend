@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { MyContext } from '../../ContextApi/ContextApi'; // Adjust the path based on your structure
 import '../../../assets/css/ManageQueue.css';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const MissedToken = () => {
   const [missed, setMissed] = useState([]);
@@ -61,11 +63,11 @@ const MissedToken = () => {
       }
       const result = await response.json();
       console.log(result);
-      alert("Token Moved Successfully");
+      toast.success("Token Moved Successfully");
       setShowPopup(false);
       fetchQueue();
     } catch (error) {
-      console.log(error);
+      toast.error(error);
     }
   };
 
@@ -130,6 +132,7 @@ const MissedToken = () => {
           </div>
         </div>
       )}
+      <ToastContainer/>
     </MyContext.Provider>
   );
 };

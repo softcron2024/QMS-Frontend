@@ -3,6 +3,8 @@ import '../../assets/css/ManageQueue.css';
 import { Link } from 'react-router-dom';
 import TokenList from './TokenManage/TokenList';
 import MissedToken from './TokenManage/MissedToken';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ManageQueue = () => {
   const [callNextToken, setCallNextToken] = useState(null);
@@ -26,11 +28,11 @@ const ManageQueue = () => {
         setCallNextToken(result.message);
       } else {
         setCallNextToken(null);
-        alert('No tokens available.');
+        toast.warning('No tokens available.');
       }
     } catch (error) {
       console.error('Error fetching data:', error);
-      alert(`Error: ${error.message}`);
+      toast.error(`Error: ${error.message}`);
     }
   };
   
@@ -83,6 +85,7 @@ const ManageQueue = () => {
           <MissedToken />
         </div>
       </div>
+      <ToastContainer/>
     </div>
   );
 }
