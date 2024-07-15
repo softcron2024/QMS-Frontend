@@ -94,6 +94,7 @@ const GenerateToken = () => {
         customer_type_id:""
       });
       setIsModalOpen(true);
+      alert("Token generate successfully")
     } catch (error) {
       console.error("Error generating token:", error);
     } finally {
