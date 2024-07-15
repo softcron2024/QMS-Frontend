@@ -11,12 +11,12 @@ const GenerateToken = () => {
     name: "",
     mobile: "",
     no_of_person: "",
+    customer_type_id:"1"
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
   const [receiptData, setReceiptData] = useState(null);
   const [token_no, setCancelTokenNo] = useState("");
-  const [selectOption, setSelectedOption] = useState("");
   const [Options, setOptions] = useState([]);
 
   useEffect(() => {
@@ -89,6 +89,7 @@ const GenerateToken = () => {
         name: "",
         mobile: "",
         no_of_person: "",
+        customer_type_id:""
       });
       setIsModalOpen(true);
     } catch (error) {
@@ -150,13 +151,13 @@ const GenerateToken = () => {
           <input type="text" name="name" value={Token.name} onChange={handleTokenChange} placeholder="Name" />
           <p className="mobile_req">*</p>
           <input type="text" name="mobile" value={Token.mobile} onChange={handleTokenChange} placeholder="Mobile Number" />
-            <select value={selectOption} onChange={(e) => setSelectedOption(e.target.value)}
+            <select value={Token.customer_type_id} name="customer_type_id" onChange={handleTokenChange}
               >
               <option value='' disabled={true}>
                Customer type
               </option>
               {Options.map((type) => (
-                <option key={type.id} value={type.id} >
+                <option key={type.customer_type_id} value={type.customer_type_id} >
                   {type.customer_type_name}
                 </option>
               ))}
