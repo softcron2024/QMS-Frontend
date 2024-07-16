@@ -18,7 +18,8 @@ const CustomerType = () => {
     const [editType, setEditType] = useState({
         customer_type_name: "",
         customer_type_color: "",
-        customer_type_text_color: ""
+        customer_type_text_color: "",
+        customer_type_priority: ""
     });
 
     const handleChange = (e) => {
@@ -103,6 +104,16 @@ const CustomerType = () => {
 
             const result = await response.json();
 
+            console.log(result);
+
+            if (result.ResponseCode === 0) {
+                toast.warning(result.message)
+            }
+
+            if (result.message.ResponseCode === 0) {
+                toast.warning(result.message.ResponseMessage)
+            }
+
             if (result.message.ResponseCode === 1) {
                 toast.success(result.message.ResponseMessage);
                 fetchType();
@@ -110,7 +121,8 @@ const CustomerType = () => {
                 setEditType({
                     customer_type_name: "",
                     customer_type_color: "",
-                    customer_type_text_color: ""
+                    customer_type_text_color: "",
+                    customer_type_priority: ""
                 })
             } else {
                 toast.error(result.message);
@@ -171,7 +183,7 @@ const CustomerType = () => {
 
     useEffect(() => {
         fetchType();
-        
+
     }, []);
     //#endregion
 
@@ -220,6 +232,22 @@ const CustomerType = () => {
                     return (
                         <h6 className="text-nowrap text-3xl mb-0 text-center fw-bold" >
                             {customer.customer_type_text_color}
+                        </h6>
+                    );
+                },
+            }
+        },
+        {
+            name: "customer_type_priority",
+            label: "Customer Type Priority",
+            options: {
+                sort: true,
+                filter: true,
+                customBodyRender: (value, tableMeta) => {
+                    const customer = tableData[tableMeta.rowIndex];
+                    return (
+                        <h6 className="text-nowrap text-3xl mb-0 text-center fw-bold" >
+                            {customer.customer_type_priority}
                         </h6>
                     );
                 },
@@ -331,24 +359,32 @@ const CustomerType = () => {
                         placeholder='Customer Type Name'
                         required
                     />
-                   <div className="color_type">
-                   <input
-                        onChange={handleEditChange}
-                        type="text"
-                        value={editType?.customer_type_color || ""}
-                        name="customer_type_color"
-                        placeholder='Customer Type color'
-                        required
-                    />
-                    <input
-                        onChange={handleEditChange}
-                        type="text"
-                        value={editType?.customer_type_text_color || ""}
-                        name="customer_type_text_color"
-                        placeholder='Customer Type Name'
-                        required
-                    />
-                   </div>
+                    <div className="color_type">
+                        <input
+                            onChange={handleEditChange}
+                            type="text"
+                            value={editType?.customer_type_color || ""}
+                            name="customer_type_color"
+                            placeholder='Customer Type color'
+                            required
+                        />
+                        <input
+                            onChange={handleEditChange}
+                            type="text"
+                            value={editType?.customer_type_text_color || ""}
+                            name="customer_type_text_color"
+                            placeholder='Customer Type Name'
+                            required
+                        />
+                        <input
+                            onChange={handleEditChange}
+                            type="text"
+                            value={editType?.customer_type_priority || ""}
+                            name="customer_type_priority"
+                            placeholder='Customer Type Priority'
+                            required
+                        />
+                    </div>
                     <div className="btn_edit">
                         <button type="submit" className='customer_type_btn customer_edit'>Update Customer Type</button>
                         <button type="button" className='customer_type_btn customer_edit' onClick={closeEditModal}>Cancel</button>
