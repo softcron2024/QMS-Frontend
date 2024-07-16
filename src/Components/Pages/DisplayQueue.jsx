@@ -181,7 +181,18 @@ const ProductList = () => {
         search: true,
         sort: true,
         filter: true,
-        responsive: 'standard'
+        responsive: 'standard', // Options are 'stacked', 'scrollFullHeight', 'scrollMaxHeight', 'standard'
+        customRowRender: (data, dataIndex, rowIndex) => {
+            const customer = tableData[rowIndex];
+            const rowColor = customer.customer_type_color || "#fff"; // default to white if no color provided
+            return (
+                <tr key={rowIndex} style={{ backgroundColor: rowColor, margin: "5px 0" }}>
+                    {data.map((cell, index) => (
+                        <td key={index} style={{ padding: "8px", border: "1px solid #ccc" }}>{cell}</td>
+                    ))}
+                </tr>
+            );
+        }
     };
 
     const isAuthenticated = Cookies.get("token") !== undefined;
