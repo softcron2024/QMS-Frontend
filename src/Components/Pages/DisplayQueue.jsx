@@ -3,6 +3,7 @@ import MUIDataTable from 'mui-datatables';
 import { Link, Navigate } from 'react-router-dom';
 import { VscScreenFull } from 'react-icons/vsc';
 import Cookies from "js-cookie";
+
 import { Typography } from "@mui/material";
 
 const ProductList = () => {
@@ -36,6 +37,7 @@ const ProductList = () => {
         };
 
         fetchList();
+
         const intervalId = setInterval(fetchList, 1000);
 
         return () => clearInterval(intervalId);
@@ -98,12 +100,12 @@ const ProductList = () => {
                         <strong>{label}</strong>
                     </th>
                 ),
-                customBodyRender: (value, tableMeta) => {
+                customBodyRender: (value, tableMeta, updateValue) => {
                     const customer = tableData[tableMeta.rowIndex];
                     return (
                         <div className="d-flex justify-content-start align-items-center product-name">
                             <div className="d-flex flex-column">
-                                <h6 className="text-left text-nowrap mb-0" style={{ color: customer.customer_type_text_color }}>{customer.customer_name}</h6>
+                                <h6 className="text-body text-left text-nowrap mb-0">{customer.customer_name}</h6>
                             </div>
                         </div>
                     );
@@ -116,10 +118,10 @@ const ProductList = () => {
             options: {
                 sort: true,
                 filter: true,
-                customBodyRender: (value, tableMeta) => {
+                customBodyRender: (value, tableMeta, updateValue) => {
                     const customer = tableData[tableMeta.rowIndex];
                     return (
-                        <h6 className="text-nowrap mb-0 text-center" style={{ color: customer.customer_type_text_color }}>{customer.customer_mobile}</h6>
+                        <h6 className="text-body text-nowrap mb-0 text-center">{customer.customer_mobile}</h6>
                     );
                 },
             }
@@ -130,10 +132,10 @@ const ProductList = () => {
             options: {
                 sort: true,
                 filter: true,
-                customBodyRender: (value, tableMeta) => {
+                customBodyRender: (value, tableMeta, updateValue) => {
                     const customer = tableData[tableMeta.rowIndex];
                     return (
-                        <h6 className="text-nowrap mb-0 text-center" style={{ color: customer.customer_type_text_color }}>{customer.no_of_person}</h6>
+                        <h6 className="text-body text-nowrap mb-0 text-center">{customer.no_of_person}</h6>
                     );
                 },
             }
@@ -144,10 +146,10 @@ const ProductList = () => {
             options: {
                 sort: true,
                 filter: true,
-                customBodyRender: (value, tableMeta) => {
+                customBodyRender: (value, tableMeta, updateValue) => {
                     const customer = tableData[tableMeta.rowIndex];
                     return (
-                        <h6 className=" text-nowrap text-3xl mb-0  text-center" style={{ color: customer.customer_type_text_color }}>{customer.token_no}</h6>
+                        <h6 className="text-body text-nowrap mb-0 text-center">{customer.token_no}</h6>
                     );
                 },
             }
@@ -163,7 +165,7 @@ const ProductList = () => {
                         {label}
                     </th>
                 ),
-                customBodyRender: (value, tableMeta) => {
+                customBodyRender: (value, tableMeta, updateValue) => {
                     const customer = tableData[tableMeta.rowIndex];
                     const base64Image = customer.qr_b64;
                     return (
@@ -181,15 +183,28 @@ const ProductList = () => {
         search: true,
         sort: true,
         filter: true,
-        responsive: 'standard'
+        responsive: 'standard', // Options are 'stacked', 'scrollFullHeight', 'scrollMaxHeight', 'standard'
+        customRowRender: (data, dataIndex, rowIndex) => {
+            const customer = tableData[rowIndex];
+            const rowColor = customer.customer_type_color || "#fff"; // default to white if no color provided
+            const textColor = rowColor ? "black" : "white"; // ensure text is readable
+            return (
+                <tr key={rowIndex} style={{ backgroundColor: rowColor, color: textColor, margin: "5px 0" }}>
+                    {data.map((cell, index) => (
+                        <td key={index} style={{ padding: "8px", border: "1px solid #ccc" }}>{cell}</td>
+                    ))}
+                </tr>
+            );
+        }
     };
 
     const isAuthenticated = Cookies.get("token") !== undefined;
 
+    console.log(isAuthenticated);
+
     if (!isAuthenticated) {
         return <Navigate to="/" replace />;
     }
-
     return (
         <div>
             <div className="d-flex justify-content-end p-3">
