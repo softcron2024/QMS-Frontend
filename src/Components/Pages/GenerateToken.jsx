@@ -153,7 +153,7 @@ const GenerateToken = () => {
           <input type="text" name="mobile" value={Token.mobile} onChange={handleTokenChange} placeholder="Mobile Number" />
             <select value={Token.customer_type_id} name="customer_type_id" onChange={handleTokenChange}
               >
-              <option value='' disabled={true}>
+              <option value={true} disabled={true}>
                Customer type
               </option>
               {Options.map((type) => (
