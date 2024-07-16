@@ -1,48 +1,83 @@
-/* Styling for the fieldset container */
 .filedset_form {
-    width: 300px; /* Adjust width as needed */
-    margin: 20px;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+  max-width: 400px;
+  margin: 10px 0 0 20px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+fieldset {
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+legend {
+  font-size: 1.5em;
+  margin-bottom: 20px;
+  display: block;
+  width: 100%;
+  text-align: center;
+  background-color: #f2f2f2;
+  color: #444;
+  font-weight: bold;
+  padding: 5px 0;
+  border-radius: 5px;
+}
+
+form {
+  display: flex;
+  flex-wrap:wrap;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 0.9em;
+  margin-bottom: 20px;
+}
+
+.Color_type {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.customer_type_btn {
+  width: 100%;
+  padding: 10px;
+  background-color: #ffbe76;
+  color: #fff;
+  border: none;
+  font-weight: bold;
+  border-radius: 5px;
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.customer_type_btn:hover {
+  background-color: #f6e58d;
+  color: #444;
+  /* font-size: 16px; */
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .Color_type {
+    flex-direction: column;
   }
-  
-  /* Styling for the fieldset and legend */
-  fieldset {
-    border: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  legend {
-    font-size: 1.2em; /* Adjust font size */
-    font-weight: bold;
-    margin-bottom: 10px; /* Space between legend and form */
-  }
-  
-   form {
-    display: grid;
-  } 
-  
-  label {
-    margin-bottom: 8px;
-  }
-  
-  input[type="text"], .customer_type_btn {
-    padding: 8px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  } 
-  
+
   .customer_type_btn {
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+    width: 100%;
   }
-  
-  .customer_type_btn:hover {
-    background-color: #0056b3;
-  }
-  
+}
