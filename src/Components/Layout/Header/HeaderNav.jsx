@@ -31,13 +31,18 @@ const NavbarComponent = () => {
     return (
         <Navbar expand="xl" className={`bg-white mb-3 ${darkMode ? 'navbar-dark bg-dark' : 'navbar-light'} Nav_navbar shadow-sm border`}>
             <Container fluid>
-                <Form className="d-flex me-3">
-                    <Form.Control
-                        type="search"
-                        placeholder="Search"
-                        className="me-2"
-                        aria-label="Search"
-                    /><Button variant="outline-primary ms-20"><FaSearch /></Button>
+                <Form className="d-flex flex-column flex-sm-row align-items-center me-3 clas">
+                    <div className="d-flex align-items-center"> {/* Wrapping in a div for alignment */}
+                        <Form.Control
+                            type="search"
+                            placeholder="Search"
+                            className="me-2 mb-2 mb-sm-0 btn_cont" // Adjust margin bottom for small devices
+                            aria-label="Search"
+                        />
+                        <Button variant="outline-primary" className="ms-sm-2 btn_search"> {/* Adjusting margin to separate button */}
+                            <FaSearch />
+                        </Button>
+                    </div>
                 </Form>
                 <Navbar.Toggle aria-controls="offcanvasNavbar-expand-xl" />
                 <Navbar.Offcanvas
@@ -46,7 +51,7 @@ const NavbarComponent = () => {
                     placement="end"
                     className="d-xl-none"  // Only show offcanvas on small screens
                 >
-                    <Offcanvas.Header closeButton>
+                    <Offcanvas.Header closeButton className='mb-4'>
                         <Offcanvas.Title id="offcanvasNavbarLabel-expand-xl font-bold">
                             <Link to='/dashboard'>Softcron Tecnology</Link>
                         </Offcanvas.Title>
@@ -54,9 +59,9 @@ const NavbarComponent = () => {
                     <Offcanvas.Body>
                         <Nav className="justify-content-end flex-grow-1 pe-3">
                             <Nav.Link className='nav_dashboard' href="#home">
-                                <Link to='/dashboard' className='Link_token'> 
-                                <i className="fa-solid fa-gauge-high" />
-                                Dashboard</Link>
+                                <Link to='/dashboard' className='Link_token'>
+                                    <i className="fa-solid fa-gauge-high" />
+                                    Dashboard</Link>
                             </Nav.Link>
                             <div className='navbar_link_dropdown'>
                                 <ul>
