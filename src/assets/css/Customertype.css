@@ -26,14 +26,6 @@ legend {
   border-radius: 5px;
 }
 
-form {
-  display: flex;
-  flex-wrap:wrap;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 20px;
-}
-
 input[type="text"] {
   width: 100%;
   padding: 10px;
@@ -79,5 +71,20 @@ input[type="text"] {
 
   .customer_type_btn {
     width: 100%;
+  }
+  
+  .Color_type {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+}
+
+@media (max-width:426px){
+  .Color_type{
+    flex-direction:column;
   }
 }
