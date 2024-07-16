@@ -26,7 +26,6 @@ const Scanner = () => {
           credentials: "include",
         });
         const data = await response.json();
-        console.log(data);
 
         if (data.message === "Token not found or Expired, Try again!") {
           setScanResult("")

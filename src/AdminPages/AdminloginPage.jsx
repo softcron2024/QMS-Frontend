@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./AdminloginPage.css"; // Import the CSS file
+import "./AdminloginPage.css"; 
 import image from "./image.jpg";
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Cookies from "js-cookie";
 
 const AdminLoginPage = () => {
@@ -32,20 +33,21 @@ const AdminLoginPage = () => {
 
       const result = await response.json();
 
-      console.log(result);
-
-      if (result.message === "Invalid username") {
-        alert("Check your username");
+      if (result.ResponseCode === 0) {
+        toast.warning(result.message);
         return;
       }
 
-      if (result.message === "Check your password") {
-        alert("Please check your password");
+      if (result.ResponseCode === 0) {
+        toast.warning(result.message);
         return;
       }
 
-      if (result.message === "User logged in successfully") {
-        navigate("/dashboard");
+      if (result.ResponseCode === 1) {
+        toast.success(result.message);
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 2000);
         try {
           const statusResponse = await fetch(
             "http://localhost:8000/api/v1/getQueue",
@@ -56,25 +58,21 @@ const AdminLoginPage = () => {
           );
 
           const statusResult = await statusResponse.json();
-          console.log(statusResult);
 
           if (statusResult.message === "Unauthorized") {
-            alert("Session expired, please log in again.");
+            toast.error("Session expired, please log in again.");
             navigate("/admin-login");
           } else {
             console.log("Queue data:", statusResult);
 
             let cookieArr = document.cookie.split(";");
-
-            console.log(cookieArr);
           }
         } catch (error) {
-          console.log(error);
+          toast.error(error)
         }
       }
     } catch (error) {
-      console.log(error);
-      alert("Something went wrong, Try Again!");
+      toast.error(error);
     }
   };
 
@@ -126,6 +124,7 @@ const AdminLoginPage = () => {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };
