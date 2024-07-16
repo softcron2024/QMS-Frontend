@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import "react-perfect-scrollbar/dist/css/styles.css";
 import Cookies from "js-cookie";
+import '../../assets/css/Header.css'
 
 const SideBarMenu = () => {
   const [activeIndexMainMenu, setActiveMainMenu] = useState(null);
@@ -59,7 +60,9 @@ const SideBarMenu = () => {
                 />
               </svg>
             </span>
-            <span className="app-brand-text demo menu-text fw-bold text-none">Softcron</span>
+            <span className="app-brand-text demo menu-text fw-bold text-none">
+              <Link to={'/dashboard'} className="Link_logo" style={{textDecoration:"none"}}>Softcron</Link>
+            </span>
           </a>
           <a href="!#" className="layout-menu-toggle menu-link text-large ms-auto">
             <i className="ti menu-toggle-icon d-none d-xl-block ti-sm align-middle" />

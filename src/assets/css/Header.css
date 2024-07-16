@@ -280,3 +280,9 @@
     }
 
 }
+
+/* Sidebar logo  */
+
+.Link_logo:hover{
+    color: #333;
+}
