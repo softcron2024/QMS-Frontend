@@ -37,7 +37,7 @@ const NavbarComponent = () => {
                         placeholder="Search"
                         className="me-2"
                         aria-label="Search"
-                    /><Button variant="outline-primary"><FaSearch /></Button>
+                    /><Button variant="outline-primary ms-20"><FaSearch /></Button>
                 </Form>
                 <Navbar.Toggle aria-controls="offcanvasNavbar-expand-xl" />
                 <Navbar.Offcanvas
