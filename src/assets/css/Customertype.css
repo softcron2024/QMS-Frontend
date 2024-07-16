@@ -159,6 +159,12 @@ input[type="text"] {
   font-weight: bold;
 }
 
+.color_type{
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
 /* Media queries for tablets and mobile devices */
 @media (max-width: 768px) {
 

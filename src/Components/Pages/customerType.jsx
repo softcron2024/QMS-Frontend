@@ -16,7 +16,9 @@ const CustomerType = () => {
     });
     const [isEditMode, setIsEditMode] = useState(false);
     const [editType, setEditType] = useState({
-        customer_type_name:""
+        customer_type_name: "",
+        customer_type_color: "",
+        customer_type_text_color: ""
     });
 
     const handleChange = (e) => {
@@ -106,7 +108,9 @@ const CustomerType = () => {
                 fetchType();
                 closeEditModal();
                 setEditType({
-                    customer_type_name:""
+                    customer_type_name: "",
+                    customer_type_color: "",
+                    customer_type_text_color: ""
                 })
             } else {
                 toast.error(result.message);
@@ -154,11 +158,11 @@ const CustomerType = () => {
                 body: JSON.stringify({ customer_type_id }),
             });
             const result = await response.json();
-            if (result.ResponseCode === 1) {
-                toast.success(result.message);
+            if (result.message.ResponseCode === 1) {
+                toast.success(result.message.ResponseMessage);
                 fetchType();
             } else {
-                toast.error(result.message);
+                toast.error(result.message.ResponseMessage);
             }
         } catch (error) {
             toast.error(error.message);
@@ -167,6 +171,7 @@ const CustomerType = () => {
 
     useEffect(() => {
         fetchType();
+        
     }, []);
     //#endregion
 
@@ -326,6 +331,24 @@ const CustomerType = () => {
                         placeholder='Customer Type Name'
                         required
                     />
+                   <div className="color_type">
+                   <input
+                        onChange={handleEditChange}
+                        type="text"
+                        value={editType?.customer_type_color || ""}
+                        name="customer_type_color"
+                        placeholder='Customer Type color'
+                        required
+                    />
+                    <input
+                        onChange={handleEditChange}
+                        type="text"
+                        value={editType?.customer_type_text_color || ""}
+                        name="customer_type_text_color"
+                        placeholder='Customer Type Name'
+                        required
+                    />
+                   </div>
                     <div className="btn_edit">
                         <button type="submit" className='customer_type_btn customer_edit'>Update Customer Type</button>
                         <button type="button" className='customer_type_btn customer_edit' onClick={closeEditModal}>Cancel</button>
