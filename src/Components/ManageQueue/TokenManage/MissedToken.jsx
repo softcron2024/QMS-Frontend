@@ -85,8 +85,7 @@ const MissedToken = () => {
 
   return (
     <MyContext.Provider value={{ missed, setMissed, handleMoveBtn }}>
-      <div className='missed_token_container'>
-        <div className="missed_token">
+        <div className="Queue_manage">
           <h2>Missed Token</h2>
         </div>
         <div className="missed_token_detailed">
@@ -117,7 +116,6 @@ const MissedToken = () => {
             </Droppable>
           </DragDropContext>
         </div>
-      </div>
       {showPopup && (
         <div className="popup">
           <div className="popup-content">

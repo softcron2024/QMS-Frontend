@@ -133,8 +133,8 @@
 .missed_bottom_token {
   background: #ffe5e5;
   width: 40%;
-  padding: 20px;
-  max-height: 800px;
+  max-height: 750px;
+  padding: 15px;
   border-radius: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
@@ -217,9 +217,12 @@
   margin-top: -5px;
 }
 
+
+
 /* Queue manage header styles */
 .Queue_manage, .missed_token h2 {
   margin-bottom: 20px;
+  text-align: center;
   font-size: 24px;
   color: #333;
   text-transform: uppercase;
@@ -369,12 +372,15 @@
 /* Start Css For Missed token for live Queue Management */
 
   .missed_token_container{
-    max-height: 850px;
+    padding: 15px;
   }  
 
   .missed_token{
     text-align: center;
+    margin-top: -10px;
   }
+
+  
 
   .popup {
     position: fixed;
