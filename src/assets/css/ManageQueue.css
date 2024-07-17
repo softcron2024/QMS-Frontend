@@ -213,6 +213,10 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
+.main_token_list_container .queue_list{
+  margin-top: -5px;
+}
+
 /* Queue manage header styles */
 .Queue_manage, .missed_token h2 {
   margin-bottom: 20px;
@@ -233,6 +237,7 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 20px;
   margin-top: 20px;
+  margin-left: 5px;
   overflow-y: auto;
   max-height: 400px;
 }
