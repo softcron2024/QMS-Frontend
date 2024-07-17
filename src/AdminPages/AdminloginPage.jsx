@@ -38,8 +38,8 @@ const AdminLoginPage = () => {
         return;
       }
 
-      if (result.ResponseCode === 0) {
-        toast.warning(result.message);
+      if (result.message.ResponseCode === 0) {
+        toast.warning(result.message.ResponseMessage);
         return;
       }
 
