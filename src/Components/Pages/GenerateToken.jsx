@@ -165,7 +165,7 @@ const GenerateToken = () => {
         </div>
         <div className="input-container">
           <input type="text" name="no_of_person" value={Token.no_of_person} onChange={handleTokenChange} placeholder="No. of person" />
-          <input type="text" name="no_of_person" value={Token.no_of_person} onChange={handleTokenChange} placeholder="Enter Priority" />
+          {/* <input type="text" name="no_of_person" value={Token.no_of_person} onChange={handleTokenChange} placeholder="Enter Priority" /> */}
         </div>
         <div>
           <button className="button1" onClick={handleCreateToken}>Generate Token</button>

@@ -104,7 +104,6 @@ const TokenList = () => {
   };
 
   return (
-    <div className="main_queue_container">
       <div className='main_token_list_container'>
       <div className="Queue_manage">
         <h2>Queue List</h2>
@@ -135,7 +134,6 @@ const TokenList = () => {
           )}
         </Droppable>
       </DragDropContext>
-      </div>
       <ToastContainer/>
     </div>
   );

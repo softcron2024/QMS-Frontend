@@ -127,8 +127,8 @@ const MissedToken = () => {
               value={newPosition}
               onChange={(e) => setNewPosition(e.target.value)}
             />
-            <button onClick={handleSubmit}>Submit</button>
-            <button onClick={() => setShowPopup(false)}>Cancel</button>
+            <button className='btn_pop_up' onClick={handleSubmit}>Submit</button>
+            <button className='btn_pop_up' onClick={() => setShowPopup(false)}>Cancel</button>
           </div>
         </div>
       )}
