@@ -21,6 +21,8 @@ const GenerateToken = () => {
   const [token_no, setCancelTokenNo] = useState("");
   const [Options, setOptions] = useState([]);
 
+
+  //#region Fetch token for customer Type
   useEffect(() => {
     const getCustomerTypes = async () => {
       try {
@@ -44,6 +46,7 @@ const GenerateToken = () => {
     };
     getCustomerTypes();
   }, []);
+  //#endregion
 
   const printRef = useRef();
   const handlePrint = useReactToPrint({
@@ -59,6 +62,7 @@ const GenerateToken = () => {
     return new Date(dateString).toLocaleDateString('en-US', options);
   };
 
+  //#region Create Token API For generate
   const handleCreateToken = async (e) => {
     e.preventDefault();
     if (isSubmitting) return;
@@ -78,8 +82,13 @@ const GenerateToken = () => {
 
       console.log(result);
 
-      if (result.ResponseCode === 0) {
-        toast.error(result.message);
+        if (result.ResponseCode === 0) {
+          toast.error(result.message);
+          return;
+        }
+
+      if (result.message.ResponseCode === 0) {
+        toast.error(result.message.ResponseMessage);
         return;
       }
 
@@ -98,7 +107,9 @@ const GenerateToken = () => {
       setIsSubmitting(false);
     }
   };
+  //#endregion
 
+  //#region Cancel Token for Generate token
   const handleCancelToken = async (e) => {
     e.preventDefault();
     try {
@@ -110,15 +121,23 @@ const GenerateToken = () => {
       });
       const result = await response.json();
 
+      if (result.ResponseCode === 0) {
+        toast.error(result.message);
+        return;
+      }
+
       if (result.message.ResponseCode === 0) {
-        toast.warning("Token scanned or already cancelled");
-      } else if (result.message.ResponseCode === 1) {
-        toast.success("Token cancelled successfully");
+        toast.warning(result.message.ResponseMessage);
+      }
+       else if (result.message.ResponseCode === 1) {
+        toast.success(result.message.ResponseMessage);
       }
     } catch (error) {
       console.error('Error cancelling token:', error);
+      toast.error(error)
     }
   };
+  //#endregion
 
   const closeModal = () => {
     setIsModalOpen(false);

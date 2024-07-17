@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../assets/css/ManageQueue.css';
 import { Link } from 'react-router-dom';
 import TokenList from './TokenManage/TokenList';
@@ -18,14 +18,16 @@ const ManageQueue = () => {
         },
         credentials: "include",
       });
-
+  
       if (!response.ok) {
         throw new Error(`Failed to fetch data: ${response.status} ${response.statusText}`);
       }
-
+  
       const result = await response.json();
       if (result.message && result.message.ResponseCode === 1) {
         setCallNextToken(result.message);
+        // Store in localStorage
+        localStorage.setItem('callNextToken', JSON.stringify(result.message));
       } else {
         setCallNextToken(null);
         toast.warning('No tokens available.');
@@ -35,6 +37,16 @@ const ManageQueue = () => {
       toast.error(`Error: ${error.message}`);
     }
   };
+
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem('callNextToken');
+    if (storedToken) {
+      setCallNextToken(JSON.parse(storedToken));
+    }
+  }, []);
+
+  
 
 
 

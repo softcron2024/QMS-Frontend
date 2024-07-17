@@ -159,6 +159,11 @@ input[type="text"] {
   font-weight: bold;
 }
 
+.queue_name h2{
+  font-size: 20px;
+  font-weight: bold;
+}
+
 .color_type{
   display: flex;
   flex-direction: row;
