@@ -212,7 +212,7 @@ const GenerateToken = () => {
         contentLabel="Cancel Token"
         ariaHideApp={false}
       >
-        <button onClick={closeCancelModal}>Close</button>
+        <button className="btn_close" onClick={closeCancelModal}>Close</button>
         <form onSubmit={handleCancelToken}>
           <h2>Cancel Token</h2>
           <div className="input-container">
@@ -225,7 +225,7 @@ const GenerateToken = () => {
             />
           </div>
           <div>
-            <button className="button1" type="submit">Cancel Token</button>
+            <button className="btn_cancel" type="submit">Cancel Token</button>
             
           </div>
         </form>

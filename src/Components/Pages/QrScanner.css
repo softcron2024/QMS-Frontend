@@ -1,54 +1,76 @@
 .qr-scanner-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border-radius: 10px;
-    padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  padding: 20px;
+  background-color: #f9f9f9; /* Soft background color */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
+}
+
+.qr-reader {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  overflow: hidden;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
+}
+
+.qr-reader video {
+  width: 100%;
+  height: auto;
+}
+
+.scanning-line {
+  position: absolute;
+  width: 100%;
+  height: 4px;
+  background-color: rgba(0, 255, 0, 0.7);
+  animation: scan 3s infinite;
+}
+
+@keyframes scan {
+  0% {
+    top: 0;
   }
-  
+  50% {
+    top: 100%;
+  }
+  100% {
+    top: 0;
+  }
+}
+
+.scan-result {
+  margin-top: 20px;
+  font-size: 18px;
+  color: #333;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 600px) {
   .qr-reader {
-    position: relative;
-    width: 100%;
-    max-width: 400px;
-    height: 100%;
-    overflow: hidden;
-    border-radius: 10px;
-    background-color: #fff;
-  }
-  
-  .qr-reader video {
-    width: 100%;
-    height: 100%;
-  }
-  
-  .scanning-line {
-    position: absolute;
-    width: 100%;
-    height: 4px;
-    background-color: rgba(0, 255, 0, 0.7);
-    animation: scan 3s infinite;
-  }
-  
-  @keyframes scan {
-    0% {
-      top: 0;
-    }
-    50% {
-      top: 100%;
-    }
-    100% {
-      top: 0;
-    }
-  }
-  
-  .scan-result {
-    margin-top: 20px;
-    font-size: 18px;
-    color: #333;
-    background-color: #fff;
-    padding: 10px;
+    max-width: 100%;
     border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
-  
+
+  .scan-result {
+    font-size: 16px;
+    padding: 8px;
+  }
+}
+
+.qr-reader:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Slightly larger shadow on hover */
+}
+
+.qr-reader:focus-within {
+  border: 2px solid rgba(0, 255, 0, 0.7); /* Green border when focused */
+}

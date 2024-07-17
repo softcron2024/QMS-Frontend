@@ -118,10 +118,9 @@ h1{
 
 .ReactModal__Content {
   width: 500px;
-  max-width: 90%;
-  height: auto;
-  max-height: 90%;
-  margin: 4% auto;
+  max-width: 50%;
+  height: 300px;
+  margin: 11% auto;
   padding: 20px;
   background: #fff;
   border-radius: 8px;
@@ -139,10 +138,10 @@ h1{
   margin-left: 7%;
 }
 
-.ReactModal__Content button {
+.ReactModal__Content .btn_close {
   margin-top: 5px;
   padding: 10px 20px;
-  background-color: #007bff;
+  background: #e77f67;
   color: white;
   border: none;
   border-radius: 4px;
@@ -150,8 +149,25 @@ h1{
   transition: background-color 0.3s ease;
 }
 
-.ReactModal__Content button:hover {
-  background-color: #0056b3;
+.ReactModal__Content .btn_cancel {
+  margin-top: 5px;
+  padding: 10px 20px;
+  background: #ff3838;
+  color: white;
+  border: none;
+  width: 90%;
+  margin-left: 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.ReactModal__Content .btn_close:hover {
+  background-color: #f3a683;
+}
+
+.ReactModal__Content .btn_cancel:hover {
+  background-color: #f3a683;
 }
 
 .ReactModal__Content p {
