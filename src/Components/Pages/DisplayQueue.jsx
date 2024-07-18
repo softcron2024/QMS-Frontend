@@ -4,6 +4,9 @@ import { Link, Navigate } from 'react-router-dom';
 import { VscScreenFull } from 'react-icons/vsc';
 import Cookies from "js-cookie";
 import { Typography, CircularProgress } from "@mui/material";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import '../../assets/css/DisplayQueue.css'
 
 const ProductList = () => {
     const [tableData, setTableData] = useState([]);
@@ -11,6 +14,35 @@ const ProductList = () => {
     const [error, setError] = useState(null); // State for error handling
     const [isFullScreen, setIsFullScreen] = useState(false);
     const tableRef = useRef(null);
+    const [colorCustomer, setcolorCustomer] = useState([]);
+    console.log(colorCustomer);
+
+    //#region fetch from customer type color and name 
+    useEffect(()=>{
+        const fetchCustomerColor = async () => {
+            try {
+                const response = await fetch('http://localhost:8000/api/v1/get-customer-type', {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    credentials: "include",
+                });
+                const result = await response.json();
+                if (Array.isArray(result?.message)) {
+                    setcolorCustomer(result?.message);
+                } else {
+                    console.error("Expected an array but got:", result?.message);
+                    setcolorCustomer([]);
+                }
+            } catch (error) {
+                toast.error(error.message);
+            }
+        }
+        fetchCustomerColor()
+    }, [])
+
+    //#endregion
 
     useEffect(() => {
         const fetchList = async () => {
@@ -248,8 +280,22 @@ const ProductList = () => {
                 ) : (
                     <MUIDataTable
                         title={
-                            <Typography variant="h5" style={{ fontWeight: 'bold', color: "#2a2a2a", textAlign: "left" }}>
-                                Live Queue
+                            <Typography variant="h5" style={{ fontWeight: 'bold', color: "#2a2a2a", textAlign: "left"  }}>
+                                 <div className='colorT'>
+                                {
+                                    colorCustomer.map((item)=>{
+
+                                       return (
+                                        <div className="colortype">
+                                        <h6 className='type'>{item.customer_type_name}</h6>
+                                        <p style={{background: item.customer_type_color,  color:item.customer_type_text_color}}></p>
+                                        </div>
+                                       )
+                                    })
+                                }
+                               </div>
+                               <h5 className='var_live_queue'>Live Queue</h5>
+                              
                             </Typography>
                         }
                         data={tableData}
