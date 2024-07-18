@@ -18,16 +18,16 @@ const ManageQueue = () => {
         },
         credentials: "include",
       });
-  
+
       if (!response.ok) {
         throw new Error(`Failed to fetch data: ${response.status} ${response.statusText}`);
       }
-  
+
       const result = await response.json();
-      if (result.message && result.message.ResponseCode === 1) {
-        setCallNextToken(result.message);
+      if (result?.message && result?.message?.ResponseCode === 1) {
+        setCallNextToken(result?.message);
         const tokenData = {
-          value: result.message,
+          value: result?.message,
           timestamp: new Date().getTime(),
         };
         localStorage.setItem('callNextToken', JSON.stringify(tokenData));
@@ -40,7 +40,7 @@ const ManageQueue = () => {
       toast.error(`Error: ${error.message}`);
     }
   };
-  
+
 
   useEffect(() => {
     const storedToken = localStorage.getItem('callNextToken');
@@ -49,22 +49,21 @@ const ManageQueue = () => {
       const currentTime = new Date().getTime();
       const FIVE_MINUTES = 5 * 60 * 1000;
 
-      if (currentTime - tokenData.timestamp < FIVE_MINUTES) {
-        setCallNextToken(tokenData.value);
-        const timeRemaining = FIVE_MINUTES - (currentTime - tokenData.timestamp);
-        const timeout = setTimeout(() => {
-          localStorage.removeItem('callNextToken');
-          setCallNextToken(null);
-        }, timeRemaining);
-        return () => clearTimeout(timeout);
-      } else {
+      setCallNextToken(tokenData.value);
+      const timeRemaining = FIVE_MINUTES - (currentTime - tokenData.timestamp);
+      const timeout = setTimeout(() => {
         localStorage.removeItem('callNextToken');
-      }
+        setCallNextToken(null);
+      }, timeRemaining);
+      return () => clearTimeout(timeout);
+    } else {
+      localStorage.removeItem('callNextToken');
     }
-  }, []);
+  }
+  );
 
-  
-  
+
+
 
 
 
