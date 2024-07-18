@@ -3,15 +3,20 @@ import MUIDataTable from 'mui-datatables';
 import { Link, Navigate } from 'react-router-dom';
 import { VscScreenFull } from 'react-icons/vsc';
 import Cookies from "js-cookie";
-import { Typography } from "@mui/material";
+import { Typography, CircularProgress } from "@mui/material";
 
 const ProductList = () => {
     const [tableData, setTableData] = useState([]);
+    const [isLoading, setIsLoading] = useState(true); // State for loading indicator
+    const [error, setError] = useState(null); // State for error handling
     const [isFullScreen, setIsFullScreen] = useState(false);
     const tableRef = useRef(null);
 
     useEffect(() => {
         const fetchList = async () => {
+            setIsLoading(true); // Show loading indicator
+            setError(null); // Clear previous error
+
             try {
                 const response = await fetch("http://localhost:8000/api/v1/getQueue", {
                     method: "GET",
@@ -20,23 +25,31 @@ const ProductList = () => {
                     },
                     credentials: "include",
                 });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
                 const result = await response.json();
                 console.log(result);
 
-                if (Array.isArray(result?.message[0])) {
-                    setTableData(result?.message[0]);
+                if (Array.isArray(result.message[0])) {
+                    setTableData(result.message[0]);
                 } else {
                     console.error("Expected an array but got:", result.message[0]);
                     setTableData([]);
                 }
             } catch (error) {
                 console.error("Error fetching data:", error);
+                setError("Error fetching data");
                 setTableData([]);
+            } finally {
+                setIsLoading(false); // Hide loading indicator
             }
         };
 
         fetchList();
-        const intervalId = setInterval(fetchList, 1000);
+        const intervalId = setInterval(fetchList, 10000);
 
         return () => clearInterval(intervalId);
     }, []);
@@ -85,6 +98,14 @@ const ProductList = () => {
         }
         setIsFullScreen(!isFullScreen);
     };
+
+    useEffect(() => {
+        if (!tableData || tableData.length === 0) {
+            setIsLoading(true);
+        } else {
+            setIsLoading(false);
+        }
+    }, [tableData]);
 
     const columns = [
         {
@@ -216,16 +237,26 @@ const ProductList = () => {
                 </div>
             </div>
             <div ref={tableRef} className={`mui-datatables ${isFullScreen ? 'fullscreen' : ''}`}>
-                <MUIDataTable
-                    title={
-                        <Typography variant="h5" style={{ fontWeight: 'bold', color: "#2a2a2a", textAlign: "left" }}>
-                            Live Queue
-                        </Typography>
-                    }
-                    data={tableData}
-                    columns={columns}
-                    options={options}
-                />
+                {isLoading ? (
+                    <div className="text-center">
+                        <CircularProgress />
+                    </div>
+                ) : error ? (
+                    <div className="text-center text-danger">
+                        {error}
+                    </div>
+                ) : (
+                    <MUIDataTable
+                        title={
+                            <Typography variant="h5" style={{ fontWeight: 'bold', color: "#2a2a2a", textAlign: "left" }}>
+                                Live Queue
+                            </Typography>
+                        }
+                        data={tableData}
+                        columns={columns}
+                        options={options}
+                    />
+                )}
             </div>
         </div>
     );
