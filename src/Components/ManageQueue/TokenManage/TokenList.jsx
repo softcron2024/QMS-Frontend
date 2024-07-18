@@ -37,7 +37,7 @@ const TokenList = () => {
 
   useEffect(() => {
     fetchQueue();
-  }, [queue]); // Fetch queue only once when component mounts
+  }, [queue]);
 
   const handleSkipBtn = async (token_no) => {
     try {
@@ -55,8 +55,9 @@ const TokenList = () => {
       }
       const result = await response.json();
       toast.success("Token skipped successfully");
-      fetchQueue(); // Fetch the updated queue after skipping a token
+      fetchQueue();
       navigate('/manage-token-Queue');
+      
     }
     catch (error) {
       console.log(error);
@@ -64,44 +65,47 @@ const TokenList = () => {
   };
 
   const onDragEnd = async (result) => {
-    const { destination, source } = result;
+  const { destination, source } = result;
+  console.log("Drag result:", result);
 
-    // If there's no destination (dropped outside the list) or the position is unchanged
-    if (!destination || (destination.index === source.index)) {
-      return;
+  if (!destination || (destination.index === source.index)) {
+    return;
+  }
+
+  const newQueue = Array.from(queue);
+  const [movedItem] = newQueue.splice(source.index, 1);
+  newQueue.splice(destination.index, 0, movedItem);
+  console.log("Updated queue:", newQueue);
+
+  setQueue(newQueue);
+
+  try {
+    const response = await fetch("http://localhost:8000/api/v1/adjust-token-position", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        token_no: movedItem.token_no,
+        in_at: destination.index
+      })
+    });
+
+    if (!response.ok) {
+      const errorBody = await response.text();
+      console.log("Failed to update token position. Response:", errorBody);
+      throw new Error('Failed to update token position');
     }
 
-    // Rearrange the items in the queue array
-    const newQueue = Array.from(queue);
-    const [movedItem] = newQueue.splice(source.index, 1);
-    newQueue.splice(destination.index, 0, movedItem);
+    const result = await response.json();
+    console.log("Server response:", result);
+    toast.success("Token position updated successfully");
+  } catch (error) {
+    console.log("Error:", error);
+  }
+};
 
-    setQueue(newQueue); // Update the queue state with the new order
-
-    // Send the updated position to the backend
-    try {
-      const response = await fetch("http://localhost:8000/api/v1/adjust-token-position", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({
-          token_no: movedItem.token_no,
-          in_at: destination.index
-        })
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to update token position');
-      }
-      const result = await response.json();
-      console.log(result);
-      toast.success("Token position updated successfully");
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   return (
     <div className='main_token_list_container'>

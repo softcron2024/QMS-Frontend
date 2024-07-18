@@ -20,8 +20,7 @@ const GenerateToken = () => {
   const [receiptData, setReceiptData] = useState(null);
   const [token_no, setCancelTokenNo] = useState("");
   const [Options, setOptions] = useState([]);
-
-
+  
   //#region Fetch token for customer Type
   useEffect(() => {
     const getCustomerTypes = async () => {
@@ -80,15 +79,13 @@ const GenerateToken = () => {
       });
       const result = await response.json();
 
-      console.log(result);
-
-        if (result.ResponseCode === 0) {
-          toast.error(result.message);
+        if (result?.ResponseCode === 0) {
+          toast.error(result?.message);
           return;
         }
 
-      if (result.message.ResponseCode === 0) {
-        toast.error(result.message.ResponseMessage);
+      if (result?.message?.ResponseCode === 0) {
+        toast.error(result?.message?.ResponseMessage);
         return;
       }
 
@@ -196,7 +193,7 @@ const GenerateToken = () => {
         contentLabel="Receipt"
         ariaHideApp={false}
       >
-        <button onClick={closeModal}>Close</button>
+        <button className="btn_close" onClick={closeModal}>Close</button>
         <div className="Print_button_receipt">
           <button className="btn_print" onClick={handlePrint}>Print</button>
         </div>
