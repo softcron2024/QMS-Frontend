@@ -61,18 +61,18 @@ const CustomerType = () => {
 
             const result = await response.json();
 
-            if (result.ResponseCode === 0) {
-                toast.error(result.message);
+            if (result?.ResponseCode === 0) {
+                toast.error(result?.message);
                 return;
             }
 
-            if (result.message.ResponseCode === 0) {
-                toast.error(result.message.ResponseMessage);
+            if (result?.message?.ResponseCode === 0) {
+                toast.error(result?.message?.ResponseMessage);
                 return;
             }
 
-            if (result.message.ResponseCode === 1) {
-                toast.success(result.message.ResponseMessage);
+            if (result?.message?.ResponseCode === 1) {
+                toast.success(result?.message?.ResponseMessage);
                 setType({
                     customer_type_name: "",
                     customer_type_color: "",
@@ -106,16 +106,16 @@ const CustomerType = () => {
 
             console.log(result);
 
-            if (result.ResponseCode === 0) {
-                toast.warning(result.message)
+            if (result?.ResponseCode === 0) {
+                toast.warning(result?.message)
             }
 
-            if (result.message.ResponseCode === 0) {
-                toast.warning(result.message.ResponseMessage)
+            if (result?.message?.ResponseCode === 0) {
+                toast.warning(result?.message?.ResponseMessage)
             }
 
-            if (result.message.ResponseCode === 1) {
-                toast.success(result.message.ResponseMessage);
+            if (result?.message?.ResponseCode === 1) {
+                toast.success(result?.message?.ResponseMessage);
                 fetchType();
                 closeEditModal();
                 setEditType({
@@ -146,10 +146,10 @@ const CustomerType = () => {
                 credentials: "include",
             });
             const result = await response.json();
-            if (Array.isArray(result.message)) {
-                setTableData(result.message);
+            if (Array.isArray(result?.message)) {
+                setTableData(result?.message);
             } else {
-                console.error("Expected an array but got:", result.message);
+                console.error("Expected an array but got:", result?.message);
                 setTableData([]);
             }
         } catch (error) {
@@ -170,11 +170,11 @@ const CustomerType = () => {
                 body: JSON.stringify({ customer_type_id }),
             });
             const result = await response.json();
-            if (result.message.ResponseCode === 1) {
-                toast.success(result.message.ResponseMessage);
+            if (result?.message?.ResponseCode === 1) {
+                toast.success(result?.message?.ResponseMessage);
                 fetchType();
             } else {
-                toast.error(result.message.ResponseMessage);
+                toast.error(result?.message?.ResponseMessage);
             }
         } catch (error) {
             toast.error(error.message);

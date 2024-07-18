@@ -27,13 +27,13 @@ const Scanner = () => {
         });
         const data = await response.json();
 
-        if (data.message === "Token not found or Expired, Try again!") {
+        if (data?.message === "Token not found or Expired, Try again!") {
           setScanResult("")
           return alert("Token Invalid")
 
         }
 
-        if (data.message === "Your token is valid") {
+        if (data?.message === "Your token is valid") {
           setScanResult("")
           return alert("Token Valid")
 

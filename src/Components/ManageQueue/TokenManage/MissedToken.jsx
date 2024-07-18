@@ -27,10 +27,10 @@ const MissedToken = () => {
 
       const result = await response.json();
 
-      if (Array.isArray(result.message)) {
-        setMissed(result.message);
+      if (Array.isArray(result?.message)) {
+        setMissed(result?.message);
       } else {
-        console.error("Expected an array but got:", result.message);
+        console.error("Expected an array but got:", result?.message);
         setMissed([]);
       }
     } catch (error) {

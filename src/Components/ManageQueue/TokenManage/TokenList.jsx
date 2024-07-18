@@ -24,10 +24,10 @@ const TokenList = () => {
       }
 
       const result = await response.json();
-      if (Array.isArray(result.message[0])) {
-        setQueue(result.message[0]);
+      if (Array.isArray(result?.message[0])) {
+        setQueue(result?.message[0]);
       } else {
-        console.error("Expected an array but got:", result.message[0]);
+        console.error("Expected an array but got:", result?.message[0]);
         setQueue([]);
       }
     } catch (error) {

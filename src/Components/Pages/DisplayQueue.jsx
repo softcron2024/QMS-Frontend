@@ -23,8 +23,8 @@ const ProductList = () => {
                 const result = await response.json();
                 console.log(result);
 
-                if (Array.isArray(result.message[0])) {
-                    setTableData(result.message[0]);
+                if (Array.isArray(result?.message[0])) {
+                    setTableData(result?.message[0]);
                 } else {
                     console.error("Expected an array but got:", result.message[0]);
                     setTableData([]);

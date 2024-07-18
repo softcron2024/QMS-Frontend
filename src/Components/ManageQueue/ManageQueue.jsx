@@ -26,8 +26,11 @@ const ManageQueue = () => {
       const result = await response.json();
       if (result.message && result.message.ResponseCode === 1) {
         setCallNextToken(result.message);
-        // Store in localStorage
-        localStorage.setItem('callNextToken', JSON.stringify(result.message));
+        const tokenData = {
+          value: result.message,
+          timestamp: new Date().getTime(),
+        };
+        localStorage.setItem('callNextToken', JSON.stringify(tokenData));
       } else {
         setCallNextToken(null);
         toast.warning('No tokens available.');
@@ -37,15 +40,30 @@ const ManageQueue = () => {
       toast.error(`Error: ${error.message}`);
     }
   };
-
+  
 
   useEffect(() => {
     const storedToken = localStorage.getItem('callNextToken');
     if (storedToken) {
-      setCallNextToken(JSON.parse(storedToken));
+      const tokenData = JSON.parse(storedToken);
+      const currentTime = new Date().getTime();
+      const FIVE_MINUTES = 5 * 60 * 1000;
+
+      if (currentTime - tokenData.timestamp < FIVE_MINUTES) {
+        setCallNextToken(tokenData.value);
+        const timeRemaining = FIVE_MINUTES - (currentTime - tokenData.timestamp);
+        const timeout = setTimeout(() => {
+          localStorage.removeItem('callNextToken');
+          setCallNextToken(null);
+        }, timeRemaining);
+        return () => clearTimeout(timeout);
+      } else {
+        localStorage.removeItem('callNextToken');
+      }
     }
   }, []);
 
+  
   
 
 
