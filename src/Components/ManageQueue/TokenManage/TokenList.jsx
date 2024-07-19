@@ -57,7 +57,7 @@ const TokenList = () => {
       toast.success("Token skipped successfully");
       fetchQueue();
       navigate('/manage-token-Queue');
-      
+
     }
     catch (error) {
       console.log(error);
@@ -65,46 +65,46 @@ const TokenList = () => {
   };
 
   const onDragEnd = async (result) => {
-  const { destination, source } = result;
-  console.log("Drag result:", result);
+    const { destination, source } = result;
+    console.log("Drag result:", result);
 
-  if (!destination || (destination.index === source.index)) {
-    return;
-  }
-
-  const newQueue = Array.from(queue);
-  const [movedItem] = newQueue.splice(source.index, 1);
-  newQueue.splice(destination.index, 0, movedItem);
-  console.log("Updated queue:", newQueue);
-
-  setQueue(newQueue);
-
-  try {
-    const response = await fetch("http://localhost:8000/api/v1/adjust-token-position", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify({
-        token_no: movedItem.token_no,
-        in_at: destination.index
-      })
-    });
-
-    if (!response.ok) {
-      const errorBody = await response.text();
-      console.log("Failed to update token position. Response:", errorBody);
-      throw new Error('Failed to update token position');
+    if (!destination || (destination.index === source.index)) {
+      return;
     }
 
-    const result = await response.json();
-    console.log("Server response:", result);
-    toast.success("Token position updated successfully");
-  } catch (error) {
-    console.log("Error:", error);
-  }
-};
+    const newQueue = Array.from(queue);
+    const [movedItem] = newQueue.splice(source.index, 1);
+    newQueue.splice(destination.index, 0, movedItem);
+    console.log("Updated queue:", newQueue);
+
+    setQueue(newQueue);
+
+    try {
+      const response = await fetch("http://localhost:8000/api/v1/adjust-token-position", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          token_no: movedItem.token_no,
+          in_at: destination.index
+        })
+      });
+
+      if (!response.ok) {
+        const errorBody = await response.text();
+        console.log("Failed to update token position. Response:", errorBody);
+        throw new Error('Failed to update token position');
+      }
+
+      const result = await response.json();
+      console.log("Server response:", result);
+      toast.success("Token position updated successfully");
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  };
 
 
   return (

@@ -5,8 +5,10 @@
   justify-content: center;
   border-radius: 10px;
   padding: 20px;
-  background-color: #f9f9f9; /* Soft background color */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  background-color: #f9f9f9;
+  /* Soft background color */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  /* Soft shadow */
 }
 
 .qr-reader {
@@ -17,7 +19,8 @@
   overflow: hidden;
   border-radius: 10px;
   background-color: #fff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  /* Soft shadow */
 }
 
 .qr-reader video {
@@ -37,9 +40,11 @@
   0% {
     top: 0;
   }
+
   50% {
     top: 100%;
   }
+
   100% {
     top: 0;
   }
@@ -68,9 +73,11 @@
 }
 
 .qr-reader:hover {
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Slightly larger shadow on hover */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  /* Slightly larger shadow on hover */
 }
 
 .qr-reader:focus-within {
-  border: 2px solid rgba(0, 255, 0, 0.7); /* Green border when focused */
+  border: 2px solid rgba(0, 255, 0, 0.7);
+  /* Green border when focused */
 }

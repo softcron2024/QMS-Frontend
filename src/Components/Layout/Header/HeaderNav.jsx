@@ -82,7 +82,7 @@ const NavbarComponent = () => {
                                             Display Queue Token</Link>
                                     </li>
                                     <li className='Link_navbar'>
-                                        <Link to='/generate-token' className='Link_token'>
+                                        <Link to='/scan-token' className='Link_token'>
                                             <i className="fa-solid fa-qrcode" />
                                             QR Scanner</Link>
                                     </li>

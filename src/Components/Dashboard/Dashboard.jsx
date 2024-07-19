@@ -18,7 +18,7 @@ const Dashboard = () => {
     TodayTokens: 0,
     TodayScannedTokens: 0,
     TodayWaitingTokens: 0,
-    TodayCancelledTokens:0,
+    TodayCancelledTokens: 0,
   });
 
   // Fetching functions
@@ -112,7 +112,7 @@ const Dashboard = () => {
       const result = await response.json();
       if (result.message.ResponseCode === 1) {
         setTodayTokenList(result.message);
-        setReport({ TodayTokens: result.message.TodayTokens, TodayScannedTokens: result.message.TodayScannedTokens, TodayWaitingTokens: result.message.TodayWaitingTokens,TodayCancelledTokens: result.message.TodayCancelledTokens });
+        setReport({ TodayTokens: result.message.TodayTokens, TodayScannedTokens: result.message.TodayScannedTokens, TodayWaitingTokens: result.message.TodayWaitingTokens, TodayCancelledTokens: result.message.TodayCancelledTokens });
       } else {
         console.error("Expected an array but got:", result.message);
         setTodayTokenList([]);
