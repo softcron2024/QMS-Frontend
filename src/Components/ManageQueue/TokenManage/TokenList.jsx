@@ -37,7 +37,11 @@ const TokenList = () => {
 
   useEffect(() => {
     fetchQueue();
-  }, [queue]);
+
+    const intervalId = setInterval(fetchQueue, 10000);
+
+    return () => clearInterval(intervalId);
+  }, []);
 
   const handleSkipBtn = async (token_no) => {
     try {
