@@ -376,7 +376,7 @@ const CustomerType = () => {
                             placeholder='Customer Type Name'
                             required
                         />
-                        <h5 style={{color:"red", marginTop:'-10PX', marginRight:"-10px"}}>*</h5>
+                        <h5 style={{ color: "red", marginTop: '-10PX', marginRight: "-10px" }}>*</h5>
                         <input
                             onChange={handleEditChange}
                             type="text"

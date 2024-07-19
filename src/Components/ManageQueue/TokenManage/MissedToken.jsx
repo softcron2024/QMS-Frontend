@@ -85,37 +85,37 @@ const MissedToken = () => {
 
   return (
     <MyContext.Provider value={{ missed, setMissed, handleMoveBtn }}>
-        <div className="Queue_manage">
-          <h2>Missed Token</h2>
-        </div>
-        <div className="missed_token_detailed">
-          <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId="Queue_list">
-              {(provided) => (
-                <div className="queue_list" {...provided.droppableProps} ref={provided.innerRef}>
-                  {missed.map((item, index) => (
-                    <Draggable key={item.token_no} draggableId={item.token_no.toString()} index={index}>
-                      {(provided) => (
-                        <div
-                          className="token_manage"
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          ref={provided.innerRef}
-                        >
-                          <p>Queue no: <span>{item.token_no}</span></p>
-                          <p>Name: <span>{item.customer_name}</span></p>
-                          <p>Mobile: <span>{item.customer_mobile}</span></p>
-                          <div className="btn_skip" onClick={() => handleMoveBtn(item.token_no, item.in_at)}>Recall</div>
-                        </div>
-                      )}
-                    </Draggable>
-                  ))}
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
-          </DragDropContext>
-        </div>
+      <div className="Queue_manage">
+        <h2>Missed Token</h2>
+      </div>
+      <div className="missed_token_detailed">
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId="Queue_list">
+            {(provided) => (
+              <div className="queue_list" {...provided.droppableProps} ref={provided.innerRef}>
+                {missed.map((item, index) => (
+                  <Draggable key={item.token_no} draggableId={item.token_no.toString()} index={index}>
+                    {(provided) => (
+                      <div
+                        className="token_manage"
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        ref={provided.innerRef}
+                      >
+                        <p>Queue no: <span>{item.token_no}</span></p>
+                        <p>Name: <span>{item.customer_name}</span></p>
+                        <p>Mobile: <span>{item.customer_mobile}</span></p>
+                        <div className="btn_skip" onClick={() => handleMoveBtn(item.token_no, item.in_at)}>Recall</div>
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
+      </div>
       {showPopup && (
         <div className="popup">
           <div className="popup-content">
@@ -130,7 +130,7 @@ const MissedToken = () => {
           </div>
         </div>
       )}
-      <ToastContainer/>
+      <ToastContainer />
     </MyContext.Provider>
   );
 };

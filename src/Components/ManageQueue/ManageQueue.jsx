@@ -41,7 +41,6 @@ const ManageQueue = () => {
     }
   };
 
-
   useEffect(() => {
     const storedToken = localStorage.getItem('callNextToken');
     if (storedToken) {
@@ -59,13 +58,7 @@ const ManageQueue = () => {
     } else {
       localStorage.removeItem('callNextToken');
     }
-  }
-  );
-
-
-
-
-
+  });
 
   return (
     <div className='main_queue_container'>

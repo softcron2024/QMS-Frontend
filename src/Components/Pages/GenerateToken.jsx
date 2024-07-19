@@ -13,14 +13,14 @@ const GenerateToken = () => {
     name: "",
     mobile: "",
     no_of_person: "",
-    customer_type_id:"1"
+    customer_type_id: "1"
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
   const [receiptData, setReceiptData] = useState(null);
   const [token_no, setCancelTokenNo] = useState("");
   const [Options, setOptions] = useState([]);
-  
+
   //#region Fetch token for customer Type
   useEffect(() => {
     const getCustomerTypes = async () => {
@@ -79,10 +79,10 @@ const GenerateToken = () => {
       });
       const result = await response.json();
 
-        if (result?.ResponseCode === 0) {
-          toast.error(result?.message);
-          return;
-        }
+      if (result?.ResponseCode === 0) {
+        toast.error(result?.message);
+        return;
+      }
 
       if (result?.message?.ResponseCode === 0) {
         toast.error(result?.message?.ResponseMessage);
@@ -94,7 +94,7 @@ const GenerateToken = () => {
         name: "",
         mobile: "",
         no_of_person: "",
-        customer_type_id:""
+        customer_type_id: ""
       });
       setIsModalOpen(true);
       toast.success("Token generate successfully")
@@ -126,7 +126,7 @@ const GenerateToken = () => {
       if (result.message.ResponseCode === 0) {
         toast.warning(result.message.ResponseMessage);
       }
-       else if (result.message.ResponseCode === 1) {
+      else if (result.message.ResponseCode === 1) {
         toast.success(result.message.ResponseMessage);
       }
     } catch (error) {
@@ -167,17 +167,17 @@ const GenerateToken = () => {
           <input type="text" name="name" value={Token.name} onChange={handleTokenChange} placeholder="Name" />
           <p className="mobile_req">*</p>
           <input type="text" name="mobile" value={Token.mobile} onChange={handleTokenChange} placeholder="Mobile Number" />
-            <select value={Token.customer_type_id} name="customer_type_id" onChange={handleTokenChange}
-              >
-              <option value={true} disabled={true}>
-               Customer type
+          <select value={Token.customer_type_id} name="customer_type_id" onChange={handleTokenChange}
+          >
+            <option value={true} disabled={true}>
+              Customer type
+            </option>
+            {Options.map((type) => (
+              <option key={type.customer_type_id} value={type.customer_type_id} >
+                {type.customer_type_name}
               </option>
-              {Options.map((type) => (
-                <option key={type.customer_type_id} value={type.customer_type_id} >
-                  {type.customer_type_name}
-                </option>
-              ))}
-            </select>
+            ))}
+          </select>
         </div>
         <div className="input-container">
           <input type="text" name="no_of_person" value={Token.no_of_person} onChange={handleTokenChange} placeholder="No. of person" />
@@ -242,7 +242,7 @@ const GenerateToken = () => {
           </div>
           <div>
             <button className="btn_cancel" type="submit">Cancel Token</button>
-            
+
           </div>
         </form>
       </Modal>

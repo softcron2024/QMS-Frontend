@@ -61,7 +61,7 @@ const SideBarMenu = () => {
               </svg>
             </span>
             <span className="app-brand-text demo menu-text fw-bold text-none">
-              <Link to={'/dashboard'} className="Link_logo" style={{textDecoration:"none"}}>Softcron</Link>
+              <Link to={'/dashboard'} className="Link_logo" style={{ textDecoration: "none" }}>Softcron</Link>
             </span>
           </a>
           <a href="!#" className="layout-menu-toggle menu-link text-large ms-auto">
@@ -122,8 +122,8 @@ const SideBarMenu = () => {
 
             <li className="menu-item">
               <Link to="/manage-token-Queue" className="menu-link">
-                <div data-i18n="Dashboards" style={{display:"flex", gap:'10px'}}>
-                {/* <i className="fa-solid fa-people-roof" style={{marginTop:'3px'}} /> */}
+                <div data-i18n="Dashboards" style={{ display: "flex", gap: '10px' }}>
+                  {/* <i className="fa-solid fa-people-roof" style={{marginTop:'3px'}} /> */}
                   Manage Queue Token</div>
               </Link>
             </li>

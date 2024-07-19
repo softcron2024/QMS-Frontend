@@ -21,7 +21,7 @@ const Notification = () => {
                     <PerfectScrollbar>
                         <li className="dropdown-notifications-list scrollable-container">
                             <ul className="list-group list-group-flush">
-                                
+
                                 <li className="list-group-item list-group-item-action dropdown-notifications-item">
                                     <div className="d-flex">
                                         <div className="flex-shrink-0 me-3">
@@ -40,7 +40,7 @@ const Notification = () => {
                                         </div>
                                     </div>
                                 </li>
-                                
+
                                 <li className="list-group-item list-group-item-action dropdown-notifications-item">
                                     <div className="d-flex">
                                         <div className="flex-shrink-0 me-3">
