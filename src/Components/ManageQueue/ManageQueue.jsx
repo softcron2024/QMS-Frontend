@@ -63,7 +63,31 @@ const ManageQueue = () => {
   );
 
 
+  const handleMoveBack =async () => {
+    try {
+      const response = await fetch("http://localhost:8000/api/v1/move-back-current-token", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
 
+      const result = await response.json();
+      console.log(result);
+      if (result?.message && result?.message?.ResponseCode === 1) {
+        setCallNextToken(result?.message);
+        toast.success("Token Moved Successfully")
+      } else {
+        setCallNextToken(null);
+        toast.warning('No tokens available.');
+      }
+  
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      toast.error(`Error: ${error.message}`);
+    }
+  }
 
 
 
@@ -72,6 +96,7 @@ const ManageQueue = () => {
       <div className='main_queue'>
         <div className="calling_buttons">
           <div className='btn1' onClick={handleNextBtn}>Next</div>
+          <div className='btn2' onClick={handleMoveBack}>Move Back</div>
         </div>
         <div className='main_manage_queue'>
           <div className='manage_Queue_container'>
