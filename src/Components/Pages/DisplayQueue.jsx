@@ -270,7 +270,7 @@ const ProductList = () => {
             <div ref={tableRef} className={`mui-datatables ${isFullScreen ? 'fullscreen' : ''}`}>
                 {isLoading ? (
                     <div className="text-center">
-                        <CircularProgress />
+                        <CircularProgress className='circular-progress'/>
                     </div>
                 ) : error ? (
                     <div className="text-center text-danger">
