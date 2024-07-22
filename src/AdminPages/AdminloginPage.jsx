@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import "./AdminloginPage.css"; 
+import { Navigate, useNavigate } from "react-router-dom";
+import "./AdminloginPage.css";
 import image from "./image.jpg";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -13,6 +13,14 @@ const AdminLoginPage = () => {
   });
 
   const navigate = useNavigate();
+
+  const isAuthenticated = Cookies.get("token") !== undefined;
+
+  console.log(isAuthenticated);
+
+  if (isAuthenticated) {
+    return <Navigate to="/dashboard" replace />;
+  }
 
   const handleChange = (e) => {
     setObj({ ...obj, [e.target.name]: e.target.value });
