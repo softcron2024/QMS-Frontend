@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../../assets/css/ManageQueue.css';
-import { json, Link } from 'react-router-dom';
+import {  Link } from 'react-router-dom';
 import TokenList from './TokenManage/TokenList';
 import MissedToken from './TokenManage/MissedToken';
 import { ToastContainer, toast } from 'react-toastify';
@@ -43,7 +43,6 @@ const ManageQueue = () => {
   };
   //#endregion
 
-
   //#region Call next after delete 1 minute from local storage
   useEffect(() => {
     const storedToken = localStorage.getItem('callNextToken');
@@ -63,9 +62,9 @@ const ManageQueue = () => {
       localStorage.removeItem('callNextToken');
     }
   }, []);
-//#endregion
+  //#endregion
 
-//#region handle moved back for call Next button 
+  //#region handle moved back for call Next button 
   const handleMoveBack = async (token_no) => {
     if (!token_no) return;
     
@@ -95,7 +94,7 @@ const ManageQueue = () => {
   
         setTimeout(() => {
           localStorage.removeItem('callNextToken');
-        }); 
+        }, 300000); 
         toast.success(result?.message?.ResponseMessage);
       } else {
         setCallNextToken(null); 

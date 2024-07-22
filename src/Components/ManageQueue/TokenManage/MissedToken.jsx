@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { MyContext } from '../../ContextApi/ContextApi'; // Adjust the path based on your structure
 import '../../../assets/css/ManageQueue.css';
@@ -67,7 +67,7 @@ const MissedToken = () => {
       setShowPopup(false);
       fetchQueue();
     } catch (error) {
-      toast.error(error);
+      toast.error(error.message);
     }
   };
 
