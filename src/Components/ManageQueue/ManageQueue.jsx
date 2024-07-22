@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../../assets/css/ManageQueue.css';
-import { Link } from 'react-router-dom';
+import { json, Link } from 'react-router-dom';
 import TokenList from './TokenManage/TokenList';
 import MissedToken from './TokenManage/MissedToken';
 import { ToastContainer, toast } from 'react-toastify';
@@ -9,6 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 const ManageQueue = () => {
   const [callNextToken, setCallNextToken] = useState(null);
 
+  //#region Call Next from Queue List 
   const handleNextBtn = async () => {
     try {
       const response = await fetch("http://localhost:8000/api/v1/call-next-token", {
@@ -40,7 +41,10 @@ const ManageQueue = () => {
       toast.error(`Error: ${error.message}`);
     }
   };
+  //#endregion
 
+
+  //#region Call next after delete 1 minute from local storage
   useEffect(() => {
     const storedToken = localStorage.getItem('callNextToken');
     if (storedToken) {
@@ -58,14 +62,58 @@ const ManageQueue = () => {
     } else {
       localStorage.removeItem('callNextToken');
     }
-  });
+  }, []);
+//#endregion
 
+//#region handle moved back for call Next button 
+  const handleMoveBack = async (token_no) => {
+    if (!token_no) return;
+    
+    try {
+      const response = await fetch("http://localhost:8000/api/v1/move-back-current-token", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ token_no }),
+        credentials: "include",
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Failed to fetch data: ${response.status} ${response.statusText}`);
+      }
+  
+      const result = await response.json();
+      console.log(result);
+      if (result?.message?.ResponseCode === 1) {
+        setCallNextToken(null);
+        const tokenData = {
+          value: result?.message,
+          timestamp: new Date().getTime(),
+        };
+        localStorage.setItem('callNextToken', JSON.stringify(tokenData));
+  
+        setTimeout(() => {
+          localStorage.removeItem('callNextToken');
+        }); 
+        toast.success(result?.message?.ResponseMessage);
+      } else {
+        setCallNextToken(null); 
+        toast.warning(result?.message?.ResponseMessage);
+      }
+    } catch (error) {
+      console.error('Error moving back token:', error);
+    }
+  };
+  //#endregion
+
+  
   return (
     <div className='main_queue_container'>
       <div className='main_queue'>
         <div className="calling_buttons">
           <div className='btn1' onClick={handleNextBtn}>Next</div>
-          {/* <div className='btn2' onClick={handleMoveBack}>Move Back</div> */}
+          <div className='btn2' onClick= {() =>handleMoveBack(callNextToken?.token_no)}>Move Back</div>
         </div>
         <div className='main_manage_queue'>
           <div className='manage_Queue_container'>
@@ -74,7 +122,6 @@ const ManageQueue = () => {
                 <div className="logoname">
                   <Link className='link_logo' to='/dashboard'> Softcron Technology </Link>
                 </div>
-
                 <div className="queue_name">
                   {callNextToken && (
                     <div key={callNextToken.token_no}>
@@ -91,13 +138,7 @@ const ManageQueue = () => {
                     </div>
                   )}
                 </div>
-
               </div>
-
-              {/* <div className="bottom_container">
-              <h3>Total Scanned Token</h3>
-              <p><span>4</span></p>
-            </div> */}
             </div>
           </div>
         </div>
