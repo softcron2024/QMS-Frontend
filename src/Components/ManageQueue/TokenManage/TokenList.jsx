@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import '../../../assets/css/ManageQueue.css';
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
-import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+import { useNavigate } from 'react-router-dom';
 
 const TokenList = () => {
   const [queue, setQueue] = useState([]);
@@ -132,7 +132,7 @@ const TokenList = () => {
                       <p>Queue no: <span>{item.token_no}</span></p>
                       <p>Name: <span>{item.customer_name}</span></p>
                       <p>Mobile: <span>{item.customer_mobile}</span></p>
-                      <div className="btn_skip" onClick={() => handleSkipBtn(item.token_no)}>Skip</div>
+                      <div className="btn_skip" onClick={() => handleSkipBtn(item?.token_no)}>Skip</div>
                     </div>
                   )}
                 </Draggable>

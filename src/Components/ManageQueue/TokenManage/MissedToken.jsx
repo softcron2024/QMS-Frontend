@@ -94,7 +94,7 @@ const MissedToken = () => {
             {(provided) => (
               <div className="queue_list" {...provided.droppableProps} ref={provided.innerRef}>
                 {missed.map((item, index) => (
-                  <Draggable key={item.token_no} draggableId={item.token_no.toString()} index={index}>
+                  <Draggable key={item?.token_no} draggableId={item?.token_no?.toString()} index={index}>
                     {(provided) => (
                       <div
                         className="token_manage"
@@ -102,10 +102,10 @@ const MissedToken = () => {
                         {...provided.dragHandleProps}
                         ref={provided.innerRef}
                       >
-                        <p>Queue no: <span>{item.token_no}</span></p>
-                        <p>Name: <span>{item.customer_name}</span></p>
-                        <p>Mobile: <span>{item.customer_mobile}</span></p>
-                        <div className="btn_skip" onClick={() => handleMoveBtn(item.token_no, item.in_at)}>Recall</div>
+                        <p>Queue no: <span>{item?.token_no}</span></p>
+                        <p>Name: <span>{item?.customer_name}</span></p>
+                        <p>Mobile: <span>{item?.customer_mobile}</span></p>
+                        <div className="btn_skip" onClick={() => handleMoveBtn(item?.token_no, item?.in_at)}>Recall</div>
                       </div>
                     )}
                   </Draggable>
