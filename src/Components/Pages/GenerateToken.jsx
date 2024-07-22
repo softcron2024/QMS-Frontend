@@ -4,8 +4,7 @@ import { Link, Navigate, } from "react-router-dom";
 import Modal from 'react-modal';
 import { useReactToPrint } from "react-to-print";
 import Cookies from "js-cookie";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { showErrorAlert, showSuccessAlert, showWarningAlert } from "../../Toastify";
 
 const GenerateToken = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -80,12 +79,12 @@ const GenerateToken = () => {
       const result = await response.json();
 
       if (result?.ResponseCode === 0) {
-        toast.error(result?.message);
+        showErrorAlert(result?.message);
         return;
       }
 
       if (result?.message?.ResponseCode === 0) {
-        toast.error(result?.message?.ResponseMessage);
+        showErrorAlert(result?.message?.ResponseMessage);
         return;
       }
 
@@ -97,9 +96,9 @@ const GenerateToken = () => {
         customer_type_id: ""
       });
       setIsModalOpen(true);
-      toast.success("Token generate successfully")
+      showSuccessAlert("Token generate successfully")
     } catch (error) {
-      console.error("Error generating token:", error);
+      showErrorAlert("Error generating token:", error);
     } finally {
       setIsSubmitting(false);
     }
@@ -119,19 +118,19 @@ const GenerateToken = () => {
       const result = await response.json();
 
       if (result.ResponseCode === 0) {
-        toast.error(result.message);
+        showErrorAlert(result.message);
         return;
       }
 
       if (result.message.ResponseCode === 0) {
-        toast.warning(result.message.ResponseMessage);
+        showWarningAlert(result.message.ResponseMessage);
       }
       else if (result.message.ResponseCode === 1) {
-        toast.success(result.message.ResponseMessage);
+        showSuccessAlert(result.message.ResponseMessage);
       }
     } catch (error) {
       console.error('Error cancelling token:', error);
-      toast.error(error)
+      showErrorAlert('Error cancelling token:', error)
     }
   };
   //#endregion
@@ -246,7 +245,6 @@ const GenerateToken = () => {
           </div>
         </form>
       </Modal>
-      <ToastContainer />
     </div>
   );
 };

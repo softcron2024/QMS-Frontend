@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../../../assets/css/ManageQueue.css';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { showErrorAlert, showSuccessAlert } from '../../../Toastify';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { useNavigate } from 'react-router-dom';
 
@@ -58,13 +57,13 @@ const TokenList = () => {
         throw new Error('Failed to fetch data');
       }
       const result = await response.json();
-      toast.success("Token skipped successfully");
+      showSuccessAlert("Token skipped successfully");
       fetchQueue();
       navigate('/manage-token-Queue');
 
     }
     catch (error) {
-      console.log(error);
+      showErrorAlert(error);
     }
   };
 
@@ -104,7 +103,7 @@ const TokenList = () => {
 
       const result = await response.json();
       console.log("Server response:", result);
-      toast.success("Token position updated successfully");
+      showSuccessAlert("Token position updated successfully");
     } catch (error) {
       console.log("Error:", error);
     }
@@ -142,7 +141,6 @@ const TokenList = () => {
           )}
         </Droppable>
       </DragDropContext>
-      <ToastContainer />
     </div>
   );
 };

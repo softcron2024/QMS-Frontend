@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import '../../assets/css/ManageQueue.css';
-import {  Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import TokenList from './TokenManage/TokenList';
 import MissedToken from './TokenManage/MissedToken';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { showErrorAlert, showWarningAlert, showSuccessAlert } from '../../Toastify';
 
 const ManageQueue = () => {
   const [callNextToken, setCallNextToken] = useState(null);
@@ -34,11 +33,11 @@ const ManageQueue = () => {
         localStorage.setItem('callNextToken', JSON.stringify(tokenData));
       } else {
         setCallNextToken(null);
-        toast.warning('No tokens available.');
+        showWarningAlert('No tokens available.', { toastId: 'no-tokens-toast' });
       }
     } catch (error) {
       console.error('Error fetching data:', error);
-      toast.error(`Error: ${error.message}`);
+      showErrorAlert(`Error: ${error.message}`, { toastId: 'fetch-error-toast' });
     }
   };
   //#endregion
@@ -64,7 +63,7 @@ const ManageQueue = () => {
   }, []);
   //#endregion
 
-  //#region handle moved back for call Next button 
+  //#region handle moved back for call Next button
   const handleMoveBack = async (token_no) => {
     if (!token_no) return;
     
@@ -77,13 +76,12 @@ const ManageQueue = () => {
         body: JSON.stringify({ token_no }),
         credentials: "include",
       });
-  
+
       if (!response.ok) {
         throw new Error(`Failed to fetch data: ${response.status} ${response.statusText}`);
       }
-  
+
       const result = await response.json();
-      console.log(result);
       if (result?.message?.ResponseCode === 1) {
         setCallNextToken(null);
         const tokenData = {
@@ -91,28 +89,28 @@ const ManageQueue = () => {
           timestamp: new Date().getTime(),
         };
         localStorage.setItem('callNextToken', JSON.stringify(tokenData));
-  
+
         setTimeout(() => {
           localStorage.removeItem('callNextToken');
         }, 300000); 
-        toast.success(result?.message?.ResponseMessage);
+        showSuccessAlert(result?.message?.ResponseMessage, { toastId: 'move-back-success-toast' });
       } else {
         setCallNextToken(null); 
-        toast.warning(result?.message?.ResponseMessage);
+        showWarningAlert(result?.message?.ResponseMessage, { toastId: 'move-back-warning-toast' });
       }
     } catch (error) {
       console.error('Error moving back token:', error);
+      showErrorAlert('Error moving back token:', error);
     }
   };
   //#endregion
 
-  
   return (
     <div className='main_queue_container'>
       <div className='main_queue'>
         <div className="calling_buttons">
           <div className='btn1' onClick={handleNextBtn}>Next</div>
-          <div className='btn2' onClick= {() =>handleMoveBack(callNextToken?.token_no)}>Move Back</div>
+          <div className='btn2' onClick={() => handleMoveBack(callNextToken?.token_no)}>Move Back</div>
         </div>
         <div className='main_manage_queue'>
           <div className='manage_Queue_container'>
@@ -149,7 +147,6 @@ const ManageQueue = () => {
             <MissedToken />
           </div>
         </div>
-        <ToastContainer />
       </div>
     </div>
   );

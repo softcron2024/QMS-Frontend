@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import '../../assets/css/Customertype.css';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { showErrorAlert, showSuccessAlert, showWarningAlert } from '../../Toastify';
 import MUIDataTable from 'mui-datatables';
 import Typography from '@material-ui/core/Typography';
 import Modal from 'react-modal';
@@ -62,17 +61,17 @@ const CustomerType = () => {
             const result = await response.json();
 
             if (result?.ResponseCode === 0) {
-                toast.error(result?.message);
+              showErrorAlert(result?.message);
                 return;
             }
 
             if (result?.message?.ResponseCode === 0) {
-                toast.error(result?.message?.ResponseMessage);
+               showWarningAlert(result?.message?.ResponseMessage);
                 return;
             }
 
             if (result?.message?.ResponseCode === 1) {
-                toast.success(result?.message?.ResponseMessage);
+                showSuccessAlert(result?.message?.ResponseMessage);
                 setType({
                     customer_type_name: "",
                     customer_type_color: "",
@@ -83,7 +82,7 @@ const CustomerType = () => {
             }
 
         } catch (error) {
-            toast.error('Error: ' + error.message);
+           showErrorAlert('Error: ' + error.message);
             console.error('Error:', error.message);
         }
     };
@@ -107,15 +106,15 @@ const CustomerType = () => {
             console.log(result);
 
             if (result?.ResponseCode === 0) {
-                toast.warning(result?.message)
+               showWarningAlert(result?.message)
             }
 
             if (result?.message?.ResponseCode === 0) {
-                toast.warning(result?.message?.ResponseMessage)
+                showWarningAlert(result?.message?.ResponseMessage)
             }
 
             if (result?.message?.ResponseCode === 1) {
-                toast.success(result?.message?.ResponseMessage);
+                showSuccessAlert(result?.message?.ResponseMessage);
                 fetchType();
                 closeEditModal();
                 setEditType({
@@ -125,11 +124,11 @@ const CustomerType = () => {
                     customer_type_priority: ""
                 })
             } else {
-                toast.error(result.message);
+                showErrorAlert(result.message);
             }
 
         } catch (error) {
-            toast.error('Error: ' + error.message);
+           showErrorAlert('Error: ' + error.message);
             console.error('Error:', error.message);
         }
     };
@@ -153,7 +152,7 @@ const CustomerType = () => {
                 setTableData([]);
             }
         } catch (error) {
-            toast.error(error.message);
+            showErrorAlert(error.message);
         }
     };
     //#endregion
@@ -171,13 +170,13 @@ const CustomerType = () => {
             });
             const result = await response.json();
             if (result?.message?.ResponseCode === 1) {
-                toast.success(result?.message?.ResponseMessage);
+                showSuccessAlert(result?.message?.ResponseMessage);
                 fetchType();
             } else {
-                toast.error(result?.message?.ResponseMessage);
+              showErrorAlert(result?.message?.ResponseMessage);
             }
         } catch (error) {
-            toast.error(error.message);
+            showErrorAlert(error.message);
         }
     };
 
@@ -392,8 +391,6 @@ const CustomerType = () => {
                     </div>
                 </form>
             </Modal>
-
-            <ToastContainer />
         </div>
     );
 };

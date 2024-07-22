@@ -4,8 +4,7 @@ import { Link, Navigate } from 'react-router-dom';
 import { VscScreenFull } from 'react-icons/vsc';
 import Cookies from "js-cookie";
 import { Typography, CircularProgress } from "@mui/material";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { showErrorAlert,showSuccessAlert,showWarningAlert } from '../../Toastify';
 import '../../assets/css/DisplayQueue.css'
 
 const ProductList = () => {
@@ -36,7 +35,7 @@ const ProductList = () => {
                     setcolorCustomer([]);
                 }
             } catch (error) {
-                toast.error(error.message);
+                showErrorAlert(error.message);
             }
         }
         fetchCustomerColor()

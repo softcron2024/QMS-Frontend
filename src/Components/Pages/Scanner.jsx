@@ -4,6 +4,7 @@ import './QrScanner.css';
 import { VscScreenFull } from 'react-icons/vsc';
 import Cookies from "js-cookie";
 import { Navigate } from 'react-router-dom';
+import { showErrorAlert, showSuccessAlert, showWarningAlert } from '../../Toastify';
 
 const Scanner = () => {
   const [scanResult, setScanResult] = useState('');
@@ -29,13 +30,13 @@ const Scanner = () => {
 
         if (data?.message === "Token not found or Expired, Try again!") {
           setScanResult("")
-          return alert("Token Invalid")
+          return showWarningAlert("Token Invalid")
 
         }
 
         if (data?.message === "Your token is valid") {
           setScanResult("")
-          return alert("Token Valid")
+          return showWarningAlert("Token Valid")
 
         }
 
@@ -46,7 +47,7 @@ const Scanner = () => {
         //   setTableData([]);
         // }
       } catch (error) {
-        console.error("Error fetching data:", error);
+        showErrorAlert("Error fetching data:", error);
         setScanResult("")
       }
     }
