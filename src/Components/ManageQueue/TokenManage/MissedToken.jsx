@@ -62,7 +62,7 @@ const MissedToken = () => {
       }
       const result = await response.json();
       console.log(result);
-     showSuccessAlert("Token Moved Successfully");
+      showSuccessAlert("Token Moved Successfully");
       setShowPopup(false);
       fetchQueue();
     } catch (error) {
@@ -104,7 +104,7 @@ const MissedToken = () => {
                         <p>Queue no: <span>{item?.token_no}</span></p>
                         <p>Name: <span>{item?.customer_name}</span></p>
                         <p>Mobile: <span>{item?.customer_mobile}</span></p>
-                        <div className="btn_skip" onClick={() => handleMoveBtn(item?.token_no, item?.in_at)}>Recall</div>
+                        <div className="btn_skip" onClick={() => handleMoveBtn(item?.token_no)}>Recall</div>
                       </div>
                     )}
                   </Draggable>
