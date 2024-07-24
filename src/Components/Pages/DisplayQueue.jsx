@@ -14,7 +14,6 @@ const ProductList = () => {
     const [isFullScreen, setIsFullScreen] = useState(false);
     const tableRef = useRef(null);
     const [colorCustomer, setcolorCustomer] = useState([]);
-    console.log(colorCustomer);
 
     //#region fetch from customer type color and name 
     useEffect(()=>{
