@@ -89,10 +89,11 @@ const MissedToken = () => {
       </div>
       <div className="missed_token_detailed">
         <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="Queue_list">
-            {(provided) => (
-              <div className="queue_list" {...provided.droppableProps} ref={provided.innerRef}>
-                {missed.map((item, index) => (
+          {missed.map((item, index) => (
+            <Droppable droppableId={item?.token_no}>
+              {(provided) => (
+                <div className="queue_list" {...provided.droppableProps} ref={provided.innerRef}>
+
                   <Draggable key={item?.token_no} draggableId={item?.token_no?.toString()} index={index}>
                     {(provided) => (
                       <div
@@ -108,11 +109,12 @@ const MissedToken = () => {
                       </div>
                     )}
                   </Draggable>
-                ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
+
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          ))}
         </DragDropContext>
       </div>
       {showPopup && (
