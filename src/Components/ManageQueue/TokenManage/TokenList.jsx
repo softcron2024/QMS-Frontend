@@ -42,7 +42,7 @@ const TokenList = () => {
     return () => clearInterval(intervalId);
   }, []);
 
-  const handleSkipBtn = async (token_no) => {
+  const handleSkipBtn = async (token_no, in_at) => {
     try {
       const response = await fetch("http://localhost:8000/api/v1/skip-token", {
         method: "POST",
@@ -50,19 +50,19 @@ const TokenList = () => {
           "Content-Type": "application/json",
         },
         credentials: "include",
-        body: JSON.stringify({ token_no })
+        body: JSON.stringify({ token_no, in_at })
       });
 
       if (!response.ok) {
         throw new Error('Failed to fetch data');
       }
       const result = await response.json();
+      console.log(result);
       showSuccessAlert("Token skipped successfully");
       fetchQueue();
       navigate('/manage-token-Queue');
 
-    }
-    catch (error) {
+    } catch (error) {
       showErrorAlert(error);
     }
   };
@@ -110,59 +110,39 @@ const TokenList = () => {
   };
 
   return (
-    <div className='main_token_list_container'>
-      <div className="Queue_manage">
-        <h2>Queue List</h2>
-      </div>
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="queue_list">
-          {(provided) => {
-            console.log("Droppable provided:", provided);
-            return (
-              <div
-                className="queue_list"
-                {...provided.droppableProps}
-                ref={provided.innerRef}
-              >
-                {queue.map((item, index) => (
-                  <Draggable
-                    key={item.token_no}
-                    draggableId={item.token_no.toString()}
-                    index={index}
-                  >
-                    {(provided) => (
-                      <div
-                        className="token_manage"
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        ref={provided.innerRef}
-                      >
-                        <p>
-                          Queue no: <span>{item.token_no}</span>
-                        </p>
-                        <p>
-                          Name: <span>{item.customer_name}</span>
-                        </p>
-                        <p>
-                          Mobile: <span>{item.customer_mobile}</span>
-                        </p>
+      <div className='missed_token_container'>
+        <div className="missed_token">
+          <h2>Queue list</h2>
+        </div>
+        <div className="missed_token_detailed">
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable droppableId="Queue_list">
+              {(provided) => (
+                <div className="queue_list" {...provided.droppableProps} ref={provided.innerRef}>
+                  {queue.map((item, index) => (
+                    <Draggable key={item.token_no} draggableId={item.token_no.toString()} index={index}>
+                      {(provided) => (
                         <div
-                          className="btn_skip"
-                          onClick={() => handleSkipBtn(item?.token_no)}
+                          className="token_manage"
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          ref={provided.innerRef}
                         >
-                          Skip
+                          <p>Queue no: <span>{item.token_no}</span></p>
+                          <p>Name: <span>{item.customer_name}</span></p>
+                          <p>Mobile: <span>{item.customer_mobile}</span></p>
+                          <div className="btn_skip" onClick={() => handleSkipBtn(item.token_no, item.in_at)}>Recall</div>
                         </div>
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
-              </div>
-            );
-          }}
-        </Droppable>
-      </DragDropContext>
-    </div>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
+        </div>
+      </div>
   );
 };
 
