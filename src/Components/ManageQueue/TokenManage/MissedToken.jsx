@@ -88,12 +88,12 @@ const MissedToken = () => {
         <h2>Missed Token</h2>
       </div>
       <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="queue_list">
+        <Droppable droppableId="missed_list">
           {(provided) => {
             console.log("Droppable provided:", provided);
             return (
               <div
-                className="queue_list"
+                className="missed_list"
                 {...provided.droppableProps}
                 ref={provided.innerRef}
               >

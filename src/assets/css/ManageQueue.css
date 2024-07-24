@@ -252,7 +252,7 @@
 }
 
 /* Queue list styles */
-.queue_list {
+.queue_list, .missed_list{
   width: 100%;
   max-width: 600px;
   background-color: #fff;
