@@ -42,7 +42,7 @@ const TokenList = () => {
     return () => clearInterval(intervalId);
   }, []);
 
-  const handleSkipBtn = async (token_no, in_at) => {
+  const handleSkipBtn = async (token_no) => {
     try {
       const response = await fetch("http://localhost:8000/api/v1/skip-token", {
         method: "POST",
@@ -50,19 +50,19 @@ const TokenList = () => {
           "Content-Type": "application/json",
         },
         credentials: "include",
-        body: JSON.stringify({ token_no, in_at })
+        body: JSON.stringify({ token_no })
       });
 
       if (!response.ok) {
         throw new Error('Failed to fetch data');
       }
       const result = await response.json();
-      console.log(result);
       showSuccessAlert("Token skipped successfully");
       fetchQueue();
       navigate('/manage-token-Queue');
 
-    } catch (error) {
+    }
+    catch (error) {
       showErrorAlert(error);
     }
   };
@@ -115,33 +115,7 @@ const TokenList = () => {
         <h2>Queue List</h2>
       </div>
       <DragDropContext onDragEnd={onDragEnd}>
-        {queue.map((item, index) => (
-          <Droppable droppableId={item.token_no}>
-            {(provided) => (
-              <div className="queue_list" {...provided.droppableProps} ref={provided.innerRef}>
-
-                <Draggable key={item.token_no} draggableId={item.token_no.toString()} index={index}>
-                  {(provided) => (
-                    <div
-                      className="token_manage"
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                      ref={provided.innerRef}
-                    >
-                      <p>Queue no: <span>{item.token_no}</span></p>
-                      <p>Name: <span>{item.customer_name}</span></p>
-                      <p>Mobile: <span>{item.customer_mobile}</span></p>
-                      <div className="btn_skip" onClick={() => handleSkipBtn(item?.token_no)}>Skip</div>
-                    </div>
-                  )}
-                </Draggable>
-
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        ))}
-        <Droppable droppableId="Queue_list">
+        <Droppable droppableId="queue_list">
           {(provided) => {
             console.log("Droppable provided:", provided);
             return (
