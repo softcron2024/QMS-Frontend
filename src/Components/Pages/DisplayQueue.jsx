@@ -44,8 +44,8 @@ const ProductList = () => {
 
     useEffect(() => {
         const fetchList = async () => {
-            setIsLoading(true); // Show loading indicator
-            setError(null); // Clear previous error
+            setIsLoading(true); 
+            setError(null); 
 
             try {
                 const response = await fetch("http://localhost:8000/api/v1/getQueue", {
