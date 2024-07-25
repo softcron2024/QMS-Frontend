@@ -1,0 +1,6 @@
+<div className="draggable-item">
+                          <p>Queue No:<span>{item.token_no}</span></p>
+                          <p>Name:<span>{item.customer_name}</span></p>
+                          <p>Mobile:<span>{item.customer_mobile}</span></p>
+                          <div className='skip_btn' onClick={() => handleMoveBtn(item.token_no)}>Moved</div>
+                        </div>

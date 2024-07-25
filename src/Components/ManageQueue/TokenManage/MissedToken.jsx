@@ -38,7 +38,7 @@ const MissedToken = () => {
 
   useEffect(() => {
     fetchQueue();
-  }, [missed]);
+  }, [missed]);  // Fetch queue on component mount
 
   const handleMoveBtn = (token_no) => {
     setSelectedToken(token_no);
@@ -69,19 +69,15 @@ const MissedToken = () => {
     }
   };
 
-  const onDragEnd = (result) => {
-    const { destination, source } = result;
-  
-    if (!destination || destination.index === source.index) {
-      return;
-    }
-  
-    const newQueue = Array.from(missed);
-    const [movedItem] = newQueue.splice(source.index, 1);
-    newQueue.splice(destination.index, 0, movedItem);
-  
-    setMissed(newQueue);
-  };
+  function handleOnDragEnd(result) {
+    if (!result.destination) return;
+
+    const items = Array.from(missed);
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+
+    setMissed(items);
+  }
 
   return (
     <div className='missed_token_queue_main'>
@@ -89,31 +85,26 @@ const MissedToken = () => {
         <h2>Missed Token List</h2>
       </div>
       <div className="queue_list">
-        <DragDropContext onDragEnd={onDragEnd}>
+        <DragDropContext onDragEnd={handleOnDragEnd}>
           <Droppable droppableId={missed}>
             {(provided) => (
-              <div className='queue' {...provided.droppableProps} ref={provided.innerRef}>
+              <ul className="queue" {...provided.droppableProps} ref={provided.innerRef}>
                 {missed.map((item, index) => (
-                  <Draggable  key={item.token_no.toString()} draggableId={item.token_no.toString()} index={index}>
+                  <Draggable key={item.token_no.toString()} draggableId={item.token_no.toString()} index={index}>
                     {(provided) => (
-                      <div
-                        className="queue"
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                      >
+                      <li ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
                         <div className="draggable-item">
                           <p>Queue No:<span>{item.token_no}</span></p>
                           <p>Name:<span>{item.customer_name}</span></p>
                           <p>Mobile:<span>{item.customer_mobile}</span></p>
-                          <div className='skip_btn' onClick={() => handleMoveBtn(item.token_no)}>Moved</div>
+                          <div className='skip_btn' onClick={() => handleMoveBtn(item.token_no)}>Move</div>
                         </div>
-                      </div>
+                      </li>
                     )}
                   </Draggable>
                 ))}
                 {provided.placeholder}
-              </div>
+              </ul>
             )}
           </Droppable>
         </DragDropContext>

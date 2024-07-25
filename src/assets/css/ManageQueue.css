@@ -95,10 +95,10 @@
 
 
 /* Queue List Css  */
-/* General Styles */
+/* General Styles */  
 .missed_token_main {
   padding: 20px;
-  background: linear-gradient(to bottom, #d3dbdb, #6ab3b3); /* Gradient from light to dark */
+  background: linear-gradient(to bottom, #f5f4ed, #f3e5b5); 
   border-radius: 8px;
   width: 100%;
   margin: auto;
@@ -108,7 +108,7 @@
 
 .missed_token_queue_main {
   padding: 20px;
-  background: linear-gradient(to bottom, #e6dbd1, #d19761); /* Gradient from light to dark */
+  background: linear-gradient(to bottom, #f1eee7, #ddc99a);
   border-radius: 8px;
   width: 100%;
   margin: auto;
@@ -124,7 +124,7 @@
   margin-bottom: 20px;
   display: inline-block;
   border-bottom: 3px solid;
-  border-image: linear-gradient(to right, #ff7e5f, #feb47b);
+  border-image: linear-gradient(to right, #ff7e5f, #e2d0c1);
   border-image-slice: 1;
 }
 
@@ -147,7 +147,7 @@
   background-color: #ffffff;
   border: 1px solid #ddd;
   border-radius: 8px;
-  padding: 10px;
+  padding: 13px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: background-color 0.3s, box-shadow 0.3s;
   cursor: grab;
