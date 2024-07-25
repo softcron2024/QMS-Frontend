@@ -38,7 +38,7 @@ const MissedToken = () => {
 
   useEffect(() => {
     fetchQueue();
-  }, [missed]);  // Fetch queue on component mount
+  }, []);
 
   const handleMoveBtn = (token_no) => {
     setSelectedToken(token_no);
@@ -69,6 +69,8 @@ const MissedToken = () => {
     }
   };
 
+  console.log(missed[0]);
+
   function handleOnDragEnd(result) {
     if (!result.destination) return;
 
@@ -86,7 +88,7 @@ const MissedToken = () => {
       </div>
       <div className="queue_list">
         <DragDropContext onDragEnd={handleOnDragEnd}>
-          <Droppable droppableId={missed}>
+          <Droppable droppableId={missed[0]?.token_no?.toString()}>
             {(provided) => (
               <ul className="queue" {...provided.droppableProps} ref={provided.innerRef}>
                 {missed.map((item, index) => (
