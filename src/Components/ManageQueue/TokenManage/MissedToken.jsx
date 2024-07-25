@@ -38,7 +38,7 @@ const MissedToken = () => {
 
   useEffect(() => {
     fetchQueue();
-  }, []);
+  }, [missed]);
 
   const handleMoveBtn = (token_no) => {
     setSelectedToken(token_no);
@@ -69,7 +69,6 @@ const MissedToken = () => {
     }
   };
 
-  console.log(missed[0]);
 
   function handleOnDragEnd(result) {
     if (!result.destination) return;
