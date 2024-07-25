@@ -23,7 +23,9 @@ const ManageQueue = () => {
       }
 
       const result = await response.json();
-      if (result?.message && result?.message?.ResponseCode === 1) {
+
+      console.log(result.message);
+      if (result?.message) {
         setCallNextToken(result?.message);
         const tokenData = {
           value: result?.message,
