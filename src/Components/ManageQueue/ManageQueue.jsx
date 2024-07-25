@@ -120,9 +120,9 @@ const ManageQueue = () => {
             {callNextToken && (
               <div key={callNextToken.token_no}>
                 <h2>Current Serving</h2>
-                <h4>
+                <p>
                   Queue no: <span>{callNextToken.token_no}</span>
-                </h4>
+                </p>
                 <p>
                   Name: <span>{callNextToken.customer_name}</span>
                 </p>

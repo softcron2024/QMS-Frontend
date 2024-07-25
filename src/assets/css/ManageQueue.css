@@ -17,14 +17,14 @@
 .operate_btn {
   display: flex;
   justify-content: flex-start;
-  background: lightskyblue;
+  background: #cccccc;
   border-radius: 5px;
   padding: 10px;
   margin-bottom: 20px;
 }
 
 .buttons button {
-  background-color: #4CAF50;
+  background-color: #088da5;
   color: white;
   border: none;
   border-radius: 5px;
@@ -35,7 +35,7 @@
 }
 
 .buttons button:hover {
-  background-color: #45a049;
+  background-color: #6897bb;
 }
 
 .Queue_logo {
@@ -46,7 +46,7 @@
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 20px;
-  color: #333;
+  color: #0e2f44;
 }
 
 .show_queue {
@@ -60,6 +60,8 @@
   color: #333;
 }
 
+
+
 .show_queue p {
   margin: 10px 0;
   font-size: 18px;
@@ -68,7 +70,7 @@
 
 .show_queue span {
   font-weight: bold;
-  color: darkblue;
+  color: #0e2f44;
 }
 
 .show_queue_token {
@@ -94,19 +96,36 @@
 
 /* Queue List Css  */
 /* General Styles */
-.missed_token_main, .missed_token_queue_main {
+.missed_token_main {
   padding: 20px;
-  background-color: #FFE5CC;
+  background: linear-gradient(to bottom, #d3dbdb, #6ab3b3); /* Gradient from light to dark */
+  border-radius: 8px;
+  width: 100%;
+  margin: auto;
+  backface-visibility: hidden;
+}
+
+
+.missed_token_queue_main {
+  padding: 20px;
+  background: linear-gradient(to bottom, #e6dbd1, #d19761); /* Gradient from light to dark */
   border-radius: 8px;
   width: 100%;
   margin: auto;
 }
 
+
 .logo_name h2 {
   font-family: 'Arial', sans-serif;
   color: #333;
+  font-size: 18px;
+  font-weight: bold;
   text-align: center;
   margin-bottom: 20px;
+  display: inline-block;
+  border-bottom: 3px solid;
+  border-image: linear-gradient(to right, #ff7e5f, #feb47b);
+  border-image-slice: 1;
 }
 
 .queue_list {
@@ -148,29 +167,31 @@
 
 .draggable-item span {
   font-weight: bold;
-  color: #000090;
+  color: #333;
 }
 
 .draggable-item .skip_btn {
-  display: inline-block;
+  display: flex;
+  justify-content: center;
   margin-top: 10px;
-  padding: 8px;
+  padding: 5px;
   font-size: 14px;
   color: #fff;
-  width: 90%;
-  background-color: #f14b4b;
+  width: 30%;
+  background: linear-gradient(to bottom, #7a9daf, #004d6b);
   border: none;
   text-align: center;
   font-size: 17px;
   font-weight: bold;
-  margin-left: 3%;
+  margin-left: 33%;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s;
 }
 
 .draggable-item .skip_btn:hover {
-  background-color: #ee7e7e;
+  background: linear-gradient(to bottom, #dadee0, #5d8797);
+  color: #0e2f44;
 }
 
 /* Custom Scrollbar Styles */

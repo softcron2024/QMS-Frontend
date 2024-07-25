@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { showErrorAlert, showSuccessAlert } from '../../../Toastify';
-import '../../../assets/css/ManageQueue.css'
+import '../../../assets/css/ManageQueue.css';
 
 const MissedToken = () => {
   const [missed, setMissed] = useState([]);
@@ -69,54 +69,54 @@ const MissedToken = () => {
     }
   };
 
-
-
-  
   const onDragEnd = (result) => {
     const { destination, source } = result;
-
+  
     if (!destination || destination.index === source.index) {
       return;
     }
-
+  
     const newQueue = Array.from(missed);
     const [movedItem] = newQueue.splice(source.index, 1);
     newQueue.splice(destination.index, 0, movedItem);
+  
     setMissed(newQueue);
   };
+
   return (
     <div className='missed_token_queue_main'>
       <div className="logo_name">
         <h2>Missed Token List</h2>
       </div>
       <div className="queue_list">
-      <DragDropContext onDragEnd={onDragEnd}>
-  <Droppable droppableId={missed}>
-    {(provided) => (
-      <div className="queue" {...provided.droppableProps} ref={provided.innerRef}>
-        {missed.map((item, index) => (
-          <Draggable key={item.token_no.toString()} draggableId={item.token_no.toString()} index={index}>
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId={missed}>
             {(provided) => (
-              <div
-                ref={provided.innerRef}
-                {...provided.draggableProps}
-                {...provided.dragHandleProps}
-                className="draggable-item"
-              >
-                <p>Queue No:<span>{item.token_no}</span></p>
-                <p>Name:<span>{item.customer_name}</span></p>
-                <p>Mobile:<span>{item.customer_mobile}</span></p>
-                <div className='skip_btn' onClick={() => handleMoveBtn(item.token_no)}>Moved</div>
+              <div className='queue' {...provided.droppableProps} ref={provided.innerRef}>
+                {missed.map((item, index) => (
+                  <Draggable  key={item.token_no.toString()} draggableId={item.token_no.toString()} index={index}>
+                    {(provided) => (
+                      <div
+                        className="queue"
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                      >
+                        <div className="draggable-item">
+                          <p>Queue No:<span>{item.token_no}</span></p>
+                          <p>Name:<span>{item.customer_name}</span></p>
+                          <p>Mobile:<span>{item.customer_mobile}</span></p>
+                          <div className='skip_btn' onClick={() => handleMoveBtn(item.token_no)}>Moved</div>
+                        </div>
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
               </div>
             )}
-          </Draggable>
-        ))}
-        {provided.placeholder}
-      </div>
-    )}
-  </Droppable>
-</DragDropContext>
-
+          </Droppable>
+        </DragDropContext>
       </div>
       {showPopup && (
         <div className="popup">
@@ -133,7 +133,7 @@ const MissedToken = () => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default MissedToken
+export default MissedToken;
