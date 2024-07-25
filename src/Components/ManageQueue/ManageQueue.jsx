@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import '../../assets/css/ManageQueue.css';
-import { Link } from 'react-router-dom';
-import TokenList from './TokenManage/TokenList';
-import MissedToken from './TokenManage/MissedToken';
+import React, { useState, useEffect } from 'react'
+import TokenList from './TokenManage/TokenList'
+import MissedToken from './TokenManage/MissedToken'
+import '../../assets/css/ManageQueue.css'
 import { showErrorAlert, showWarningAlert, showSuccessAlert } from '../../Toastify';
 
 const ManageQueue = () => {
@@ -66,7 +65,7 @@ const ManageQueue = () => {
   //#region handle moved back for call Next button
   const handleMoveBack = async (token_no) => {
     if (!token_no) return;
-    
+
     try {
       const response = await fetch("http://localhost:8000/api/v1/move-back-current-token", {
         method: "POST",
@@ -92,10 +91,10 @@ const ManageQueue = () => {
 
         setTimeout(() => {
           localStorage.removeItem('callNextToken');
-        }, 300000); 
+        }, 300000);
         showSuccessAlert(result?.message?.ResponseMessage, { toastId: 'move-back-success-toast' });
       } else {
-        setCallNextToken(null); 
+        setCallNextToken(null);
         showWarningAlert(result?.message?.ResponseMessage, { toastId: 'move-back-warning-toast' });
       }
     } catch (error) {
@@ -105,51 +104,42 @@ const ManageQueue = () => {
   };
   //#endregion
 
+
   return (
-    <div className='main_queue_container'>
-      <div className='main_queue'>
-        <div className="calling_buttons">
-          <div className='btn1' onClick={handleNextBtn}>Next</div>
-          <div className='btn2' onClick={() => handleMoveBack(callNextToken?.token_no)}>Move Back</div>
+    <div className='manage_Queue_main'>
+      <div className='main_queue_css'>
+        <div className="operate_btn">
+          <div className='buttons'>
+            <button onClick={handleNextBtn}>Next</button>
+            <button onClick={() => handleMoveBack(callNextToken?.token_no)}>Moved Back</button>
+          </div>
         </div>
-        <div className='main_manage_queue'>
-          <div className='manage_Queue_container'>
-            <div className="manage_queue">
-              <div className="second_queue_container">
-                <div className="logoname">
-                  <Link className='link_logo' to='/dashboard'> Softcron Technology </Link>
-                </div>
-                <div className="queue_name">
-                  {callNextToken && (
-                    <div key={callNextToken.token_no}>
-                      <h2>Current Serving</h2>
-                      <h4>
-                        Queue no: <span>{callNextToken.token_no}</span>
-                      </h4>
-                      <p>
-                        Name: <span>{callNextToken.customer_name}</span>
-                      </p>
-                      <p>
-                        Mobile no: <span>{callNextToken.customer_mobile}</span>
-                      </p>
-                    </div>
-                  )}
-                </div>
+        <div className="Queue_logo">
+          <h2>Softcron Tecnology</h2>
+          <div className="show_queue">
+            {callNextToken && (
+              <div key={callNextToken.token_no}>
+                <h2>Current Serving</h2>
+                <h4>
+                  Queue no: <span>{callNextToken.token_no}</span>
+                </h4>
+                <p>
+                  Name: <span>{callNextToken.customer_name}</span>
+                </p>
+                <p>
+                  Mobile no: <span>{callNextToken.customer_mobile}</span>
+                </p>
               </div>
-            </div>
-          </div>
-        </div>
-        <div className="right_div">
-          <div className="main_right_list_container">
-            <TokenList />
-          </div>
-          <div className='missed_bottom_token'>
-            <MissedToken />
+            )}
           </div>
         </div>
       </div>
+      <div className="show_queue_token">
+        <TokenList />
+        <MissedToken />
+      </div>
     </div>
-  );
+  )
 }
 
-export default ManageQueue;
+export default ManageQueue

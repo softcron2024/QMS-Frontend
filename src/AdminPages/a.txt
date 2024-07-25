@@ -1,0 +1,568 @@
+
+/* Main Css For Queue Management show for Token */
+/* Container styles */
+.main_queue_container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: linear-gradient(to bottom right, #f5f6f8, #c3cfe2);
+  /* min-height: 100vh; */
+}
+
+/* Main queue styles */
+.main_queue {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  background: white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.calling_buttons {
+  display: flex;
+  justify-content: start;
+  width: 100%;
+  padding: 10px;
+  gap: 20px;
+  background: #2a9df4;
+}
+
+.calling_buttons .btn1 {
+  background: #ffffff;
+  color: #2a9df4;
+  padding: 10px 20px;
+  border: none;
+  font-size: 15px;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s;
+}
+
+.calling_buttons .btn1:hover {
+  background: whitesmoke;
+  color: #2a9df4;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.calling_buttons .btn2 {
+  background: #ffffff;
+  color: #2a9df4;
+  padding: 10px 20px;
+  border: none;
+  font-size: 15px;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s;
+}
+
+.calling_buttons .btn2:hover {
+  background: whitesmoke;
+  color: #2a9df4;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+/* Manage queue styles */
+.main_manage_queue {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 20px;
+}
+
+.manage_Queue_container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.manage_queue {
+  width: 100%;
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.second_queue_container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logoname {
+  margin-bottom: 20px;
+}
+
+.logoname .link_logo {
+  text-decoration: none;
+  color: #2a9df4;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.queue_name {
+  text-align: center;
+  width: 100%;
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.queue_name h2 {
+  color: #333333;
+}
+
+.queue_name h4, .queue_name p {
+  color: #555555;
+}
+
+.queue_name span {
+  color: #2a9df4;
+  font-weight: bold;
+}
+
+/* Right div styles */
+.right_div {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  padding: 20px;
+  gap: 60px;
+  justify-content: center;
+}
+
+.main_right_list_container {
+  margin-bottom: 20px;
+  width: 40%;
+}
+
+.missed_bottom_token {
+  background: #ffe5e5;
+  width: 40%;
+  max-height: 750px;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* ToastContainer styles */
+.ToastContainer {
+  position: center;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .right_div {
+    flex-direction: column;
+  }
+
+  .main_right_list_container, .missed_bottom_token {
+    width: 100%;
+  }
+
+  .calling_buttons {
+    justify-content: center;
+  }
+
+  .calling_buttons .btn1 {
+    width: 20%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .main_queue_container {
+    padding: 10px;
+  }
+
+  .main_queue {
+    padding: 10px;
+  }
+
+  .calling_buttons {
+    padding: 5px;
+  }
+
+  .calling_buttons .btn1 {
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  .manage_queue, .queue_name, .missed_bottom_token {
+    padding: 15px;
+  }
+
+  .queue_name h2 {
+    font-size: 20px;
+  }
+
+  .queue_name h4, .queue_name p {
+    font-size: 14px;
+  }
+}
+
+/* end Main queue management  */
+
+ 
+
+  .popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    animation: fadeIn 0.3s ease-in-out;
+    z-index: 1000;
+  }
+  
+  .popup-content {
+    background: #fff;
+    padding: 20px 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    animation: slideIn 0.3s ease-in-out;
+  }
+  
+  .popup-content h3 {
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 1.5em;
+    font-weight: bold;
+  }
+  
+  .popup-content input {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+  }
+  
+  .popup-content button {
+    padding: 10px 20px;
+    margin: 0 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .popup-content .btn_pop_up {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .popup-content .btn_pop_up:hover {
+    background-color: #45a049;
+  }
+  
+  .popup-content .btn_pop_up:last-child {
+    background-color: #f44336;
+    color: white;
+  }
+  
+  .popup-content .btn_pop_up:last-child:hover {
+    background-color: #d32f2f;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slideIn {
+    from {
+      transform: translateY(-50px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+
+/* End css for missed token */
+
+ const [missed, setMissed] = useState([]);
+  const [showPopup, setShowPopup] = useState(false);
+  const [selectedToken, setSelectedToken] = useState(null);
+  const [newPosition, setNewPosition] = useState('');
+
+  const fetchQueue = async () => {
+    try {
+      const response = await fetch("http://localhost:8000/api/v1/get-missed-tokens-list", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch data');
+      }
+
+      const result = await response.json();
+
+      if (Array.isArray(result?.message)) {
+        setMissed(result?.message);
+      } else {
+        console.error("Expected an array but got:", result?.message);
+        setMissed([]);
+      }
+    } catch (error) {
+      console.error('Error fetching queue:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchQueue();
+  }, []);
+
+  const handleMoveBtn = (token_no) => {
+    setSelectedToken(token_no);
+    setShowPopup(true);
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const response = await fetch("http://localhost:8000/api/v1/recall-missed-token", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ token_no: selectedToken, in_at: newPosition })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to recall token');
+      }
+      const result = await response.json();
+      console.log(result);
+      showSuccessAlert("Token Moved Successfully");
+      setShowPopup(false);
+      fetchQueue();
+    } catch (error) {
+      showErrorAlert(error.message);
+    }
+  };
+
+
+  const [callNextToken, setCallNextToken] = useState(null);
+
+  //#region Call Next from Queue List 
+  const handleNextBtn = async () => {
+    try {
+      const response = await fetch("http://localhost:8000/api/v1/call-next-token", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch data: ${response.status} ${response.statusText}`);
+      }
+
+      const result = await response.json();
+      if (result?.message && result?.message?.ResponseCode === 1) {
+        setCallNextToken(result?.message);
+        const tokenData = {
+          value: result?.message,
+          timestamp: new Date().getTime(),
+        };
+        localStorage.setItem('callNextToken', JSON.stringify(tokenData));
+      } else {
+        setCallNextToken(null);
+        showWarningAlert('No tokens available.', { toastId: 'no-tokens-toast' });
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      showErrorAlert(`Error: ${error.message}`, { toastId: 'fetch-error-toast' });
+    }
+  };
+  //#endregion
+
+  //#region Call next after delete 1 minute from local storage
+  useEffect(() => {
+    const storedToken = localStorage.getItem('callNextToken');
+    if (storedToken) {
+      const tokenData = JSON.parse(storedToken);
+      const currentTime = new Date().getTime();
+      const FIVE_MINUTES = 5 * 60 * 1000;
+
+      setCallNextToken(tokenData.value);
+      const timeRemaining = FIVE_MINUTES - (currentTime - tokenData.timestamp);
+      const timeout = setTimeout(() => {
+        localStorage.removeItem('callNextToken');
+        setCallNextToken(null);
+      }, timeRemaining);
+      return () => clearTimeout(timeout);
+    } else {
+      localStorage.removeItem('callNextToken');
+    }
+  }, []);
+  //#endregion
+
+  //#region handle moved back for call Next button
+  const handleMoveBack = async (token_no) => {
+    if (!token_no) return;
+    
+    try {
+      const response = await fetch("http://localhost:8000/api/v1/move-back-current-token", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ token_no }),
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch data: ${response.status} ${response.statusText}`);
+      }
+
+      const result = await response.json();
+      if (result?.message?.ResponseCode === 1) {
+        setCallNextToken(null);
+        const tokenData = {
+          value: result?.message,
+          timestamp: new Date().getTime(),
+        };
+        localStorage.setItem('callNextToken', JSON.stringify(tokenData));
+
+        setTimeout(() => {
+          localStorage.removeItem('callNextToken');
+        }, 300000); 
+        showSuccessAlert(result?.message?.ResponseMessage, { toastId: 'move-back-success-toast' });
+      } else {
+        setCallNextToken(null); 
+        showWarningAlert(result?.message?.ResponseMessage, { toastId: 'move-back-warning-toast' });
+      }
+    } catch (error) {
+      console.error('Error moving back token:', error);
+      showErrorAlert('Error moving back token:', error);
+    }
+  };
+  //#endregion
+
+
+
+
+
+
+
+
+ {showPopup && (
+        <div className="popup">
+          <div className="popup-content">
+            <h3>Enter New Position</h3>
+            <input
+              type="number"
+              value={newPosition}
+              onChange={(e) => setNewPosition(e.target.value)}
+            />
+            <button className='btn_pop_up' onClick={handleSubmit}>Submit</button>
+            <button className='btn_pop_up' onClick={() => setShowPopup(false)}>Cancel</button>
+          </div>
+        </div>
+      )}
+
+       const [missed, setMissed] = useState([]);
+  const [showPopup, setShowPopup] = useState(false);
+  const [selectedToken, setSelectedToken] = useState(null);
+  const [newPosition, setNewPosition] = useState('');
+
+  const fetchQueue = async () => {
+    try {
+      const response = await fetch("http://localhost:8000/api/v1/get-missed-tokens-list", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch data');
+      }
+
+      const result = await response.json();
+
+      if (Array.isArray(result?.message)) {
+        setMissed(result?.message);
+      } else {
+        console.error("Expected an array but got:", result?.message);
+        setMissed([]);
+      }
+    } catch (error) {
+      console.error('Error fetching queue:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchQueue();
+  }, []);
+
+  const handleMoveBtn = (token_no) => {
+    setSelectedToken(token_no);
+    setShowPopup(true);
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const response = await fetch("http://localhost:8000/api/v1/recall-missed-token", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ token_no: selectedToken, in_at: newPosition })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to recall token');
+      }
+      const result = await response.json();
+      console.log(result);
+      showSuccessAlert("Token Moved Successfully");
+      setShowPopup(false);
+      fetchQueue();
+    } catch (error) {
+      showErrorAlert(error.message);
+    }
+  };
