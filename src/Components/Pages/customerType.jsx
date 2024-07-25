@@ -61,12 +61,12 @@ const CustomerType = () => {
             const result = await response.json();
 
             if (result?.ResponseCode === 0) {
-              showErrorAlert(result?.message);
+                showErrorAlert(result?.message);
                 return;
             }
 
             if (result?.message?.ResponseCode === 0) {
-               showWarningAlert(result?.message?.ResponseMessage);
+                showWarningAlert(result?.message?.ResponseMessage);
                 return;
             }
 
@@ -82,7 +82,7 @@ const CustomerType = () => {
             }
 
         } catch (error) {
-           showErrorAlert('Error: ' + error.message);
+            showErrorAlert('Error: ' + error.message);
             console.error('Error:', error.message);
         }
     };
@@ -106,7 +106,7 @@ const CustomerType = () => {
             console.log(result);
 
             if (result?.ResponseCode === 0) {
-               showWarningAlert(result?.message)
+                showWarningAlert(result?.message)
             }
 
             if (result?.message?.ResponseCode === 0) {
@@ -128,7 +128,7 @@ const CustomerType = () => {
             }
 
         } catch (error) {
-           showErrorAlert('Error: ' + error.message);
+            showErrorAlert('Error: ' + error.message);
             console.error('Error:', error.message);
         }
     };
@@ -173,7 +173,7 @@ const CustomerType = () => {
                 showSuccessAlert(result?.message?.ResponseMessage);
                 fetchType();
             } else {
-              showErrorAlert(result?.message?.ResponseMessage);
+                showErrorAlert(result?.message?.ResponseMessage);
             }
         } catch (error) {
             showErrorAlert(error.message);
