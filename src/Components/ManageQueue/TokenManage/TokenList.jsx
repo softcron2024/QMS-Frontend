@@ -65,8 +65,6 @@ const TokenList = () => {
   const onDragEnd = async (result) => {
     const { destination, source } = result;
 
-    console.log(result);
-    console.log("destinamtiojmn",destination);
     // Ensure there's a destination and the indices are different
     if (!destination || destination.index === source.index) {
       return;
