@@ -64,18 +64,20 @@ const TokenList = () => {
 
   const onDragEnd = async (result) => {
     const { destination, source } = result;
-  
+
+    console.log(result);
+    console.log("destinamtiojmn",destination);
     // Ensure there's a destination and the indices are different
     if (!destination || destination.index === source.index) {
       return;
     }
-  
+
     const newQueue = Array.from(queue);
     const [movedItem] = newQueue.splice(source.index, 1);
     newQueue.splice(destination.index, 0, movedItem);
-  
+
     setQueue(newQueue);
-  
+
     try {
       const response = await fetch("http://localhost:8000/api/v1/adjust-token-position", {
         method: "POST",
@@ -85,16 +87,16 @@ const TokenList = () => {
         credentials: "include",
         body: JSON.stringify({
           token_no: movedItem.token_no,
-          in_at: destination.index
+          in_at: destination.index + 1
         })
       });
-  
+
       if (!response.ok) {
         const errorBody = await response.text();
         console.log("Failed to update token position. Response:", errorBody);
         throw new Error('Failed to update token position');
       }
-  
+
       const result = await response.json();
       console.log("Server response:", result);
       showSuccessAlert("Token position updated successfully");
@@ -102,8 +104,6 @@ const TokenList = () => {
       console.log("Error:", error);
     }
   };
-  
-
 
   return (
     <div className='missed_token_main'>
@@ -111,32 +111,32 @@ const TokenList = () => {
         <h2>Queue List</h2>
       </div>
       <div className="queue_list">
-      <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId={queue}>
-        {(provided) => (
-          <div className="queue" {...provided.droppableProps} ref={provided.innerRef}>
-            {queue.map((item, index) => (
-                <Draggable key={item.token_no.toString()} draggableId={item.token_no.toString()} index={index}>
-                {(provided) => (
-                  <div
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                    className="draggable-item"
-                  >
-                    <p>Queue No:<span>{item.token_no}</span></p>
-                    <p>Name:<span>{item.customer_name}</span></p>
-                    <p>Mobile:<span>{item.customer_mobile}</span></p>
-                    <div className='skip_btn' onClick={() => handleSkipBtn(item.token_no)}>Skip</div>
-                  </div>
-                )}
-              </Draggable>
-            ))}
-            {provided.placeholder}
-          </div>
-        )}
-      </Droppable>
-    </DragDropContext>
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId={queue[0]?.token_no?.toString()}>
+            {(provided) => (
+              <div className="queue" {...provided.droppableProps} ref={provided.innerRef}>
+                {queue.map((item, index) => (
+                  <Draggable key={item.token_no.toString()} draggableId={item.token_no.toString()} index={index}>
+                    {(provided) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        className="draggable-item"
+                      >
+                        <p>Queue No:<span>{item.token_no}</span></p>
+                        <p>Name:<span>{item.customer_name}</span></p>
+                        <p>Mobile:<span>{item.customer_mobile}</span></p>
+                        <div className='skip_btn' onClick={() => handleSkipBtn(item.token_no)}>Skip</div>
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
       </div>
     </div>
   );
