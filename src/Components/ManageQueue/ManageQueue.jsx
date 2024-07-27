@@ -113,7 +113,7 @@ const ManageQueue = () => {
         <div className="operate_btn">
           <div className='buttons'>
             <button onClick={handleNextBtn}>Next</button>
-            <button onClick={() => handleMoveBack(callNextToken?.token_no)}>Moved Back</button>
+            <button onClick={() => handleMoveBack(callNextToken?.token_no)}>Move Back</button>
           </div>
         </div>
         <div className="Queue_logo">
