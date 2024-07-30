@@ -104,6 +104,11 @@ const SideBarMenu = () => {
                     <div data-i18n="Display Queue">Display Queue</div>
                   </Link>
                 </li>
+                <li className="menu-item">
+                  <Link to="/cancel-token" className="menu-link">
+                    <div data-i18n="Display Queue">Cancel Token</div>
+                  </Link>
+                </li>
               </ul>
             </li>
             {/* Product menu end */}

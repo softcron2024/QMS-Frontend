@@ -1,0 +1,61 @@
+.main_container_cancel {
+    box-shadow: 0px 1px 1px rgba(9, 30, 66, 0.25), 0px 0px 1px 1px rgba(9, 30, 66, 0.13);
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 30px;
+    margin-left: 5%;
+    background-color: #fff;
+    max-width: 1000px;
+    height: 100%;
+  }
+
+  .input_cancel{
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    padding: 20px;
+    width: 90%;
+    display: grid;
+    margin-left: 5%;
+    margin-top: 10%;
+}
+  
+  .input-container input {
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    flex: 1;
+    outline: none;
+  }
+
+  input::placeholder{
+    font-size: 15px;
+    cursor: pointer;
+  }
+
+  .input_cancel .logo_cancel{
+    font-size: 22px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .input_cancel .cancel_buttons{
+    display: flex;
+    justify-content: center;
+  }
+
+  .input_cancel .cnl_btn{
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    padding: 7px;
+    width: 60%;
+    background: #74d680;
+    color: #fff;
+    font-size: 17px;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: .3s ease-in-out;
+  }
+
+  .cnl_btn:hover{
+    background: 	#84ff9f;
+    color: #264653;
+  }

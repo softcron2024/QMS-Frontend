@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
-import { showErrorAlert, showSuccessAlert } from '../../../Toastify';
+import React, { useState, useEffect, useRef } from 'react';
+import { showErrorAlert, showSuccessAlert, showWarningAlert } from '../../../Toastify';
 import '../../../assets/css/ManageQueue.css';
 
 const MissedToken = () => {
@@ -8,6 +7,9 @@ const MissedToken = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [selectedToken, setSelectedToken] = useState(null);
   const [newPosition, setNewPosition] = useState('');
+  const dragImageRef = useRef(null);
+  const containerRef = useRef(null);
+  const scrollIntervalRef = useRef(null);
 
   const fetchQueue = async () => {
     try {
@@ -53,62 +55,136 @@ const MissedToken = () => {
           "Content-Type": "application/json",
         },
         credentials: "include",
-        body: JSON.stringify({ token_no: selectedToken, in_at: newPosition })
+        body: JSON.stringify({
+          token_no: selectedToken,
+          in_at: newPosition
+        })
       });
 
       if (!response.ok) {
-        throw new Error('Failed to recall token');
+        throw new Error('Failed to recall missed token');
       }
+
       const result = await response.json();
-      console.log(result);
-      showSuccessAlert("Token Moved Successfully");
-      setShowPopup(false);
+      showSuccessAlert("Missed token recalled successfully");
       fetchQueue();
+      setShowPopup(false);
     } catch (error) {
-      showErrorAlert(error.message);
+      showErrorAlert(error);
     }
   };
 
+  const handleDragStart = (e, index) => {
+    e.dataTransfer.setData("index", index);
+    e.dataTransfer.effectAllowed = "move";
 
-  function handleOnDragEnd(result) {
-    if (!result.destination) return;
+    // Create a custom drag image
+    const dragImage = e.currentTarget.cloneNode(true);
+    dragImage.style.position = "fixed";
+    dragImage.style.top = `${e.clientY - e.currentTarget.offsetHeight / 2}px`;
+    dragImage.style.left = `${e.clientX - e.currentTarget.offsetWidth / 2}px`;
+    dragImage.style.width = `${e.currentTarget.offsetWidth}px`;
+    dragImage.style.height = `${e.currentTarget.offsetHeight}px`;
+    dragImage.style.opacity = "1";
+    dragImage.style.pointerEvents = "none"; // Ensures the drag image does not intercept mouse events
+    dragImage.style.backgroundColor = "white"; // Ensure background is white
+    dragImage.style.zIndex = "1000"; // Ensure it's above other elements
+    document.body.appendChild(dragImage);
 
-    const items = Array.from(missed);
-    const [reorderedItem] = items.splice(result.source.index, 1);
-    items.splice(result.destination.index, 0, reorderedItem);
+    dragImageRef.current = dragImage;
 
-    setMissed(items);
-  }
+    const rect = e.currentTarget.getBoundingClientRect();
+    const offsetX = rect.width / 2;
+    const offsetY = rect.height / 2;
+    e.dataTransfer.setDragImage(dragImage, offsetX, offsetY);
+
+    // Add dragging class
+    e.currentTarget.classList.add("dragging");
+  };
+
+  const handleDrag = (e) => {
+    if (dragImageRef.current) {
+      dragImageRef.current.style.top = `${e.clientY - dragImageRef.current.offsetHeight / 2}px`;
+      dragImageRef.current.style.left = `${e.clientX - dragImageRef.current.offsetWidth / 2}px`;
+    }
+  };
+
+  const handleDragEnd = (e) => {
+    e.currentTarget.classList.remove("dragging");
+
+    // Remove custom drag image
+    if (dragImageRef.current) {
+      document.body.removeChild(dragImageRef.current);
+      dragImageRef.current = null;
+    }
+
+    clearInterval(scrollIntervalRef.current);
+  };
+
+  const handleDrop = (e, index) => {
+    const draggedIndex = e.dataTransfer.getData("index");
+    if (draggedIndex === index.toString()) return; // Prevents reordering with the same item
+
+    const newMissed = [...missed];
+    const [draggedItem] = newMissed.splice(draggedIndex, 1);
+    newMissed.splice(index, 0, draggedItem);
+    setMissed(newMissed);
+
+    showWarningAlert("Cannot update position in missed list")
+    clearInterval(scrollIntervalRef.current);
+  };
+
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    const { clientY } = e;
+    const container = containerRef.current;
+    const containerRect = container.getBoundingClientRect();
+    const scrollOffset = 50; // Adjust this value as needed
+
+    const scrollHandler = () => {
+      if (clientY - containerRect.top < scrollOffset) {
+        // Scroll up
+        container.scrollTop -= scrollOffset;
+      } else if (containerRect.bottom - clientY < scrollOffset) {
+        // Scroll down
+        container.scrollTop += scrollOffset;
+      }
+      scrollIntervalRef.current = requestAnimationFrame(scrollHandler);
+    };
+
+    scrollHandler(); // Initial call to start the scrolling
+  };
 
   return (
-    <div className='missed_token_queue_main'>
+    <div className='missed_token_main'>
       <div className="logo_name">
-        <h2>Missed Token List</h2>
+        <h2>Missed Tokens</h2>
       </div>
-      <div className="queue_list">
-        <DragDropContext onDragEnd={handleOnDragEnd}>
-          <Droppable droppableId={missed[0]?.token_no?.toString()}>
-            {(provided) => (
-              <ul className="queue" {...provided.droppableProps} ref={provided.innerRef}>
-                {missed.map((item, index) => (
-                  <Draggable key={item.token_no.toString()} draggableId={item.token_no.toString()} index={index}>
-                    {(provided) => (
-                      <li ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                        <div className="draggable-item">
-                          <p>Queue No:<span>{item.token_no}</span></p>
-                          <p>Name:<span>{item.customer_name}</span></p>
-                          <p>Mobile:<span>{item.customer_mobile}</span></p>
-                          <div className='skip_btn' onClick={() => handleMoveBtn(item.token_no)}>Move</div>
-                        </div>
-                      </li>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
-              </ul>
-            )}
-          </Droppable>
-        </DragDropContext>
+      <div className="queue_list" ref={containerRef} onDragOver={handleDragOver}>
+        {missed.length > 0 ? (
+          missed.map((item, index) => (
+            <div
+              key={item.token_no.toString()}
+              className="draggable-item"
+              draggable
+              onDragStart={(e) => handleDragStart(e, index)}
+              onDrag={(e) => handleDrag(e)}
+              onDragEnd={(e) => handleDragEnd(e)}
+              onDragOver={(e) => e.preventDefault()}
+              onDrop={(e) => handleDrop(e, index)}
+            >
+              <p>Queue No:<span>{item.token_no}</span></p>
+              <p>Name:<span>{item.customer_name}</span></p>
+              <p>Mobile:<span>{item.customer_mobile}</span></p>
+              <div className='skip_btn' onClick={() => handleMoveBtn(item.token_no)}>Recall</div>
+            </div>
+          ))
+        ) : (
+          <div className="draggable-item">
+            <p>No missed tokens</p>
+          </div>
+        )}
       </div>
       {showPopup && (
         <div className="popup">

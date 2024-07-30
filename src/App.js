@@ -13,6 +13,7 @@ import DisplayQueue from "./Components/Pages/DisplayQueue";
 import AdminLoginPage from "./AdminPages/AdminloginPage"
 import ManageQueue from "./Components/ManageQueue/ManageQueue";
 import CustomerType from "./Components/Pages/customerType";
+import CancelToken from "./Components/Pages/CancelToken";
 
 function ProtectedRoutes() {
 
@@ -58,6 +59,7 @@ function ProtectedRoutes() {
                 <Route path="/today-token" exact element={<TodayToken />} />
                 <Route path="/manage-token-Queue" exact element={<ManageQueue />} />
                 <Route path="/customer-type" exact element={<CustomerType />} />
+                <Route path="/cancel-token" exact element={<CancelToken />} />
               </Routes>
               <Footer />
             </div>

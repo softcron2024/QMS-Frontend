@@ -82,6 +82,11 @@ const NavbarComponent = () => {
                                             Display Queue Token</Link>
                                     </li>
                                     <li className='Link_navbar'>
+                                        <Link to='/cancel-token' className='Link_token'>
+                                        <i className="fa-solid fa-ban" style={{color:"#ff474c"}} />
+                                            Cancel Token</Link>
+                                    </li>
+                                    <li className='Link_navbar'>
                                         <Link to='/scan-token' className='Link_token'>
                                             <i className="fa-solid fa-qrcode" />
                                             QR Scanner</Link>

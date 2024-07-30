@@ -1,3 +1,7 @@
+* {
+  scroll-behavior: smooth;
+}
+
 .manage_Queue_main {
   display: flex;
   flex-direction: column;
@@ -102,6 +106,7 @@
   border-radius: 8px;
   width: 100%;
   margin: auto;
+  margin-top: 0;
   backface-visibility: hidden;
 }
 
@@ -112,6 +117,7 @@
   border-radius: 8px;
   width: 100%;
   margin: auto;
+  margin-top: 0;
 }
 
 
@@ -129,10 +135,8 @@
 }
 
 .queue_list {
-  background-color: #ffffff;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
+  padding: 5px;
   max-height: 500px; 
   overflow-y: auto; 
 }
@@ -423,59 +427,48 @@
   }
 }
 
-.App-header {
+
+.draggable-item {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 1.5vmin);
+  align-items: flex-start;
+  margin-bottom: 15px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: grab;
+  transition: background-color 0.2s ease, opacity 0.2s ease, transform 0.3s ease-in-out;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.characters {
-  list-style: none;
-  padding-left: 0;
-}
-
-.characters li {
+.draggable-item-2 {
   display: flex;
-  align-items: center;
-  border: solid 2px #d0d0d0;
-  border-radius: .2em;
-  padding: .5em .8em .5em .5em;
-  margin-bottom: 1em;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: grab;
+  transition: background-color 0.2s ease, opacity 0.2s ease, transform 0.3s ease-in-out;
+  margin-bottom: 10px;
 }
 
-.characters p {
-  max-width: none;
+.draggable-item:active {
+  cursor: grabbing;
+}
+
+.draggable-item.dragging {
+  opacity: 0;
+}
+
+.draggable-item.drop-transition {
+  transition: transform 0.3s ease-in-out;
+}
+
+.draggable-item p {
+  margin: 1px 0;
+}
+
+.draggable-item span {
   font-weight: bold;
-  margin: 0;
-}
-
-.characters-thumb {
-  overflow: hidden;
-  flex-shrink: 0;
-  width: 2em;
-  height: 2em;
-  background-color: #e8e8e8;
-  padding: .5em;
-  margin-right: .5em;
-}
-
-.characters-thumb img {
-  display: block;
-  width: 100%;
-  height: auto;
 }

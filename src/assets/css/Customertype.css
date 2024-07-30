@@ -51,7 +51,7 @@ input[type="text"] {
   width: 100%;
   padding: 10px;
   background-color: #ffbe76;
-  color: #fff;
+  color: 	#3b444b;
   border: none;
   font-weight: bold;
   border-radius: 5px;
@@ -62,7 +62,7 @@ input[type="text"] {
 
 .customer_type_btn:hover {
   background-color: #f6e58d;
-  color: #192a56;
+  color: #475c6c;
   font-weight: bold;
 }
 
@@ -107,10 +107,12 @@ input[type="text"] {
 
 .btn_type .customer_type_btn:nth-child(1){
   background-color: #FD7272;
+  color: whitesmoke;
 }
 
 .btn_type .customer_type_btn:nth-child(2){
   background-color: #EE5A24;
+  color: whitesmoke;
 }
 .btn_type .customer_type_btn:nth-child(2):hover{
   background-color: #EE5A24;
