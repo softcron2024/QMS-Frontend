@@ -11,9 +11,11 @@
 
 .main_queue_css {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   background-color: #f9f9f9;
   border-radius: 10px;
+  gap: 20px;
+  margin-top: -40px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 20px;
 }
@@ -23,6 +25,8 @@
   justify-content: flex-start;
   background: #cccccc;
   border-radius: 5px;
+  width: 100%;
+  height: 60px;
   padding: 10px;
   margin-bottom: 20px;
 }
@@ -43,33 +47,42 @@
 }
 
 .Queue_logo {
-  text-align: center;
+  display: grid;
+  margin-top: 10%;
+  margin-left: -32%;
 }
 
 .Queue_logo h2 {
   font-size: 24px;
   font-weight: bold;
+  text-align: start;
   margin-bottom: 20px;
   color: #0e2f44;
 }
 
 .show_queue {
   gap: 10px;
-  text-align: center;
+  text-align: start;
 }
 
 .show_queue h4{
   font-size: 20px;
   font-weight: 500;
+  margin-left: 20px;
   color: #333;
 }
 
-
+.show_queue h2{
+  margin-left: 19px;
+  margin-top: -10px;
+}
 
 .show_queue p {
   margin: 10px 0;
   font-size: 18px;
   color: #555;
+  margin-top: -10px;
+  margin-left: 40px;
 }
 
 .show_queue span {
@@ -471,4 +484,175 @@
 
 .draggable-item span {
   font-weight: bold;
+}
+
+
+/* Waiting to scan token for css */
+
+/* Call next token show in css */
+
+.waiting_main_nexttoken{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(to bottom, #f5f4ed, #f3e5b5); 
+  padding: 10px;
+  height: 280px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  border-radius: 10px;
+  width: 50%;
+}
+
+/* Base styles */
+.waiting_main_token{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(to bottom, #f5f4ed, #f3e5b5); 
+  padding: 10px;
+  height: 280px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  border-radius: 10px;
+  width: 50%;
+}
+
+.waiting_main_token .waiting_token{
+  height: 60%;
+}
+
+.waiting_main_token h3{
+  font-family: 'Arial', sans-serif;
+  color: #333;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+  display: inline-block;
+  border-bottom: 3px solid;
+  border-image: linear-gradient(to right, #f8e0da, #ebb17f);
+  border-image-slice: 1;
+}
+
+.waiting_token{
+  border-radius: 10px;
+  height: 65%;
+  width: 90%;
+  margin-top: 5px;
+  padding: 10px;
+  background: #f2f2f2;
+  box-shadow: 0px 1px 1px rgba(9, 30, 66, 0.25), 0px 0px 1px 1px rgba(9, 30, 66, 0.13);
+}
+
+.waiting_token p{
+  font-size: 18px;
+  font-weight: bold;
+  color: #0d1b2a;
+}
+
+.waiting_token p span{
+ margin-left: 2px;
+}
+
+.waiting_token .Skip_btn{
+  background: linear-gradient(to bottom, #7a9daf, #415a77);
+  color: white;
+  font-size: 16px;
+  padding: 5px;
+  margin-bottom: -10%;
+  margin-left: 40%;
+  text-align: center;
+  margin-top: 5px;
+  font-weight: bold;
+  width: 100px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.waiting_token .Skip_btn:hover{
+  background: linear-gradient(to bottom, #7a9daf, #617d9c);
+}
+
+.comp_btn{
+  margin-top: -20%;
+}
+
+/* Tablet view */
+@media (max-width: 768px) {
+  .waiting_main_token{
+    margin-left: 30px;
+    width: 100%;
+    /* margin-top: 1%; */
+  }
+
+  .waiting_main_nexttoken{
+    width: 100%;
+  }
+
+  .waiting_main_nexttoken .waiting_token{
+   height: 180px;
+  }
+
+  
+  .main_queue_css{
+    width: 100%;
+  }
+  
+  .waiting_token .Skip_btn{
+    margin-left: 30%;
+    margin-top: 10%;
+  }
+
+  .Queue_logo h2{
+    margin-left: -20%;
+  }
+
+  .show_queue h2{
+    margin-left: -10%;
+  }
+
+  .Queue_logo p{
+    margin-left: -2%;
+  }
+}
+
+/* Mobile View */
+@media (max-width: 480px) {
+  .main_queue_css{
+    display: flex;
+    flex-direction: column;
+  }
+
+  .waiting_main_nexttoken{
+    width: 100%;
+    
+  }
+
+  .waiting_main_nexttoken .Skip_btn{
+    margin-top: -1%;
+  }
+
+  .waiting_main_token{
+    width: 100%;
+    margin-left: -1%;
+  }
+
+  .operate_btn{
+    margin-left: 1%;
+    width: 100%;
+  }
+
+  
+  .Queue_logo h2{
+    margin-left: 33%;
+    margin-top: -2%;
+  }
+
+  .show_queue h2{
+    margin-left: 38%;
+  }
+
+  .Queue_logo p{
+    margin-left: 43%;
+  }
+
 }

@@ -15,9 +15,9 @@ const GenerateToken = () => {
     customer_type_id: "1"
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
+  // const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
   const [receiptData, setReceiptData] = useState(null);
-  const [token_no, setCancelTokenNo] = useState("");
+  // const [token_no, setCancelTokenNo] = useState("");
   const [Options, setOptions] = useState([]);
 
   //#region Fetch token for customer Type
@@ -79,12 +79,12 @@ const GenerateToken = () => {
       const result = await response.json();
 
       if (result?.ResponseCode === 0) {
-        showErrorAlert(result?.message);
+        showWarningAlert(result?.message);
         return;
       }
 
       if (result?.message?.ResponseCode === 0) {
-        showErrorAlert(result?.message?.ResponseMessage);
+        showWarningAlert(result?.message?.ResponseMessage);
         return;
       }
 
@@ -106,33 +106,33 @@ const GenerateToken = () => {
   //#endregion
 
   //#region Cancel Token for Generate token
-  const handleCancelToken = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await fetch("http://localhost:8000/api/v1/cancel-token", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ token_no }),
-      });
-      const result = await response.json();
+  // const handleCancelToken = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const response = await fetch("http://localhost:8000/api/v1/cancel-token", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       credentials: "include",
+  //       body: JSON.stringify({ token_no }),
+  //     });
+  //     const result = await response.json();
 
-      if (result.ResponseCode === 0) {
-        showErrorAlert(result.message);
-        return;
-      }
+  //     if (result.ResponseCode === 0) {
+  //       showErrorAlert(result.message);
+  //       return;
+  //     }
 
-      if (result.message.ResponseCode === 0) {
-        showWarningAlert(result.message.ResponseMessage);
-      }
-      else if (result.message.ResponseCode === 1) {
-        showSuccessAlert(result.message.ResponseMessage);
-      }
-    } catch (error) {
-      console.error('Error cancelling token:', error);
-      showErrorAlert('Error cancelling token:', error)
-    }
-  };
+  //     if (result.message.ResponseCode === 0) {
+  //       showWarningAlert(result.message.ResponseMessage);
+  //     }
+  //     else if (result.message.ResponseCode === 1) {
+  //       showSuccessAlert(result.message.ResponseMessage);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error cancelling token:', error);
+  //     showErrorAlert('Error cancelling token:', error)
+  //   }
+  // };
   //#endregion
 
   const closeModal = () => {
@@ -140,10 +140,10 @@ const GenerateToken = () => {
     setReceiptData(null);
   };
 
-  const closeCancelModal = () => {
-    setIsCancelModalOpen(false);
-    setCancelTokenNo("");
-  };
+  // const closeCancelModal = () => {
+  //   setIsCancelModalOpen(false);
+  //   setCancelTokenNo("");
+  // };
 
   const isAuthenticated = Cookies.get("token") !== undefined;
 
@@ -159,7 +159,7 @@ const GenerateToken = () => {
           <button className="button">
             <Link className="link" to="/dashboard">Back</Link>
           </button>
-          <button className="button" onClick={() => setIsCancelModalOpen(true)}>Cancel</button>
+          {/* <button className="button" onClick={() => setIsCancelModalOpen(true)}>Cancel</button> */}
         </div>
         <h1>Softcron Technology</h1>
         <div className="input-container">
@@ -221,7 +221,7 @@ const GenerateToken = () => {
           )}
         </div>
       </Modal>
-      <Modal
+      {/* <Modal
         isOpen={isCancelModalOpen}
         onRequestClose={closeCancelModal}
         contentLabel="Cancel Token"
@@ -244,7 +244,7 @@ const GenerateToken = () => {
 
           </div>
         </form>
-      </Modal>
+      </Modal> */}
     </div>
   );
 };

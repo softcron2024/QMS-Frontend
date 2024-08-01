@@ -1,0 +1,132 @@
+
+/* Base styles */
+.waiting_main_token{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 53%;
+  margin-top: -19%;
+  padding: 10px;
+  height: 200px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  border-radius: 10px;
+  width: 47%;
+}
+
+.waiting_main_token h3{
+  font-family: 'Arial', sans-serif;
+  color: #333;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+  display: inline-block;
+  border-bottom: 3px solid;
+  border-image: linear-gradient(to right, #ff7e5f, #e2d0c1);
+  border-image-slice: 1;
+}
+
+.waiting_token{
+  border-radius: 10px;
+  height: 80%;
+  width: 90%;
+  margin-top: -10px;
+  padding: 10px;
+  box-shadow: 0px 1px 1px rgba(9, 30, 66, 0.25), 0px 0px 1px 1px rgba(9, 30, 66, 0.13);
+}
+
+.waiting_token p{
+  font-size: 18px;
+  font-weight: bold;
+  color: #0d1b2a;
+}
+
+.waiting_token p span{
+ margin-left: 2px;
+}
+
+.waiting_token .Skip_btn{
+  background: linear-gradient(to bottom, #7a9daf, #415a77);
+  color: white;
+  font-size: 16px;
+  padding: 5px;
+  margin-left: 40%;
+  text-align: center;
+  margin-top: 5px;
+  font-weight: bold;
+  width: 100px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.waiting_token .Skip_btn:hover{
+  background: linear-gradient(to bottom, #7a9daf, #617d9c);
+}
+
+/* Tablet view */
+@media (max-width: 768px) {
+  .waiting_main_token{
+    margin-left: 0;
+    width: 100%;
+    margin-top: 1%;
+  }
+
+  .main_queue_css{
+    width: 100%;
+  }
+  
+  .waiting_token .Skip_btn{
+    margin-left: 42%;
+  }
+}
+
+/* Mobile view */
+@media (max-width: 480px) {
+  .waiting_main_token{
+    margin-left: 0;
+    width: 100%;
+    padding: 15px;
+    height: auto;
+  }
+
+  .waiting_main_token h3{
+    font-size: 16px;
+    margin-bottom: 15px;
+  }
+
+  .waiting_token{
+    height: auto;
+    width: 100%;
+    padding: 15px;
+  }
+
+  .waiting_token p{
+    font-size: 16px;
+  }
+
+  .waiting_token .Skip_btn{
+    font-size: 14px;
+    width: 80px;
+    margin-left: 39%;
+  }
+}
+
+<div className="Queue_logo">
+          <h2>Softcron Technology</h2>
+          <div className="show_queue">
+            {currentToken && (
+              <div key={currentToken.token_no}>
+                <h2>Current Serving</h2>
+                <p>
+                  Queue no: <span>{currentToken.token_no}</span>
+                </p>
+                <p>
+                  Name: <span>{currentToken.Customer_name}</span>
+                </p>
+                <p>
+                  Mobile no: <span>{currentToken.Customer_mobile}</span>
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
