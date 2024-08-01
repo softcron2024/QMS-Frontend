@@ -15,7 +15,7 @@ export const showSuccessAlert = (message) =>{
 };
 
 export const showErrorAlert = (message) =>{
-    toast.success(message, {
+    toast.error(message, {
         position:"top-right",
         autoClose:"3000",
         hideProgressBar: false,

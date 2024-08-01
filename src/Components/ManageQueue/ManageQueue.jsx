@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react'
-import TokenList from './TokenManage/TokenList'
-import MissedToken from './TokenManage/MissedToken'
-import '../../assets/css/ManageQueue.css'
-import { showErrorAlert, showWarningAlert, showSuccessAlert } from '../../Toastify';
+import React, { useState, useEffect } from 'react';
+import TokenList from './TokenManage/TokenList';
+import MissedToken from './TokenManage/MissedToken';
+import '../../assets/css/ManageQueue.css';
+import { showErrorAlert, showSuccessAlert, showWarningAlert } from '../../Toastify';
 
 const ManageQueue = () => {
-  const [currentToken, setcurrentToken] = useState(null)
+  const [currentToken, setcurrentToken] = useState(null);
 
   //#region Call Next from Queue List 
   const handleNextBtn = async () => {
@@ -27,9 +27,15 @@ const ManageQueue = () => {
       console.log(result);
 
       if (result?.message?.ResponseCode === 0) {
-        showErrorAlert(result?.message?.ResponseMessage);
+        showWarningAlert(result?.message?.ResponseMessage);
         return; // Exit the function if there's an error
       }
+      if (result?.message?.ResponseCode === 1) {
+        showSuccessAlert(result?.message?.ResponseMessage);
+        return; // Exit the function if there's an error
+      }
+
+      
 
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -40,7 +46,9 @@ const ManageQueue = () => {
   //#endregion
 
   useEffect(() => {
-    async function getCurrntToken() {
+    let intervalId;
+
+    const getCurrntToken = async () => {
       try {
         // Fetch the current token
         const resp = await fetch("http://localhost:8000/api/v1/get-current-token", {
@@ -56,72 +64,22 @@ const ManageQueue = () => {
         }
 
         const currentTokenResult = await resp.json();
-        console.log(currentTokenResult);
-
-        if (currentTokenResult?.message?.ResponseCode === 0) {
-          // showErrorAlert(currentTokenResult?.message?.ResponseMessage);
-          return; // Exit the function if there's an error
-        }
-
         if (currentTokenResult?.message?.ResponseCode === 1) {
           setcurrentToken(currentTokenResult.message);
-          // showSuccessAlert(currentTokenResult.message.ResponseMessage);
         } else {
           setcurrentToken(null);
-          // showWarningAlert('No tokens available.', { toastId: 'no-tokens-toast' });
         }
       } catch (error) {
-        // showErrorAlert(`Error fetching current token: ${error.message}`, { toastId: 'fetch-error-toast' });
+        console.error('Error fetching current token:', error);
       }
-    }
+    };
 
-    setInterval(() => {
-      getCurrntToken()
-    },600);
-  })
+    intervalId = setInterval(getCurrntToken, 5000); // Increase interval to 5 seconds
 
-  //#region handle moved back for call Next button
-  // const handleMoveBack = async (token_no) => {
-  //   if (!token_no) return;
-
-  //   try {
-  //     const response = await fetch("http://localhost:8000/api/v1/move-back-current-token", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({ token_no }),
-  //       credentials: "include",
-  //     });
-
-  //     if (!response.ok) {
-  //       throw new Error(`Failed to fetch data: ${response.status} ${response.statusText}`);
-  //     }
-
-  //     const result = await response.json();
-  //     if (result?.message?.ResponseCode === 1) {
-  //       setCallNextToken(null);
-  //       const tokenData = {
-  //         value: result?.message,
-  //         timestamp: new Date().getTime(),
-  //       };
-  //       localStorage.setItem('callNextToken', JSON.stringify(tokenData));
-
-  //       setTimeout(() => {
-  //         localStorage.removeItem('callNextToken');
-  //       }, 300000);
-  //       showSuccessAlert(result?.message?.ResponseMessage, { toastId: 'move-back-success-toast' });
-  //     } else {
-  //       setCallNextToken(null);
-  //       showWarningAlert(result?.message?.ResponseMessage, { toastId: 'move-back-warning-toast' });
-  //     }
-  //   } catch (error) {
-  //     console.error('Error moving back token:', error);
-  //     showErrorAlert('Error moving back token:', error);
-  //   }
-  // };
-  //#endregion
-
+    return () => {
+      clearInterval(intervalId); // Clear interval on component unmount
+    };
+  }, []);
 
   return (
     <div className='manage_Queue_main'>
@@ -129,11 +87,10 @@ const ManageQueue = () => {
         <div className="operate_btn">
           <div className='buttons'>
             <button onClick={handleNextBtn}>Next</button>
-            {/* <button onClick={() => handleMoveBack(callNextToken?.token_no)}>Move Back</button> */}
           </div>
         </div>
         <div className="Queue_logo">
-          <h2>Softcron Tecnology</h2>
+          <h2>Softcron Technology</h2>
           <div className="show_queue">
             {currentToken && (
               <div key={currentToken.token_no}>
@@ -157,7 +114,7 @@ const ManageQueue = () => {
         <MissedToken />
       </div>
     </div>
-  )
+  );
 }
 
-export default ManageQueue
+export default ManageQueue;

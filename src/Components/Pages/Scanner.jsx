@@ -27,35 +27,23 @@ const Scanner = () => {
           credentials: "include",
         });
         const data = await response.json();
-
-        if (data?.message === "Token not found or Expired, Try again!") {
+        if (data?.ResponseCode === 0) {
           setScanResult("")
-          return showWarningAlert("Token Invalid")
+          return showWarningAlert(data?.message)
 
         }
 
-        if (data?.message === "Your token is valid") {
+        if (data?.ResponseCode === 1) {
           setScanResult("")
-          return showWarningAlert("Token Valid")
+          showSuccessAlert(data?.message)
 
         }
-
-        // if (Array.isArray(result)) {
-        //   setTableData(result);
-        // } else {
-        //   console.error("Expected an array but got:", result);
-        //   setTableData([]);
-        // }
       } catch (error) {
         showErrorAlert("Error fetching data:", error);
         setScanResult("")
       }
     }
   }, []);
-
-  // const handleError = useCallback((err) => {
-  //   console.error("QR Scan Error:", err);
-  // }, []);
 
   useEffect(() => {
     const handleFullScreenChange = () => {

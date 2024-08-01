@@ -22,7 +22,6 @@ const ProductList = () => {
                     credentials: "include",
                 });
                 const result = await response.json();
-                console.log(result);
 
                 if (Array.isArray(result)) {
                     setTableData(result);
@@ -201,8 +200,6 @@ const ProductList = () => {
     };
 
     const isAuthenticated = Cookies.get("token") !== undefined;
-
-    console.log(isAuthenticated);
 
     if (!isAuthenticated) {
         return <Navigate to="/" replace />;
