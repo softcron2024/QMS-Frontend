@@ -7,10 +7,11 @@ import { showErrorAlert, showSuccessAlert, showWarningAlert } from '../../Toasti
 const ManageQueue = () => {
   const [currentToken, setcurrentToken] = useState(null);
   const [waitingToken, setwaitingToken] = useState([]);
+
+
   //#region Call Next from Queue List 
   const handleNextBtn = async () => {
     try {
-      // Fetch the next token
       const response = await fetch("http://localhost:8000/api/v1/call-next-token", {
         method: "GET",
         headers: {
@@ -24,18 +25,15 @@ const ManageQueue = () => {
       }
 
       const result = await response.json();
-      console.log(result);
 
       if (result?.message?.ResponseCode === 0) {
         showWarningAlert(result?.message?.ResponseMessage);
-        return; // Exit the function if there's an error
+        return; 
       }
       if (result?.message?.ResponseCode === 1) {
         showSuccessAlert(result?.message?.ResponseMessage);
-        return; // Exit the function if there's an error
+        return; 
       }
-
-
 
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -45,14 +43,11 @@ const ManageQueue = () => {
 
   //#endregion
 
-
   //#region Get token when call next token and after scan_token
   useEffect(() => {
     let intervalId;
-
     const getCurrntToken = async () => {
       try {
-        // Fetch the current token
         const resp = await fetch("http://localhost:8000/api/v1/get-current-token", {
           method: "GET",
           headers: {
@@ -60,11 +55,9 @@ const ManageQueue = () => {
           },
           credentials: "include",
         });
-
         if (!resp.ok) {
           throw new Error(`Failed to fetch current token: ${resp.status} ${resp.statusText}`);
         }
-
         const currentTokenResult = await resp.json();
         if (currentTokenResult?.message?.ResponseCode === 1) {
           setcurrentToken(currentTokenResult.message);
@@ -75,15 +68,14 @@ const ManageQueue = () => {
         console.error('Error fetching current token:', error);
       }
     };
-
-    intervalId = setInterval(getCurrntToken, 5000); // Increase interval to 5 seconds
-
+    intervalId = setInterval(getCurrntToken, 5000); 
     return () => {
-      clearInterval(intervalId); // Clear interval on component unmount
+      clearInterval(intervalId); 
     };
   }, []);
   //#endregion
 
+  //#region Get Waiting_to_scan current token from waiting list
   const getWaitToken = async () => {
     try {
       const resp = await fetch("http://localhost:8000/api/v1/get-waiting-token", {
@@ -109,11 +101,12 @@ const ManageQueue = () => {
       setwaitingToken([]);
     }
   };
-
   useEffect(() => {
     getWaitToken();
   }, [waitingToken]);
+  //#endregion
 
+  //#region Call skip from Waiting list
   const handleSkipBtn = async (token_no) => {
     try {
       const response = await fetch("http://localhost:8000/api/v1/skip-token", {
@@ -124,17 +117,50 @@ const ManageQueue = () => {
         credentials: "include",
         body: JSON.stringify({ token_no })
       });
-
+  
       if (!response.ok) {
         throw new Error('Failed to fetch data');
       }
+  
       const result = await response.json();
-      showSuccessAlert("Token skipped successfully");
+  
+      if (result.ResponseCode === 0) {
+        showWarningAlert(result?.message);
+      }
+
+      if(result?.ResponseCode === 1){
+        showSuccessAlert(result?.message)
+      }
       getWaitToken();
     } catch (error) {
       showErrorAlert(error.message);
     }
   };
+  //#endregion
+
+  //#region Show token click after complete token
+ const handleComplete = async (token_no) => {
+ try {
+  const response = await fetch ('http://localhost:8000/api/v1/complete-token',{
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify({ token_no })
+  });
+  const result = await response.json();
+
+  if (result?.message?.ResponseCode === 0) {
+    showWarningAlert(result?.message?.ResponseMessage)
+  }
+  if (result?.message?.ResponseCode === 1) {
+    showSuccessAlert(result?.message?.ResponseMessage)
+  }
+ } catch (error) {
+  console.log(error);
+ }};
+ //#endregion
 
   return (
     <div className='manage_Queue_main'>
@@ -149,7 +175,7 @@ const ManageQueue = () => {
               <h2>Waiting Token</h2>
             </div>
             <div className="waiting_token">
-
+                <h2 style={{fontSize:"18px", fontWeight:'bold', color:'#264653'}}>Current Waiting token</h2>
               {waitingToken && (
                 <div key={waitingToken.token_no}>
                   <p>
@@ -176,7 +202,7 @@ const ManageQueue = () => {
 
             {currentToken && (
               <div key={currentToken.token_no}>
-                <h2 style={{fontSize:"18px", fontWeight:'bold', color:'#264653'}}>Current Serving</h2>
+                <h2 style={{fontSize:"18px", fontWeight:'bold', color:'#264653'}}>Current Serving token</h2>
                 <p>
                   Queue no: <span>{currentToken.token_no}</span>
                 </p>
@@ -187,7 +213,7 @@ const ManageQueue = () => {
                   Mobile no: <span>{currentToken.Customer_mobile}</span>
                 </p>
                 <div className='Skip_btn'>
-                    <button className='skip_btn comp_btn'>Complete</button>
+                    <button className='skip_btn comp_btn' onClick={()=>handleComplete(currentToken.token_no)}>Complete</button>
                   </div>
               </div>
             )}
