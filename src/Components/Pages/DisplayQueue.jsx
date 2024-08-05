@@ -44,8 +44,8 @@ const ProductList = () => {
 
     useEffect(() => {
         const fetchList = async () => {
-            setIsLoading(true); 
-            setError(null); 
+            setIsLoading(true);
+            setError(null);
 
             try {
                 const response = await fetch("http://localhost:8000/api/v1/getQueue", {
@@ -57,7 +57,10 @@ const ProductList = () => {
                 });
 
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    const result = await response.json();
+                    const errorMessage = result.message || `HTTP error! status: ${response.status}`;
+                    showErrorAlert(errorMessage)
+                    throw new Error(errorMessage);
                 }
 
                 const result = await response.json();
@@ -71,7 +74,7 @@ const ProductList = () => {
                 }
             } catch (error) {
                 console.error("Error fetching data:", error);
-                setError("Error fetching data");
+                setError(error.message);
                 setTableData([]);
             } finally {
                 setIsLoading(false); // Hide loading indicator
