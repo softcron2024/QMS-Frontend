@@ -12,7 +12,7 @@ const GenerateToken = () => {
     name: "",
     mobile: "",
     no_of_person: "",
-    customer_type_id: "1"
+    customer_type_id: ""
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
   // const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
@@ -63,10 +63,24 @@ const GenerateToken = () => {
   //#region Create Token API For generate
   const handleCreateToken = async (e) => {
     e.preventDefault();
+    
+    // Validation
+    const { name, mobile, no_of_person, customer_type_id } = Token;
+    if (!name || !mobile || !no_of_person || !customer_type_id) {
+      showWarningAlert("All fields are required.");
+      return;
+    }
+  
+    const mobilePattern = /^[0-9]+$/; 
+    if (!mobilePattern.test(mobile)) {
+      showWarningAlert("Please enter a valid 10-digit mobile number.");
+      return;
+    }
+  
     if (isSubmitting) return;
-
+  
     setIsSubmitting(true);
-
+  
     try {
       const response = await fetch("http://localhost:8000/api/v1/generate-token", {
         method: "POST",
@@ -77,32 +91,31 @@ const GenerateToken = () => {
         credentials: "include",
       });
       const result = await response.json();
-
+      console.log(result);
+  
       if (result?.ResponseCode === 0) {
         showWarningAlert(result?.message);
-        return;
-      }
-
-      if (result?.message?.ResponseCode === 0) {
+      } else if (result?.ResponseCode === 1) {
+        setReceiptData(result?.message);
+        setIsModalOpen(true);
+      } else {
         showWarningAlert(result?.message?.ResponseMessage);
-        return;
       }
-
-      setReceiptData(result);
+  
       setToken({
         name: "",
         mobile: "",
         no_of_person: "",
-        customer_type_id: ""
+        customer_type_id: "",
       });
-      setIsModalOpen(true);
-      showSuccessAlert("Token generate successfully")
+      showSuccessAlert("Token generated successfully");
     } catch (error) {
       showErrorAlert("Error generating token:", error);
     } finally {
       setIsSubmitting(false);
     }
   };
+  
   //#endregion
 
   //#region Cancel Token for Generate token
@@ -168,8 +181,8 @@ const GenerateToken = () => {
           <input type="text" name="mobile" value={Token.mobile} onChange={handleTokenChange} placeholder="Mobile Number" />
           <select value={Token.customer_type_id} name="customer_type_id" onChange={handleTokenChange}
           >
-            <option value={true} disabled={true}>
-              Customer type
+            <option selected value="" disabled>
+              Select Customer type
             </option>
             {Options.map((type) => (
               <option key={type.customer_type_id} value={type.customer_type_id} >

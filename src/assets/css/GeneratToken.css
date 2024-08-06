@@ -105,6 +105,7 @@ h1{
 
 .input-container select{
   outline: none;
+  padding-right: 10px;
 }
 
 /* Modal styles */

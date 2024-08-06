@@ -23,6 +23,7 @@ const CancelToken = () => {
       }
 
       const result = await response.json();
+
       if (Array.isArray(result?.message[0])) {
         setcanceltoken(result?.message[0]);
       } else {
@@ -48,7 +49,6 @@ const CancelToken = () => {
         body: JSON.stringify({ token_no: tokenNo }),
       });
       const result = await response.json();
-
       if (result.ResponseCode === 0) {
         showErrorAlert(result.message);
         return;
@@ -71,16 +71,17 @@ const CancelToken = () => {
         <div className="logo_cancel">
           Softcron Technology
         </div>
-        <div className="input-container">
-          <input 
-            type="text" 
+        <div className="subscribe">
+          <p>Cancel Token</p>
+          <input  type="text" 
             placeholder="Enter Token No" 
             value={tokenNo}
             onChange={(e) => setTokenNo(e.target.value)}
           />
-        </div>
-        <div className="cancel_buttons">
-          <button className='cnl_btn' type="submit">Cancel</button>
+          <br />
+          <div className="submit-btn">
+              <button type="submit">Cancel</button>
+            </div>
         </div>
       </form>
     </div>

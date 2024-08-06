@@ -5,6 +5,8 @@ import { VscScreenFull } from 'react-icons/vsc';
 import Cookies from "js-cookie";
 
 import { Typography } from "@mui/material";
+import { toast } from 'react-toastify';
+import { showSuccessAlert } from '../../Toastify';
 
 const ProductList = () => {
     const [tableData, setTableData] = useState([]);
@@ -22,25 +24,30 @@ const ProductList = () => {
                     credentials: "include",
                 });
                 const result = await response.json();
+                console.log(result);
 
-                if (Array.isArray(result)) {
-                    setTableData(result);
-                } else {
-                    console.error("Expected an array but got:", result);
+                    if(result.ResponseCode === 1){
+                        setTableData(result?.message);
+                    }
+
+                    // if (Array.isArray(result)) {
+                    //     setTableData(result);
+                    // } else {
+                    //     console.error("Expected an array but got:", result);
+                    //     setTableData([]);
+                    // }
+                } catch (error) {
+                    console.error("Error fetching data:", error);
                     setTableData([]);
                 }
-            } catch (error) {
-                console.error("Error fetching data:", error);
-                setTableData([]);
-            }
-        };
+            };
 
-        fetchList();
+            fetchList();
 
-        const intervalId = setInterval(fetchList, 1000);
+            const intervalId = setInterval(fetchList, 1000);
 
-        return () => clearInterval(intervalId);
-    }, []);
+            return () => clearInterval(intervalId);
+        }, []);
 
     useEffect(() => {
         const handleFullScreenChange = () => {

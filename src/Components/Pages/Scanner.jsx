@@ -27,6 +27,7 @@ const Scanner = () => {
           credentials: "include",
         });
         const data = await response.json();
+        
         if (data?.ResponseCode === 0) {
           setScanResult("")
           return showWarningAlert(data?.message)

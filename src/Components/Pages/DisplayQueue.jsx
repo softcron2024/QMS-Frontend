@@ -64,14 +64,10 @@ const ProductList = () => {
                 }
 
                 const result = await response.json();
-                console.log(result);
 
-                if (Array.isArray(result.message[0])) {
-                    setTableData(result.message[0]);
-                } else {
-                    console.error("Expected an array but got:", result.message[0]);
-                    setTableData([]);
-                }
+               if(result.ResponseCode === 1){
+                    setTableData(result?.message[0])
+               }
             } catch (error) {
                 console.error("Error fetching data:", error);
                 setError(error.message);
@@ -269,7 +265,7 @@ const ProductList = () => {
                     </Link>
                 </div>
             </div>
-            <div ref={tableRef} className={`mui-datatables ${isFullScreen ? 'fullscreen' : ''}`}>
+            <div ref={tableRef} className={`mui-datatables mb-5 ${isFullScreen ? 'fullscreen' : ''}`}>
                 {isLoading ? (
                     <div className="text-center">
                         <CircularProgress className='circular-progress'/>
@@ -282,6 +278,7 @@ const ProductList = () => {
                     <MUIDataTable
                         title={
                             <Typography variant="h5" style={{ fontWeight: 'bold', color: "#2a2a2a", textAlign: "left"  }}>
+                                <h5 className='var_live_queue'>Live Queue</h5>
                                  <div className='colorT'>
                                 {
                                     colorCustomer.map((item)=>{
@@ -295,7 +292,7 @@ const ProductList = () => {
                                     })
                                 }
                                </div>
-                               <h5 className='var_live_queue'>Live Queue</h5>
+                               
                               
                             </Typography>
                         }

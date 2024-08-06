@@ -25,15 +25,18 @@ const ManageQueue = () => {
       }
 
       const result = await response.json();
-
+      console.log(result?.message?.ResponseCode);
       if (result?.message?.ResponseCode === 0) {
-        showWarningAlert(result?.message?.ResponseMessage);
-        return; 
+        showWarningAlert(result?.message?.ResponseMessage)
+        return
       }
+
       if (result?.message?.ResponseCode === 1) {
-        showSuccessAlert(result?.message?.ResponseMessage);
-        return; 
+        setwaitingToken(result?.message)
+        showSuccessAlert(result?.message)
+        return
       }
+
 
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -59,6 +62,7 @@ const ManageQueue = () => {
           throw new Error(`Failed to fetch current token: ${resp.status} ${resp.statusText}`);
         }
         const currentTokenResult = await resp.json();
+        
         if (currentTokenResult?.message?.ResponseCode === 1) {
           setcurrentToken(currentTokenResult.message);
         } else {
@@ -68,44 +72,44 @@ const ManageQueue = () => {
         console.error('Error fetching current token:', error);
       }
     };
-    intervalId = setInterval(getCurrntToken, 5000); 
+    intervalId = setInterval(getCurrntToken, 5000);
     return () => {
-      clearInterval(intervalId); 
+      clearInterval(intervalId);
     };
   }, []);
   //#endregion
 
-  //#region Get Waiting_to_scan current token from waiting list
-  const getWaitToken = async () => {
-    try {
-      const resp = await fetch("http://localhost:8000/api/v1/get-waiting-token", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      });
+  //#region Get Waiting to scan token on call next 
+    const getWaitToken = async () => {
+      try {
+        const resp = await fetch("http://localhost:8000/api/v1//get-waiting-to-scan-token", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        });
 
-      if (!resp.ok) {
-        throw new Error(`HTTP error! status: ${resp.status}`);
-      }
+        if (!resp.ok) {
+          throw new Error(`Failed to fetch waiting token: ${resp.status} ${resp.statusText}`);
+        }
 
-      const result = await resp.json();
-      if (result && result.message) {
-        setwaitingToken(result.message);
-      } else {
-        setwaitingToken([]);
+        const result = await resp.json();
+        if (result?.message?.ResponseCode === 1) {
+          setwaitingToken(result.message);
+        } else {
+          setwaitingToken(null);
+        }
+      } catch (error) {
+        console.error('Error fetching waiting token:', error);
       }
-    } catch (error) {
-      console.error('Error fetching waiting token:', error);
-      setwaitingToken([]);
-    }
-  };
-  useEffect(() => {
+    };
+
+    useEffect(() => {
     getWaitToken();
-  }, [waitingToken]);
+  }, []);
   //#endregion
-
+ 
   //#region Call skip from Waiting list
   const handleSkipBtn = async (token_no) => {
     try {
@@ -117,19 +121,20 @@ const ManageQueue = () => {
         credentials: "include",
         body: JSON.stringify({ token_no })
       });
-  
+
       if (!response.ok) {
         throw new Error('Failed to fetch data');
       }
-  
-      const result = await response.json();
-  
-      if (result.ResponseCode === 0) {
-        showWarningAlert(result?.message);
-      }
 
-      if(result?.ResponseCode === 1){
-        showSuccessAlert(result?.message)
+      const result = await response.json();
+      
+     if(result?.message?.ResponseCode === 0){
+      showWarningAlert(result?.message?.ResponseMessage)
+     }
+
+      if (result?.message?.ResponseCode === 1) {
+        showSuccessAlert(result?.message?.ResponseMessage)
+
       }
       getWaitToken();
     } catch (error) {
@@ -139,86 +144,87 @@ const ManageQueue = () => {
   //#endregion
 
   //#region Show token click after complete token
- const handleComplete = async (token_no) => {
- try {
-  const response = await fetch ('http://localhost:8000/api/v1/complete-token',{
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-    body: JSON.stringify({ token_no })
-  });
-  const result = await response.json();
-
-  if (result?.message?.ResponseCode === 0) {
-    showWarningAlert(result?.message?.ResponseMessage)
-  }
-  if (result?.message?.ResponseCode === 1) {
-    showSuccessAlert(result?.message?.ResponseMessage)
-  }
- } catch (error) {
-  console.log(error);
- }};
- //#endregion
+  const handleComplete = async (token_no) => {
+    try {
+      const response = await fetch('http://localhost:8000/api/v1/complete-token', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ token_no })
+      });
+      const result = await response.json();
+      
+      if (result?.message?.ResponseCode === 0) {
+        showWarningAlert(result?.message?.ResponseMessage)
+      }
+      if (result?.message?.ResponseCode === 1) {
+        showSuccessAlert(result?.message?.ResponseMessage)
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  //#endregion
 
   return (
     <div className='manage_Queue_main'>
       <div className="operate_btn">
-          <div className='buttons'>
-            <button onClick={handleNextBtn}>Next</button>
-          </div>
+        <div className='buttons'>
+          <button onClick={handleNextBtn}>Next</button>
         </div>
+      </div>
       <div className='main_queue_css'>
         <div className="waiting_main_token">
-            <div className="logo_name">
-              <h2>Waiting Token</h2>
-            </div>
-            <div className="waiting_token">
-                <h2 style={{fontSize:"18px", fontWeight:'bold', color:'#264653'}}>Current Waiting token</h2>
-              {waitingToken && (
-                <div key={waitingToken.token_no}>
-                  <p>
-                    Queue no: <span>{waitingToken.token_no}</span>
-                  </p>
-                  <p>
-                    Name: <span>{waitingToken.customer_name}</span>
-                  </p>
-                  <p>
-                    Mobile: <span>{waitingToken.customer_mobile}</span>
-                  </p>
-                  <div className='Skip_btn'>
-                    <button className='skip_btn' onClick={() => handleSkipBtn(waitingToken.token_no)}>skip</button>
-                  </div>
-                </div>
-              )}
-            </div>
+          <div className="logo_name">
+            <h2>Waiting Token</h2>
           </div>
-          <div className="waiting_main_nexttoken">
-            <div className="logo_name">
-              <h2>Softcron tecnology</h2>
-            </div>
-            <div className="waiting_token">
+          <div className="waiting_token">
+            <h2 style={{ fontSize: "18px", fontWeight: 'bold', color: '#264653' }}>Current Waiting token</h2>
+            {waitingToken && (
+              <div key={waitingToken.token_no}>
+                <p>
+                  Queue no: <span>{waitingToken.token_no}</span>
+                </p>
+                <p>
+                  Name: <span>{waitingToken.customer_name}</span>
+                </p>
+                <p>
+                  Mobile: <span>{waitingToken.customer_mobile}</span>
+                </p>
+                <div className='Skip_btn'>
+                  <button className='skip_btn' onClick={() => handleSkipBtn(waitingToken.token_no)}>skip</button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+        <div className="waiting_main_nexttoken">
+          <div className="logo_name">
+            <h2>Softcron tecnology</h2>
+          </div>
+          <div className="waiting_token">
 
             {currentToken && (
               <div key={currentToken.token_no}>
-                <h2 style={{fontSize:"18px", fontWeight:'bold', color:'#264653'}}>Current Serving token</h2>
+                <h2 style={{ fontSize: "18px", fontWeight: 'bold', color: '#264653' }}>Current Serving token</h2>
                 <p>
                   Queue no: <span>{currentToken.token_no}</span>
                 </p>
                 <p>
-                  Name: <span>{currentToken.Customer_name}</span>
+                  Name: <span>{currentToken.customer_name}</span>
                 </p>
                 <p>
-                  Mobile no: <span>{currentToken.Customer_mobile}</span>
+                  Mobile no: <span>{currentToken.customer_mobile}</span>
                 </p>
                 <div className='Skip_btn'>
-                    <button className='skip_btn comp_btn' onClick={()=>handleComplete(currentToken.token_no)}>Complete</button>
-                  </div>
+                  <button className='skip_btn comp_btn' onClick={() => handleComplete(currentToken.token_no)}>Complete</button>
+                </div>
               </div>
             )}
-            </div>
           </div>
+        </div>
       </div>
 
       <div className="show_queue_token">

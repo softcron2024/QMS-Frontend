@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { showErrorAlert, showSuccessAlert } from '../../../Toastify';
 import '../../../assets/css/ManageQueue.css';
+import { logDOM } from '@testing-library/react';
 
 const TokenList = () => {
   const [queue, setQueue] = useState([]);
@@ -155,6 +156,8 @@ const TokenList = () => {
       }
 
       const result = await response.json();
+      console.log(result);
+      
       showSuccessAlert("Token position updated successfully");
     } catch (error) {
       showErrorAlert(error.message);

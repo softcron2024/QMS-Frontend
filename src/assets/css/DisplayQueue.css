@@ -1,9 +1,10 @@
 .colorT {
     margin-top: 10px;
-    display: flex;
-    flex-direction: row;
-    gap: 50px;
-    margin-left: 35%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 15px;
+    margin-left: 39%;
+    margin-top: -8%;
 }
 
 .colortype h6 {
@@ -17,7 +18,7 @@
 }
 
 .var_live_queue {
-    margin-top: -40px;
+    margin-top: 5%;
 }
 
 
@@ -25,7 +26,7 @@
 @media only screen and (max-width: 768px) {
     .colorT {
         flex-direction: row; 
-
+        margin-top: 6%;
         margin-left: 0;
     }
 
@@ -33,9 +34,7 @@
         font-size: 12px;
     }
 
-    .var_live_queue {
-        margin-top: 10px; 
-    }
+    
 
 }
 
