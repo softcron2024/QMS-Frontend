@@ -62,7 +62,7 @@ const ManageQueue = () => {
           throw new Error(`Failed to fetch current token: ${resp.status} ${resp.statusText}`);
         }
         const currentTokenResult = await resp.json();
-        
+
         if (currentTokenResult?.message?.ResponseCode === 1) {
           setcurrentToken(currentTokenResult.message);
         } else {
@@ -80,36 +80,36 @@ const ManageQueue = () => {
   //#endregion
 
   //#region Get Waiting to scan token on call next 
-    const getWaitToken = async () => {
-      try {
-        const resp = await fetch("http://localhost:8000/api/v1//get-waiting-to-scan-token", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        });
+  const getWaitToken = async () => {
+    try {
+      const resp = await fetch("http://localhost:8000/api/v1//get-waiting-to-scan-token", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
 
-        if (!resp.ok) {
-          throw new Error(`Failed to fetch waiting token: ${resp.status} ${resp.statusText}`);
-        }
-
-        const result = await resp.json();
-        if (result?.message?.ResponseCode === 1) {
-          setwaitingToken(result.message);
-        } else {
-          setwaitingToken(null);
-        }
-      } catch (error) {
-        console.error('Error fetching waiting token:', error);
+      if (!resp.ok) {
+        throw new Error(`Failed to fetch waiting token: ${resp.status} ${resp.statusText}`);
       }
-    };
 
-    useEffect(() => {
+      const result = await resp.json();
+      if (result?.message?.ResponseCode === 1) {
+        setwaitingToken(result.message);
+      } else {
+        setwaitingToken(null);
+      }
+    } catch (error) {
+      console.error('Error fetching waiting token:', error);
+    }
+  };
+
+  useEffect(() => {
     getWaitToken();
   }, []);
   //#endregion
- 
+
   //#region Call skip from Waiting list
   const handleSkipBtn = async (token_no) => {
     try {
@@ -127,10 +127,10 @@ const ManageQueue = () => {
       }
 
       const result = await response.json();
-      
-     if(result?.message?.ResponseCode === 0){
-      showWarningAlert(result?.message?.ResponseMessage)
-     }
+
+      if (result?.message?.ResponseCode === 0) {
+        showWarningAlert(result?.message?.ResponseMessage)
+      }
 
       if (result?.message?.ResponseCode === 1) {
         showSuccessAlert(result?.message?.ResponseMessage)
@@ -155,7 +155,7 @@ const ManageQueue = () => {
         body: JSON.stringify({ token_no })
       });
       const result = await response.json();
-      
+
       if (result?.message?.ResponseCode === 0) {
         showWarningAlert(result?.message?.ResponseMessage)
       }
@@ -206,7 +206,7 @@ const ManageQueue = () => {
           </div>
           <div className="waiting_token">
 
-            {currentToken && (
+            {currentToken ? (
               <div key={currentToken.token_no}>
                 <h2 style={{ fontSize: "18px", fontWeight: 'bold', color: '#264653' }}>Current Serving token</h2>
                 <p>
@@ -222,7 +222,12 @@ const ManageQueue = () => {
                   <button className='skip_btn comp_btn' onClick={() => handleComplete(currentToken.token_no)}>Complete</button>
                 </div>
               </div>
+            ) : (
+              <div className='no_token_available'>
+                <h2>No token available</h2>
+              </div>
             )}
+
           </div>
         </div>
       </div>
