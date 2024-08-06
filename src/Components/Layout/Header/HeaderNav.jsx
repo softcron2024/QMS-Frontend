@@ -124,12 +124,12 @@ const NavbarComponent = () => {
                     </Offcanvas.Body>
                 </Navbar.Offcanvas>
                 <Nav className="d-none d-xl-flex ms-auto">
-                    <Button variant="outline-secondary" onClick={toggleDarkMode} className="me-2 Color_darkmode">
+                    {/* <Button variant="outline-secondary" onClick={toggleDarkMode} className="me-2 Color_darkmode">
                         {darkMode ? <FaSun /> : <FaMoon />}
-                    </Button>
-                    <Dropdown.Toggle variant="outline-secondary" id="dropdown-basic" className='Color_darkmode'>
+                    </Button> */}
+                    {/* <Dropdown.Toggle variant="outline-secondary" id="dropdown-basic" className='Color_darkmode'>
                         <FaBell />
-                    </Dropdown.Toggle>
+                    </Dropdown.Toggle> */}
                     <Dropdown align="end">
                         <Dropdown.Toggle variant="outline-secondary" id="dropdown-basic">
                             <FaUserCircle />

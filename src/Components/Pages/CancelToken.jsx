@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import '../../assets/css/CancelToken.css';
 import { showSuccessAlert, showErrorAlert, showWarningAlert } from '../../Toastify';
-import { useNavigate } from 'react-router-dom';
 
 const CancelToken = () => {
-  const [canceltoken, setcanceltoken] = useState([]);
+  const [canceltoken, setCanceltoken] = useState([]);
   const [tokenNo, setTokenNo] = useState("");
-  const navigate = useNavigate
 
   const fetchQueue = async () => {
     try {
@@ -25,10 +23,10 @@ const CancelToken = () => {
       const result = await response.json();
 
       if (Array.isArray(result?.message[0])) {
-        setcanceltoken(result?.message[0]);
+        setCanceltoken(result?.message[0]);
       } else {
         console.error("Expected an array but got:", result?.message[0]);
-        setcanceltoken([]);
+        setCanceltoken([]);
       }
     } catch (error) {
       console.error('Error fetching queue:', error);
@@ -48,6 +46,7 @@ const CancelToken = () => {
         credentials: "include",
         body: JSON.stringify({ token_no: tokenNo }),
       });
+
       const result = await response.json();
       if (result.ResponseCode === 0) {
         showErrorAlert(result.message);
@@ -73,15 +72,17 @@ const CancelToken = () => {
         </div>
         <div className="subscribe">
           <p>Cancel Token</p>
-          <input  type="text" 
+          <input type="text" 
             placeholder="Enter Token No" 
             value={tokenNo}
             onChange={(e) => setTokenNo(e.target.value)}
           />
           <br />
-          <div className="submit-btn">
+          {tokenNo && (
+            <div className="submit-btn">
               <button type="submit">Cancel</button>
             </div>
+          )}
         </div>
       </form>
     </div>
