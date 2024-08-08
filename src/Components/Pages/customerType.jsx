@@ -267,8 +267,8 @@ const CustomerType = () => {
                     const customer = tableData[tableMeta.rowIndex];
                     return (
                         <div className="text-center btn_type" style={{ display: "flex", justifyContent: "center" }}>
-                            <button className='customer_type_btn' onClick={() => openEditModal(customer)}>Edit</button>
-                            <button className='customer_type_btn' onClick={() => handleDelete(customer.customer_type_id)}>Delete</button>
+                            <button className='btn btn-primary' onClick={() => openEditModal(customer)}>Edit</button>
+                            <button className='btn btn-danger' onClick={() => handleDelete(customer.customer_type_id)}>Delete</button>
                         </div>
                     );
                 },
@@ -292,6 +292,7 @@ const CustomerType = () => {
                     <legend>Customer Type</legend>
                     <form onSubmit={handleSubmit}>
                         <input
+                            className="form-control"
                             onChange={handleChange}
                             type="text"
                             value={type.customer_type_name}
@@ -301,6 +302,7 @@ const CustomerType = () => {
                         />
                         <div className="Color_type">
                             <input
+                                className="form-control"
                                 onChange={handleChange}
                                 type="text"
                                 value={type.customer_type_color}
@@ -309,6 +311,7 @@ const CustomerType = () => {
                                 required
                             />
                             <input
+                                className="form-control"
                                 onChange={handleChange}
                                 type="text"
                                 value={type.customer_type_text_color}
@@ -317,6 +320,7 @@ const CustomerType = () => {
                                 required
                             />
                             <input
+                                className="form-control"
                                 onChange={handleChange}
                                 type="text"
                                 value={type.customer_type_priority}
@@ -325,7 +329,9 @@ const CustomerType = () => {
                                 required
                             />
                         </div>
-                        <button type="submit" className='customer_type_btn'>Add Customer Type</button>
+                        <div className="d-grid gap-2">
+                            <button className="btn btn-primary" type='submit'>Add Customer Type</button>
+                        </div>
                     </form>
                 </fieldset>
             </div>
@@ -351,6 +357,7 @@ const CustomerType = () => {
                 <h2>Edit Customer Type</h2>
                 <form onSubmit={handleEditSubmit}>
                     <input
+                        className="form-control"
                         onChange={handleEditChange}
                         type="text"
                         value={editType?.customer_type_name || ""}
@@ -360,6 +367,7 @@ const CustomerType = () => {
                     />
                     <div className="color_type">
                         <input
+                            className="form-control"
                             onChange={handleEditChange}
                             type="text"
                             value={editType?.customer_type_color || ""}
@@ -368,6 +376,7 @@ const CustomerType = () => {
                             required
                         />
                         <input
+                            className="form-control"
                             onChange={handleEditChange}
                             type="text"
                             value={editType?.customer_type_text_color || ""}
@@ -377,6 +386,7 @@ const CustomerType = () => {
                         />
                         <h5 style={{ color: "red", marginTop: '-10PX', marginRight: "-10px" }}>*</h5>
                         <input
+                            className="form-control"
                             onChange={handleEditChange}
                             type="text"
                             value={editType?.customer_type_priority || ""}

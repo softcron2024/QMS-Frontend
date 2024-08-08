@@ -10,6 +10,7 @@ const MissedToken = () => {
   const dragImageRef = useRef(null);
   const containerRef = useRef(null);
   const scrollIntervalRef = useRef(null);
+  const initialOffsetRef = useRef({ x: 0, y: 0 });
 
   const fetchQueue = async () => {
     try {
@@ -40,7 +41,7 @@ const MissedToken = () => {
 
   useEffect(() => {
     fetchQueue();
-  }, [missed]);
+  }, []);
 
   const handleMoveBtn = (token_no) => {
     setSelectedToken(token_no);
@@ -78,11 +79,18 @@ const MissedToken = () => {
     e.dataTransfer.setData("index", index);
     e.dataTransfer.effectAllowed = "move";
 
+    // Calculate the initial offset
+    const rect = e.currentTarget.getBoundingClientRect();
+    initialOffsetRef.current = {
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top
+    };
+
     // Create a custom drag image
     const dragImage = e.currentTarget.cloneNode(true);
     dragImage.style.position = "fixed";
-    dragImage.style.top = `${e.clientY - e.currentTarget.offsetHeight / 2}px`;
-    dragImage.style.left = `${e.clientX - e.currentTarget.offsetWidth / 2}px`;
+    dragImage.style.top = `${e.clientY - initialOffsetRef.current.y}px`;
+    dragImage.style.left = `${e.clientX - initialOffsetRef.current.x}px`;
     dragImage.style.width = `${e.currentTarget.offsetWidth}px`;
     dragImage.style.height = `${e.currentTarget.offsetHeight}px`;
     dragImage.style.opacity = "1";
@@ -93,10 +101,14 @@ const MissedToken = () => {
 
     dragImageRef.current = dragImage;
 
-    const rect = e.currentTarget.getBoundingClientRect();
-    const offsetX = rect.width / 2;
-    const offsetY = rect.height / 2;
-    e.dataTransfer.setDragImage(dragImage, offsetX, offsetY);
+    // Create an invisible element as the drag image
+    const invisibleDragImage = document.createElement('div');
+    invisibleDragImage.style.width = '1px';
+    invisibleDragImage.style.height = '1px';
+    invisibleDragImage.style.opacity = '0';
+    document.body.appendChild(invisibleDragImage);
+
+    e.dataTransfer.setDragImage(invisibleDragImage, 0, 0);
 
     // Add dragging class
     e.currentTarget.classList.add("dragging");
@@ -104,8 +116,8 @@ const MissedToken = () => {
 
   const handleDrag = (e) => {
     if (dragImageRef.current) {
-      dragImageRef.current.style.top = `${e.clientY - dragImageRef.current.offsetHeight / 2}px`;
-      dragImageRef.current.style.left = `${e.clientX - dragImageRef.current.offsetWidth / 2}px`;
+      dragImageRef.current.style.top = `${e.clientY - initialOffsetRef.current.y}px`;
+      dragImageRef.current.style.left = `${e.clientX - initialOffsetRef.current.x}px`;
     }
   };
 
@@ -130,10 +142,9 @@ const MissedToken = () => {
     newMissed.splice(index, 0, draggedItem);
     setMissed(newMissed);
 
-    showWarningAlert("Cannot update position in missed list")
+    showWarningAlert("Cannot update position in missed list");
     clearInterval(scrollIntervalRef.current);
   };
-
 
   const handleDragOver = (e) => {
     e.preventDefault();
@@ -158,33 +169,64 @@ const MissedToken = () => {
 
   return (
     <div className='missed_token_main'>
-      <div className="logo_name">
-        <h2>Missed Tokens</h2>
+      <div className="logo_name text-center col-12">
+        <h2 className="fs-4 text-center">Missed List</h2>
       </div>
       <div className="queue_list" ref={containerRef} onDragOver={handleDragOver}>
-        {missed.length > 0 ? (
-          missed.map((item, index) => (
-            <div
-              key={item.token_no.toString()}
-              className="draggable-item"
-              draggable
-              onDragStart={(e) => handleDragStart(e, index)}
-              onDrag={(e) => handleDrag(e)}
-              onDragEnd={(e) => handleDragEnd(e)}
-              onDragOver={(e) => e.preventDefault()}
-              onDrop={(e) => handleDrop(e, index)}
-            >
-              <p>Queue No:<span>{item.token_no}</span></p>
-              <p>Name:<span>{item.customer_name}</span></p>
-              <p>Mobile:<span>{item.customer_mobile}</span></p>
-              <div className='skip_btn' onClick={() => handleMoveBtn(item.token_no)}>Recall</div>
+        {missed.length > 0 && missed.map((item, index) => (
+          <div onDrag={(e) => handleDrag(e)}
+            onDragEnd={handleDragEnd}
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={(e) => handleDrop(e, index)}
+            onDragStart={(e) => handleDragStart(e, index)}
+            draggable
+            className={`draggable-item col-xl-10 col-lg-10 cursor-grab  ${item.transition ? 'drop-transition' : ''}`}
+            key={item.token_no?.toString()}>
+            <div className="card l-bg-blue-dark">
+              <div className="card-statistic-3 p-4">
+                <div className="card-icon card-icon-large"><i className="fas fa-users" /></div>
+                <div className="mb-4 d-flex">
+                  <h5 className="card-title col-8 fs-4 mb-0 text-white">Missed Customer</h5>
+                  <div className="col-4">
+                    <button onClick={() => handleMoveBtn(item.token_no)} className="btn bg-secondary-subtle w-full">Skip</button>
+                  </div>
+                </div>
+                <div className='d-flex w-full justify-content-between'>
+                  <div className="d-flex flex-column w-full bg-red-900">
+                    <h2 className="d-flex align-items-center text-white mb-0">
+                      Token No.  &nbsp;
+                    </h2>
+                    <h2 className="d-flex align-items-center text-white mb-0">
+                      Customer Name  &nbsp;
+                    </h2>
+                    <h2 className="d-flex align-items-center text-white mb-0">
+                      Customer Mobile  &nbsp;
+                    </h2>
+                  </div>
+                  <div>{item && (
+                    <div className="row align-items-center mb-1 d-flex">
+                      <div className="col-12">
+                        <h2 className="d-flex align-items-center text-white mb-0">
+                          : &nbsp;{item.token_no}
+                        </h2>
+                      </div>
+                      <div className="col-12">
+                        <h2 className="d-flex align-items-center text-white mb-0">
+                          : &nbsp;{item.customer_name}
+                        </h2>
+                      </div>
+                      <div className="col-12">
+                        <h2 className="d-flex align-items-center text-white mb-0">
+                          : &nbsp;{item.customer_mobile}
+                        </h2>
+                      </div>
+                    </div>
+                  )}</div>
+                </div>
+              </div>
             </div>
-          ))
-        ) : (
-          <div className="draggable-item">
-            <p>No missed tokens</p>
           </div>
-        )}
+        ))}
       </div>
       {showPopup && (
         <div className="popup">

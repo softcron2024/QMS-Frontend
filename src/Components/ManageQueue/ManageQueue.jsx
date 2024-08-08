@@ -172,62 +172,103 @@ const ManageQueue = () => {
     <div className='manage_Queue_main'>
       <div className="operate_btn">
         <div className='buttons'>
-          <button onClick={handleNextBtn}>Next</button>
+          <button className='btn' onClick={handleNextBtn}>Next</button>
         </div>
       </div>
       <div className='main_queue_css'>
         <div className="waiting_main_token">
-          <div className="logo_name">
-            <h2>Waiting Token</h2>
-          </div>
-          <div className="waiting_token">
-            <h2 style={{ fontSize: "18px", fontWeight: 'bold', color: '#264653' }}>Current Waiting token</h2>
-            {waitingToken && (
-              <div key={waitingToken.token_no}>
-                <p>
-                  Queue no: <span>{waitingToken.token_no}</span>
-                </p>
-                <p>
-                  Name: <span>{waitingToken.customer_name}</span>
-                </p>
-                <p>
-                  Mobile: <span>{waitingToken.customer_mobile}</span>
-                </p>
-                <div className='Skip_btn'>
-                  <button className='skip_btn' onClick={() => handleSkipBtn(waitingToken.token_no)}>skip</button>
+          <div className="col-xl-8 col-lg-8">
+            <div className="card l-bg-blue-dark">
+              <div className="card-statistic-3 p-4">
+                <div className="card-icon card-icon-large"><i className="fas fa-users" /></div>
+                <div className="mb-4">
+                  <h5 className="card-title fs-4 mb-0 text-white">Current Waiting token</h5>
+                </div>
+                <div className='d-flex w-full justify-content-between'>
+                  <div className="d-flex flex-column w-full bg-red-900">
+                    <h2 className="d-flex align-items-center text-white mb-0">
+                      Token No.  &nbsp;
+                    </h2>
+                    <h2 className="d-flex align-items-center text-white mb-0">
+                      Customer Name  &nbsp;
+                    </h2>
+                    <h2 className="d-flex align-items-center text-white mb-0">
+                      Customer Mobile  &nbsp;
+                    </h2>
+                  </div>
+                  <div>{waitingToken && (
+                    <div className="row align-items-center mb-1 d-flex">
+                      <div className="col-12">
+                        <h2 className="d-flex align-items-center text-white mb-0">
+                          : &nbsp;{waitingToken.token_no}
+                        </h2>
+                      </div>
+                      <div className="col-12">
+                        <h2 className="d-flex align-items-center text-white mb-0">
+                          : &nbsp;{waitingToken.customer_name}
+                        </h2>
+                      </div>
+                      <div className="col-12">
+                        <h2 className="d-flex align-items-center text-white mb-0">
+                          : &nbsp;{waitingToken.customer_mobile}
+                        </h2>
+                      </div>
+                    </div>
+                  )}</div>
                 </div>
               </div>
-            )}
+            </div>
           </div>
         </div>
         <div className="waiting_main_nexttoken">
-          <div className="logo_name">
-            <h2>Softcron tecnology</h2>
-          </div>
-          <div className="waiting_token">
-
-            {currentToken ? (
-              <div key={currentToken.token_no}>
-                <h2 style={{ fontSize: "18px", fontWeight: 'bold', color: '#264653' }}>Current Serving token</h2>
-                <p>
-                  Queue no: <span>{currentToken.token_no}</span>
-                </p>
-                <p>
-                  Name: <span>{currentToken.customer_name}</span>
-                </p>
-                <p>
-                  Mobile no: <span>{currentToken.customer_mobile}</span>
-                </p>
-                <div className='Skip_btn'>
-                  <button className='skip_btn comp_btn' onClick={() => handleComplete(currentToken.token_no)}>Complete</button>
+          <div className="col-xl-8 col-lg-8">
+            <div className="card l-bg-blue-dark-2">
+              <div className="card-statistic-3 p-4">
+                <div className="card-icon card-icon-large"><i className="fas fa-users" /></div>
+                <div className="mb-4">
+                  <h5 className="card-title fs-4 mb-0 text-white">In Process</h5>
                 </div>
-              </div>
-            ) : (
-              <div className='no_token_available'>
-                <h2>No token available</h2>
-              </div>
-            )}
+                {currentToken ? (
+                  <div className='d-flex w-full justify-content-between'>
+                    <div className="d-flex flex-column w-full bg-red-900">
+                      <h2 className="d-flex align-items-center text-white mb-0">
+                        Token No.  &nbsp;
+                      </h2>
+                      <h2 className="d-flex align-items-center text-white mb-0">
+                        Customer Name  &nbsp;
+                      </h2>
+                      <h2 className="d-flex align-items-center text-white mb-0">
+                        Customer Mobile  &nbsp;
+                      </h2>
+                    </div>
+                    <div>
 
+                      <div className="row align-items-center mb-1 d-flex">
+                        <div className="col-12">
+                          <h2 className="d-flex align-items-center text-white mb-0">
+                            : &nbsp;{currentToken.token_no}
+                          </h2>
+                        </div>
+                        <div className="col-12">
+                          <h2 className="d-flex align-items-center text-white mb-0">
+                            : &nbsp;{currentToken.customer_name}
+                          </h2>
+                        </div>
+                        <div className="col-12">
+                          <h2 className="d-flex align-items-center text-white mb-0">
+                            : &nbsp;{currentToken.customer_mobile}
+                          </h2>
+                        </div>
+                      </div>
+                    </div>
+                  </div>) :
+                  <div className="col-12">
+                    <h2 className="d-flex align-items-center text-white mb-0">
+                      No token in process
+                    </h2>
+                  </div>}
+              </div>
+            </div>
           </div>
         </div>
       </div>

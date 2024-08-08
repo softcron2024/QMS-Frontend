@@ -1,62 +1,55 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { showErrorAlert, showSuccessAlert } from '../../../Toastify';
 import '../../../assets/css/ManageQueue.css';
-import { logDOM } from '@testing-library/react';
 
 const TokenList = () => {
   const [queue, setQueue] = useState([]);
   const [draggedItemIndex, setDraggedItemIndex] = useState(null);
+  const [isDragging, setIsDragging] = useState(false);
   const dragImageRef = useRef(null);
   const containerRef = useRef(null);
-  const scrollIntervalRef = useRef(null);
-
-  const fetchQueue = async () => {
-    try {
-      const response = await fetch("http://localhost:8000/api/v1/getQueue", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch data');
-      }
-
-      const result = await response.json();
-      if (Array.isArray(result?.message[0])) {
-        setQueue(result?.message[0]);
-      } else {
-        console.error("Expected an array but got:", result?.message[0]);
-        setQueue([]);
-      }
-    } catch (error) {
-      console.error('Error fetching queue:', error);
-    }
-  };
+  const scrollAnimationRef = useRef(null);
+  const dragOffset = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
+    const fetchQueue = async () => {
+      try {
+        const response = await fetch("http://localhost:8000/api/v1/getQueue", {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+        });
+
+        if (!response.ok) throw new Error('Failed to fetch data');
+
+        const result = await response.json();
+        if (Array.isArray(result?.message[0])) {
+          setQueue(result?.message[0]);
+        } else {
+          console.error("Expected an array but got:", result?.message[0]);
+          setQueue([]);
+        }
+      } catch (error) {
+        console.error('Error fetching queue:', error);
+      }
+    };
+
     fetchQueue();
-  }, [queue]); // Only run once on mount
+  }, []);
 
   const handleSkipBtn = async (token_no) => {
     try {
       const response = await fetch("http://localhost:8000/api/v1/skip-token", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({ token_no })
+        body: JSON.stringify({ token_no }),
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to fetch data');
-      }
+      if (!response.ok) throw new Error('Failed to fetch data');
+
       const result = await response.json();
       showSuccessAlert("Token skipped successfully");
-      fetchQueue();
     } catch (error) {
       showErrorAlert(error.message);
     }
@@ -64,100 +57,93 @@ const TokenList = () => {
 
   const handleDragStart = (e, index) => {
     setDraggedItemIndex(index);
-    e.dataTransfer.setData("index", index);
-    e.dataTransfer.effectAllowed = "move";
+    setIsDragging(true);
+    const rect = e.currentTarget.getBoundingClientRect();
+    dragOffset.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
 
-    // Create a custom drag image
     const dragImage = e.currentTarget.cloneNode(true);
-    dragImage.style.position = "fixed";
-    dragImage.style.top = `${e.clientY - e.currentTarget.offsetHeight / 2}px`;
-    dragImage.style.left = `${e.clientX - e.currentTarget.offsetWidth / 2}px`;
-    dragImage.style.width = `${e.currentTarget.offsetWidth}px`;
-    dragImage.style.height = `${e.currentTarget.offsetHeight}px`;
-    dragImage.style.opacity = "1";
-    dragImage.style.pointerEvents = "none"; // Ensures the drag image does not intercept mouse events
-    dragImage.style.backgroundColor = "white"; // Ensure background is white
-    dragImage.style.zIndex = "1000"; // Ensure it's above other elements
-    document.body.appendChild(dragImage);
+    Object.assign(dragImage.style, {
+      position: "fixed",
+      top: `${e.clientY - dragOffset.current.y}px`,
+      left: `${e.clientX - dragOffset.current.x}px`,
+      width: `${e.currentTarget.offsetWidth}px`,
+      height: `${e.currentTarget.offsetHeight}px`,
+      opacity: "1",
+      pointerEvents: "none",
+      backgroundColor: "white",
+      zIndex: "1000",
+    });
 
+    document.body.appendChild(dragImage);
     dragImageRef.current = dragImage;
 
-    const rect = e.currentTarget.getBoundingClientRect();
-    const offsetX = rect.width / 2;
-    const offsetY = rect.height / 2;
-    e.dataTransfer.setDragImage(dragImage, offsetX, offsetY);
+    const invisibleDragImage = document.createElement('div');
+    Object.assign(invisibleDragImage.style, {
+      width: '1px',
+      height: '1px',
+      opacity: '0',
+    });
+    document.body.appendChild(invisibleDragImage);
+    e.dataTransfer.setDragImage(invisibleDragImage, 0, 0);
 
-    // Add dragging class
     e.currentTarget.classList.add("dragging");
   };
 
   const handleDrag = (e) => {
     if (dragImageRef.current) {
-      dragImageRef.current.style.top = `${e.clientY - dragImageRef.current.offsetHeight / 2}px`;
-      dragImageRef.current.style.left = `${e.clientX - dragImageRef.current.offsetWidth / 2}px`;
+      dragImageRef.current.style.top = `${e.clientY - dragOffset.current.y}px`;
+      dragImageRef.current.style.left = `${e.clientX - dragOffset.current.x}px`;
     }
   };
 
   const handleDragEnd = (e) => {
     e.currentTarget.classList.remove("dragging");
     setDraggedItemIndex(null);
+    setIsDragging(false);
 
-    // Remove custom drag image
     if (dragImageRef.current) {
       document.body.removeChild(dragImageRef.current);
       dragImageRef.current = null;
     }
 
-    clearInterval(scrollIntervalRef.current);
+    cancelAnimationFrame(scrollAnimationRef.current);
   };
 
   const handleDrop = (e, index) => {
     e.preventDefault();
     const draggedIndex = e.dataTransfer.getData("index");
-    if (draggedIndex === index.toString()) return; // Prevents reordering with the same item
+    if (draggedIndex === index.toString()) return;
 
     const newQueue = [...queue];
     const [draggedItem] = newQueue.splice(draggedIndex, 1);
     newQueue.splice(index, 0, draggedItem);
-    
-    // Apply transition class to the dropped item
+
     const droppedItem = newQueue[index];
     droppedItem.transition = true;
     setQueue(newQueue);
 
-    // Remove the transition class after the transition duration
     setTimeout(() => {
       droppedItem.transition = false;
       setQueue([...newQueue]);
-    }, 300); // The duration should match the CSS transition duration
+    }, 300);
 
-    // Send only the moved token number and new position to the server
     updateTokenPosition(draggedItem.token_no, index + 1);
-
-    clearInterval(scrollIntervalRef.current);
+    cancelAnimationFrame(scrollAnimationRef.current);
   };
 
   const updateTokenPosition = async (token_no, newPosition) => {
     try {
       const response = await fetch("http://localhost:8000/api/v1/adjust-token-position", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({
-          token_no,
-          in_at: newPosition
-        })
+        body: JSON.stringify({ token_no, in_at: newPosition }),
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to update token position');
-      }
+      if (!response.ok) throw new Error('Failed to update token position');
 
       const result = await response.json();
       console.log(result);
-      
       showSuccessAlert("Token position updated successfully");
     } catch (error) {
       showErrorAlert(error.message);
@@ -166,55 +152,94 @@ const TokenList = () => {
 
   const handleDragOver = (e) => {
     e.preventDefault();
+    if (!isDragging) return;
+
     const { clientY } = e;
     const container = containerRef.current;
     const containerRect = container.getBoundingClientRect();
-    const scrollOffset = 50; // Adjust this value as needed
+    const scrollSpeed = 2; // Smaller value for slower scrolling
+    const scrollMargin = 50;
 
-    clearInterval(scrollIntervalRef.current);
+    cancelAnimationFrame(scrollAnimationRef.current);
 
     const scrollHandler = () => {
-      if (clientY - containerRect.top < scrollOffset) {
-        // Scroll up
-        container.scrollTop -= scrollOffset;
-      } else if (containerRect.bottom - clientY < scrollOffset) {
-        // Scroll down
-        container.scrollTop += scrollOffset;
+      if (clientY - containerRect.top < scrollMargin) {
+        container.scrollBy({ top: -scrollSpeed, behavior: 'smooth' });
+      } else if (containerRect.bottom - clientY < scrollMargin) {
+        container.scrollBy({ top: scrollSpeed, behavior: 'smooth' });
       }
+      scrollAnimationRef.current = requestAnimationFrame(scrollHandler);
     };
 
-    scrollIntervalRef.current = requestAnimationFrame(scrollHandler);
+    scrollAnimationRef.current = requestAnimationFrame(scrollHandler);
   };
+
+  useEffect(() => {
+    return () => cancelAnimationFrame(scrollAnimationRef.current);
+  }, []);
 
   return (
     <div className='missed_token_main'>
       <div className="logo_name">
-        <h2>Queue List</h2>
+        <h2>Waiting List</h2>
       </div>
       <div className="queue_list" ref={containerRef} onDragOver={handleDragOver}>
-        {queue.length > 0 ? (
-          queue.map((item, index) => (
-            <div
-              key={item.token_no?.toString()} // Safely access token_no
-              className={`draggable-item ${draggedItemIndex === index ? 'dragging' : ''} ${item.transition ? 'drop-transition' : ''}`}
-              draggable
-              onDragStart={(e) => handleDragStart(e, index)}
-              onDrag={(e) => handleDrag(e)}
-              onDragEnd={handleDragEnd}
-              onDragOver={(e) => e.preventDefault()}
-              onDrop={(e) => handleDrop(e, index)}
-            >
-              <p>Queue No:<span>{item.token_no}</span></p>
-              <p>Name:<span>{item.customer_name}</span></p>
-              <p>Mobile:<span>{item.customer_mobile}</span></p>
-              <div className='skip_btn' onClick={() => handleSkipBtn(item.token_no)}>Skip</div>
+        {queue.map((item, index) => (
+          <div
+            key={item.token_no?.toString()}
+            className={`draggable-item col-xl-10 col-lg-10 cursor-grab ${draggedItemIndex === index ? 'dragging cursor-grabbing' : ''} ${item.transition ? 'drop-transition' : ''}`}
+            draggable
+            onDrag={(e) => handleDrag(e)}
+            onDragEnd={handleDragEnd}
+            onDrop={(e) => handleDrop(e, index)}
+            onDragStart={(e) => handleDragStart(e, index)}
+            onDragOver={(e) => e.preventDefault()}
+          >
+            <div className="card l-bg-blue-dark">
+              <div className="card-statistic-3 p-4">
+                <div className="card-icon card-icon-large"><i className="fas fa-users" /></div>
+                <div className="mb-4 d-flex">
+                  <h5 className="card-title col-8 fs-4 mb-0 text-white">Waiting Customer</h5>
+                  <div className="col-4">
+                    <button onClick={() => handleSkipBtn(item.token_no)} className="btn btn-danger w-full">Skip</button>
+                  </div>
+                </div>
+                <div className='d-flex w-full justify-content-between'>
+                  <div className="d-flex flex-column w-full bg-red-900">
+                    <h2 className="d-flex align-items-center text-white mb-0">
+                      Token No. &nbsp;
+                    </h2>
+                    <h2 className="d-flex align-items-center text-white mb-0">
+                      Customer Name &nbsp;
+                    </h2>
+                    <h2 className="d-flex align-items-center text-white mb-0">
+                      Customer Mobile &nbsp;
+                    </h2>
+                  </div>
+                  <div>
+                    <div className="row align-items-center mb-1 d-flex">
+                      <div className="col-12">
+                        <h2 className="d-flex align-items-center text-white mb-0">
+                          : &nbsp;{item.token_no}
+                        </h2>
+                      </div>
+                      <div className="col-12">
+                        <h2 className="d-flex align-items-center text-white mb-0">
+                          : &nbsp;{item.customer_name}
+                        </h2>
+                      </div>
+                      <div className="col-12">
+                        <h2 className="d-flex align-items-center text-white mb-0">
+                          : &nbsp;{item.customer_mobile}
+                        </h2>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-          ))
-        ) : (
-          <div className="draggable-item">
-            <p>No tokens in the queue</p>
           </div>
-        )}
+        ))}
       </div>
     </div>
   );

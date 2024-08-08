@@ -15,10 +15,10 @@ const GenerateToken = () => {
     customer_type_id: ""
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
-  // const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
   const [receiptData, setReceiptData] = useState(null);
-  // const [token_no, setCancelTokenNo] = useState("");
   const [Options, setOptions] = useState([]);
+  const [selectedCustomerType, setSelectedCustomerType] = useState("Select Customer type");
+  console.log(Options);
 
   //#region Fetch token for customer Type
   useEffect(() => {
@@ -55,6 +55,11 @@ const GenerateToken = () => {
     setToken({ ...Token, [e.target.name]: e.target.value });
   };
 
+  const handleCustomerTypeChange = (type) => {
+    setToken({ ...Token, customer_type_id: type.customer_type_id });
+    setSelectedCustomerType(type.customer_type_name);
+  };
+
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'short', day: 'numeric' };
     return new Date(dateString).toLocaleDateString('en-US', options);
@@ -63,24 +68,24 @@ const GenerateToken = () => {
   //#region Create Token API For generate
   const handleCreateToken = async (e) => {
     e.preventDefault();
-    
+
     // Validation
     const { name, mobile, no_of_person, customer_type_id } = Token;
     if (!name || !mobile || !no_of_person || !customer_type_id) {
       showWarningAlert("All fields are required.");
       return;
     }
-  
-    const mobilePattern = /^[0-9]+$/; 
+
+    const mobilePattern = /^[0-9]+$/;
     if (!mobilePattern.test(mobile)) {
-      showWarningAlert("Please enter a valid 10-digit mobile number.");
+      showWarningAlert("Please enter a valid mobile number.");
       return;
     }
-  
+
     if (isSubmitting) return;
-  
+
     setIsSubmitting(true);
-  
+
     try {
       const response = await fetch("http://localhost:8000/api/v1/generate-token", {
         method: "POST",
@@ -92,7 +97,7 @@ const GenerateToken = () => {
       });
       const result = await response.json();
       console.log(result);
-  
+
       if (result?.ResponseCode === 0) {
         showWarningAlert(result?.message);
       } else if (result?.ResponseCode === 1) {
@@ -101,7 +106,7 @@ const GenerateToken = () => {
       } else {
         showWarningAlert(result?.message?.ResponseMessage);
       }
-  
+
       setToken({
         name: "",
         mobile: "",
@@ -115,37 +120,7 @@ const GenerateToken = () => {
       setIsSubmitting(false);
     }
   };
-  
-  //#endregion
 
-  //#region Cancel Token for Generate token
-  // const handleCancelToken = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const response = await fetch("http://localhost:8000/api/v1/cancel-token", {
-  //       method: "POST",
-  //       headers: { "Content-Type": "application/json" },
-  //       credentials: "include",
-  //       body: JSON.stringify({ token_no }),
-  //     });
-  //     const result = await response.json();
-
-  //     if (result.ResponseCode === 0) {
-  //       showErrorAlert(result.message);
-  //       return;
-  //     }
-
-  //     if (result.message.ResponseCode === 0) {
-  //       showWarningAlert(result.message.ResponseMessage);
-  //     }
-  //     else if (result.message.ResponseCode === 1) {
-  //       showSuccessAlert(result.message.ResponseMessage);
-  //     }
-  //   } catch (error) {
-  //     console.error('Error cancelling token:', error);
-  //     showErrorAlert('Error cancelling token:', error)
-  //   }
-  // };
   //#endregion
 
   const closeModal = () => {
@@ -153,50 +128,49 @@ const GenerateToken = () => {
     setReceiptData(null);
   };
 
-  // const closeCancelModal = () => {
-  //   setIsCancelModalOpen(false);
-  //   setCancelTokenNo("");
-  // };
-
   const isAuthenticated = Cookies.get("token") !== undefined;
 
   if (!isAuthenticated) {
     return <Navigate to="/" replace />;
   }
 
-
   return (
     <div>
       <div className="container">
         <div className="button-container">
-          <button className="button">
-            <Link className="link" to="/dashboard">Back</Link>
+          <button>
+            <Link className="btn btn-primary" to="/dashboard">Back</Link>
           </button>
-          {/* <button className="button" onClick={() => setIsCancelModalOpen(true)}>Cancel</button> */}
+          <h1>Softcron Technology</h1>
         </div>
-        <h1>Softcron Technology</h1>
         <div className="input-container">
-          <input type="text" name="name" value={Token.name} onChange={handleTokenChange} placeholder="Name" />
+          <input type="text" className="form-control" name="name" value={Token.name} onChange={handleTokenChange} placeholder="Name" />
           <p className="mobile_req">*</p>
-          <input type="text" name="mobile" value={Token.mobile} onChange={handleTokenChange} placeholder="Mobile Number" />
-          <select value={Token.customer_type_id} name="customer_type_id" onChange={handleTokenChange}
-          >
-            <option selected value="" disabled>
-              Select Customer type
-            </option>
-            {Options.map((type) => (
-              <option key={type.customer_type_id} value={type.customer_type_id} >
-                {type.customer_type_name}
-              </option>
-            ))}
-          </select>
+          <input className="form-control" type="text" name="mobile" value={Token.mobile} onChange={handleTokenChange} placeholder="Mobile Number" />
+          <div className="dropdown">
+            <button className="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+              {selectedCustomerType}
+            </button>
+            <ul className="dropdown-menu">
+              {Options.map((type) => (
+                <li key={type.customer_type_id}>
+                  <button
+                    className="dropdown-item"
+                    type="button"
+                    onClick={() => handleCustomerTypeChange(type)}
+                  >
+                    {type.customer_type_name}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
         <div className="input-container">
-          <input type="text" name="no_of_person" value={Token.no_of_person} onChange={handleTokenChange} placeholder="No. of person" />
-          {/* <input type="text" name="no_of_person" value={Token.no_of_person} onChange={handleTokenChange} placeholder="Enter Priority" /> */}
+          <input className="form-control" type="text" name="no_of_person" value={Token.no_of_person} onChange={handleTokenChange} placeholder="No. of person" />
         </div>
-        <div>
-          <button className="button1" onClick={handleCreateToken}>Generate Token</button>
+        <div className="d-grid gap-2">
+          <button className="btn btn-primary" onClick={handleCreateToken}>Generate Token</button>
         </div>
       </div>
       <Modal
@@ -234,30 +208,6 @@ const GenerateToken = () => {
           )}
         </div>
       </Modal>
-      {/* <Modal
-        isOpen={isCancelModalOpen}
-        onRequestClose={closeCancelModal}
-        contentLabel="Cancel Token"
-        ariaHideApp={false}
-      >
-        <button className="btn_close" onClick={closeCancelModal}>Close</button>
-        <form onSubmit={handleCancelToken}>
-          <h2>Cancel Token</h2>
-          <div className="input-container">
-            <input
-              type="text"
-              name="token_no"
-              value={token_no}
-              onChange={(e) => setCancelTokenNo(e.target.value)}
-              placeholder="Token Number"
-            />
-          </div>
-          <div>
-            <button className="btn_cancel" type="submit">Cancel Token</button>
-
-          </div>
-        </form>
-      </Modal> */}
     </div>
   );
 };
