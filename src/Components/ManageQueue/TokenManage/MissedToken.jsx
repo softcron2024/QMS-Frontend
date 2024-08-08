@@ -172,7 +172,7 @@ const MissedToken = () => {
       <div className="logo_name text-center col-12">
         <h2 className="fs-4 text-center">Missed List</h2>
       </div>
-      <div className="queue_list" ref={containerRef} onDragOver={handleDragOver}>
+      <div className="queue_list col-11" ref={containerRef} onDragOver={handleDragOver}>
         {missed.length > 0 && missed.map((item, index) => (
           <div onDrag={(e) => handleDrag(e)}
             onDragEnd={handleDragEnd}
@@ -180,7 +180,7 @@ const MissedToken = () => {
             onDrop={(e) => handleDrop(e, index)}
             onDragStart={(e) => handleDragStart(e, index)}
             draggable
-            className={`draggable-item col-xl-10 col-lg-10 cursor-grab  ${item.transition ? 'drop-transition' : ''}`}
+            className={`draggable-item col-xl-12 col-lg-12 cursor-grab  ${item.transition ? 'drop-transition' : ''}`}
             key={item.token_no?.toString()}>
             <div className="card l-bg-blue-dark">
               <div className="card-statistic-3 p-4">

@@ -183,7 +183,7 @@ const TokenList = () => {
       <div className="logo_name fs-4 text-center">
         <h2 className="fs-4">Waiting List</h2>
       </div>
-      <div className="queue_list-1 col-11" ref={containerRef} onDragOver={handleDragOver}>
+      <div className="queue_list col-11" ref={containerRef} onDragOver={handleDragOver}>
         {queue.map((item, index) => (
           <div
             key={item.token_no?.toString()}
