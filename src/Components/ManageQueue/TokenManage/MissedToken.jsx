@@ -172,8 +172,8 @@ const MissedToken = () => {
       <div className="logo_name text-center col-12">
         <h2 className="fs-4 text-center">Missed List</h2>
       </div>
-      <div className="queue_list col-11" ref={containerRef} onDragOver={handleDragOver}>
-        {missed.length > 0 && missed.map((item, index) => (
+      <div className="queue_list col-12 col-sm-11" ref={containerRef} onDragOver={handleDragOver}>
+        {missed.length > 0 ? missed.map((item, index) => (
           <div onDrag={(e) => handleDrag(e)}
             onDragEnd={handleDragEnd}
             onDragOver={(e) => e.preventDefault()}
@@ -226,7 +226,21 @@ const MissedToken = () => {
               </div>
             </div>
           </div>
-        ))}
+        )):<div className="card l-bg-blue-dark">
+        <div className="card-statistic-3 p-4">
+          <div className="card-icon card-icon-large"><i className="fas fa-users" /></div>
+          <div className="mb-4 d-flex">
+            <h5 className="card-title col-8 fs-4 mb-0 text-white">Missed Customer</h5>
+          </div>
+          <div className='d-flex w-full justify-content-between'>
+            <div className="d-flex flex-column w-full bg-red-900">
+              <h2 className="d-flex align-items-center text-white mb-0">
+                Nothing to show. &nbsp;
+              </h2>
+            </div>
+          </div>
+        </div>
+      </div>}
       </div>
       {showPopup && (
         <div className="popup">

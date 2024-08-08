@@ -6,8 +6,7 @@ import { showErrorAlert, showSuccessAlert, showWarningAlert } from '../../Toasti
 
 const ManageQueue = () => {
   const [currentToken, setcurrentToken] = useState(null);
-  const [waitingToken, setwaitingToken] = useState([]);
-
+  const [waitingToken, setwaitingToken] = useState(null);
 
   //#region Call Next from Queue List 
   const handleNextBtn = async () => {
@@ -72,7 +71,7 @@ const ManageQueue = () => {
         console.error('Error fetching current token:', error);
       }
     };
-    intervalId = setInterval(getCurrntToken, 5000);
+    intervalId = setInterval(getCurrntToken, 1000);
     return () => {
       clearInterval(intervalId);
     };
@@ -181,41 +180,57 @@ const ManageQueue = () => {
             <div className="card l-bg-blue-dark">
               <div className="card-statistic-3 p-4">
                 <div className="card-icon card-icon-large"><i className="fas fa-users" /></div>
-                <div className="mb-4">
-                  <h5 className="card-title fs-4 mb-0 text-white">Current Waiting token</h5>
+                <div className="mb-4 d-flex flex-row">
+                  <h5 className="card-title col-8 fs-4 mb-0 text-white">Current Waiting token</h5>
+                  {
+                    waitingToken ? <div className="col-4">
+                      <button onClick={() => handleSkipBtn(waitingToken?.token_no)} className="btn custom-button-2 w-full">Skip</button>
+                    </div> : ""
+                  }
                 </div>
-                <div className='d-flex w-full justify-content-between'>
-                  <div className="d-flex flex-column w-full bg-red-900">
-                    <h2 className="d-flex align-items-center text-white mb-0">
-                      Token No.  &nbsp;
-                    </h2>
-                    <h2 className="d-flex align-items-center text-white mb-0">
-                      Customer Name  &nbsp;
-                    </h2>
-                    <h2 className="d-flex align-items-center text-white mb-0">
-                      Customer Mobile  &nbsp;
-                    </h2>
-                  </div>
-                  <div>{waitingToken && (
-                    <div className="row align-items-center mb-1 d-flex">
-                      <div className="col-12">
-                        <h2 className="d-flex align-items-center text-white mb-0">
-                          : &nbsp;{waitingToken.token_no}
-                        </h2>
-                      </div>
-                      <div className="col-12">
-                        <h2 className="d-flex align-items-center text-white mb-0">
-                          : &nbsp;{waitingToken.customer_name}
-                        </h2>
-                      </div>
-                      <div className="col-12">
-                        <h2 className="d-flex align-items-center text-white mb-0">
-                          : &nbsp;{waitingToken.customer_mobile}
-                        </h2>
+                {waitingToken ? (
+                  <div className='d-flex w-full justify-content-between'>
+
+                    <div className="d-flex flex-column w-full bg-red-900">
+                      <h2 className="d-flex align-items-center text-white mb-0">
+                        Token No.  &nbsp;
+                      </h2>
+                      <h2 className="d-flex align-items-center text-white mb-0">
+                        Customer Name  &nbsp;
+                      </h2>
+                      <h2 className="d-flex align-items-center text-white mb-0">
+                        Customer Mobile  &nbsp;
+                      </h2>
+                    </div>
+                    <div>
+                      <div className="row align-items-center mb-1 d-flex">
+                        <div className="col-12">
+                          <h2 className="d-flex align-items-center text-white mb-0">
+                            : &nbsp;{waitingToken.token_no}
+                          </h2>
+                        </div>
+                        <div className="col-12">
+                          <h2 className="d-flex align-items-center text-white mb-0">
+                            : &nbsp;{waitingToken.customer_name}
+                          </h2>
+                        </div>
+                        <div className="col-12">
+                          <h2 className="d-flex align-items-center text-white mb-0">
+                            : &nbsp;{waitingToken.customer_mobile}
+                          </h2>
+                        </div>
                       </div>
                     </div>
-                  )}</div>
-                </div>
+                  </div>
+                ) :
+                  <div className="row align-items-center mb-1 d-flex">
+                    <div className="col-12">
+                      <h2 className="d-flex align-items-center text-white mb-0">
+                        Nothing to show
+                      </h2>
+                    </div>
+
+                  </div>}
               </div>
             </div>
           </div>
@@ -225,8 +240,13 @@ const ManageQueue = () => {
             <div className="card l-bg-blue-dark-2">
               <div className="card-statistic-3 p-4">
                 <div className="card-icon card-icon-large"><i className="fas fa-users" /></div>
-                <div className="mb-4">
-                  <h5 className="card-title fs-4 mb-0 text-white">In Process</h5>
+                <div className="mb-4 d-flex">
+                  <h5 className="card-title col-8 fs-4 mb-0 text-white">In Process</h5>
+                  {
+                    currentToken ? <div className="col-4">
+                      <button onClick={() => handleComplete(currentToken?.token_no)} className="btn custom-button-3 w-full">Complete</button>
+                    </div> : ""
+                  }
                 </div>
                 {currentToken ? (
                   <div className='d-flex w-full justify-content-between'>

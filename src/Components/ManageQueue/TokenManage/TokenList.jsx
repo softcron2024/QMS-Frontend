@@ -183,8 +183,8 @@ const TokenList = () => {
       <div className="logo_name fs-4 text-center">
         <h2 className="fs-4">Waiting List</h2>
       </div>
-      <div className="queue_list col-11" ref={containerRef} onDragOver={handleDragOver}>
-        {queue.map((item, index) => (
+      <div className="queue_list col-12 col-sm-11" ref={containerRef} onDragOver={handleDragOver}>
+        {queue.length > 0? queue.map((item, index) => (
           <div
             key={item.token_no?.toString()}
             className={`draggable-item col-xl-12 col-lg-12 cursor-grab ${draggedItemIndex === index ? 'dragging cursor-grabbing' : ''} ${item.transition ? 'drop-transition' : ''}`}
@@ -239,7 +239,24 @@ const TokenList = () => {
               </div>
             </div>
           </div>
-        ))}
+        )) : <div className="card l-bg-blue-dark">
+          <div className="card-statistic-3 p-4">
+            <div className="card-icon card-icon-large"><i className="fas fa-users" /></div>
+            <div className="mb-4 d-flex">
+              <h5 className="card-title col-8 fs-4 mb-0 text-white">Waiting Customer</h5>
+              <div className="col-4">
+                {/* <button onClick={() => handleSkipBtn(item.token_no)} className="btn custom-button-2 w-full">Skip</button> */}
+              </div>
+            </div>
+            <div className='d-flex w-full justify-content-between'>
+              <div className="d-flex flex-column w-full bg-red-900">
+                <h2 className="d-flex align-items-center text-white mb-0">
+                  Nothing to show. &nbsp;
+                </h2>
+              </div>
+            </div>
+          </div>
+        </div>}
       </div>
     </div>
   );

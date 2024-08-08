@@ -138,15 +138,14 @@ const GenerateToken = () => {
     <div>
       <div className="container">
         <div className="button-container">
-          <button>
+          <button className="d-none d-sm-block">
             <Link className="btn btn-primary" to="/dashboard">Back</Link>
           </button>
-          <h1>Softcron Technology</h1>
+          <h1 className="custom-h1">Softcron Technology</h1>
         </div>
         <div className="input-container">
-          <input type="text" className="form-control" name="name" value={Token.name} onChange={handleTokenChange} placeholder="Name" />
-          <p className="mobile_req">*</p>
-          <input className="form-control" type="text" name="mobile" value={Token.mobile} onChange={handleTokenChange} placeholder="Mobile Number" />
+          <input type="text" className="form-control" name="name" value={Token.name} onChange={handleTokenChange} placeholder="Name (required)" />
+          <input className="form-control" type="text" name="mobile" value={Token.mobile} onChange={handleTokenChange} placeholder="Mobile Number (required)" />
           <div className="dropdown">
             <button className="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
               {selectedCustomerType}
@@ -167,7 +166,7 @@ const GenerateToken = () => {
           </div>
         </div>
         <div className="input-container">
-          <input className="form-control" type="text" name="no_of_person" value={Token.no_of_person} onChange={handleTokenChange} placeholder="No. of person" />
+          <input className="form-control" type="text" name="no_of_person" value={Token.no_of_person} onChange={handleTokenChange} placeholder="No. of person (required)" />
         </div>
         <div className="d-grid gap-2">
           <button className="btn btn-primary" onClick={handleCreateToken}>Generate Token</button>
