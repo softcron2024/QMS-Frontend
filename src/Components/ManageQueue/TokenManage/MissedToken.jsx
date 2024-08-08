@@ -188,7 +188,7 @@ const MissedToken = () => {
                 <div className="mb-4 d-flex">
                   <h5 className="card-title col-8 fs-4 mb-0 text-white">Missed Customer</h5>
                   <div className="col-4">
-                    <button onClick={() => handleMoveBtn(item.token_no)} className="btn bg-secondary-subtle w-full">Skip</button>
+                    <button onClick={() => handleMoveBtn(item.token_no)} className="btn custom-button-3 subtle w-full">Recall</button>
                   </div>
                 </div>
                 <div className='d-flex w-full justify-content-between'>

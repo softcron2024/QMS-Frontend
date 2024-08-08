@@ -157,7 +157,7 @@ const TokenList = () => {
     const { clientY } = e;
     const container = containerRef.current;
     const containerRect = container.getBoundingClientRect();
-    const scrollSpeed = 2; // Smaller value for slower scrolling
+    const scrollSpeed = 10; // Smaller value for slower scrolling
     const scrollMargin = 50;
 
     cancelAnimationFrame(scrollAnimationRef.current);
@@ -180,14 +180,14 @@ const TokenList = () => {
 
   return (
     <div className='missed_token_main'>
-      <div className="logo_name">
-        <h2>Waiting List</h2>
+      <div className="logo_name fs-4 text-center">
+        <h2 className="fs-4">Waiting List</h2>
       </div>
-      <div className="queue_list" ref={containerRef} onDragOver={handleDragOver}>
+      <div className="queue_list-1 col-11" ref={containerRef} onDragOver={handleDragOver}>
         {queue.map((item, index) => (
           <div
             key={item.token_no?.toString()}
-            className={`draggable-item col-xl-10 col-lg-10 cursor-grab ${draggedItemIndex === index ? 'dragging cursor-grabbing' : ''} ${item.transition ? 'drop-transition' : ''}`}
+            className={`draggable-item col-xl-12 col-lg-12 cursor-grab ${draggedItemIndex === index ? 'dragging cursor-grabbing' : ''} ${item.transition ? 'drop-transition' : ''}`}
             draggable
             onDrag={(e) => handleDrag(e)}
             onDragEnd={handleDragEnd}
@@ -201,7 +201,7 @@ const TokenList = () => {
                 <div className="mb-4 d-flex">
                   <h5 className="card-title col-8 fs-4 mb-0 text-white">Waiting Customer</h5>
                   <div className="col-4">
-                    <button onClick={() => handleSkipBtn(item.token_no)} className="btn btn-danger w-full">Skip</button>
+                    <button onClick={() => handleSkipBtn(item.token_no)} className="btn custom-button-2 w-full">Skip</button>
                   </div>
                 </div>
                 <div className='d-flex w-full justify-content-between'>

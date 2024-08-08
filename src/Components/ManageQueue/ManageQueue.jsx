@@ -171,13 +171,13 @@ const ManageQueue = () => {
   return (
     <div className='manage_Queue_main'>
       <div className="operate_btn">
-        <div className='buttons'>
-          <button className='btn' onClick={handleNextBtn}>Next</button>
+        <div className=''>
+          <button className='btn custom-button' onClick={handleNextBtn}>Next</button>
         </div>
       </div>
       <div className='main_queue_css'>
         <div className="waiting_main_token">
-          <div className="col-xl-8 col-lg-8">
+          <div className="col-xl-10 col-lg-10">
             <div className="card l-bg-blue-dark">
               <div className="card-statistic-3 p-4">
                 <div className="card-icon card-icon-large"><i className="fas fa-users" /></div>
@@ -221,7 +221,7 @@ const ManageQueue = () => {
           </div>
         </div>
         <div className="waiting_main_nexttoken">
-          <div className="col-xl-8 col-lg-8">
+          <div className="col-xl-10 col-lg-10">
             <div className="card l-bg-blue-dark-2">
               <div className="card-statistic-3 p-4">
                 <div className="card-icon card-icon-large"><i className="fas fa-users" /></div>
