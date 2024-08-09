@@ -52,11 +52,9 @@ const Dashboard = () => {
       if (Array.isArray(result.message)) {
         setThisWeekData(result.message);
       } else {
-        console.error("Expected an array but got:", result.message);
         setThisWeekData([]);
       }
     } catch (error) {
-      console.log(error);
       alert("Something went wrong, Try Again!");
     }
   };
@@ -72,11 +70,9 @@ const Dashboard = () => {
       if (result) {
         setLastWeekData(result.message);
       } else {
-        console.error("Expected an array but got:", result.message);
         setLastWeekData([]);
       }
     } catch (error) {
-      console.log(error);
       alert("Something went wrong, Try Again!");
     }
   };
@@ -92,11 +88,9 @@ const Dashboard = () => {
       if (Array.isArray(result.message)) {
         setMonthToken(result.message);
       } else {
-        console.error("Expected an array but got:", result.message);
         setMonthToken([]);
       }
     } catch (error) {
-      console.log(error);
       alert("Something went wrong, Try Again!");
     }
   };
@@ -113,11 +107,9 @@ const Dashboard = () => {
         setTodayTokenList(result.message);
         setReport({ TodayTokens: result.message.TodayTokens, TodayScannedTokens: result.message.TodayScannedTokens, TodayWaitingTokens: result.message.TodayWaitingTokens, TodayCancelledTokens: result.message.TodayCancelledTokens });
       } else {
-        console.error("Expected an array but got:", result.message);
         setTodayTokenList([]);
       }
     } catch (error) {
-      console.log(error);
       alert("Something went wrong, Try Again!");
     }
   };
@@ -133,11 +125,9 @@ const Dashboard = () => {
       if (Array.isArray(result.message)) {
         setYearData(result.message);
       } else {
-        console.error("Expected an array but got:", result.message);
         setYearData([]);
       }
     } catch (error) {
-      console.log(error);
       alert("Something went wrong, Try Again!");
     }
   };
