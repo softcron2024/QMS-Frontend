@@ -1,4 +1,3 @@
-import { ApexOptions } from 'apexcharts';
 import React, { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 import '../charts/Chart.css';
@@ -39,14 +38,12 @@ const ChartOne = ({ thisWeekData, thisMonthData, thisYearData }) => {
 
       const newCategories = thisWeekData.map(item => {
         const date = new Date(item.report_date);
-        console.log(date);
         const day = dayNames[date.getDay()];
-        console.log("day", day);
         return day;
       });
       setCategories(newCategories);
     }
-  }, [thisWeekData, view]);
+  }, [thisWeekData, dayNames, series, view]);
 
   useEffect(() => {
     let updatedSeries;
@@ -69,7 +66,7 @@ const ChartOne = ({ thisWeekData, thisMonthData, thisYearData }) => {
       }).slice(0, 30);
       setCategories(newCategories);
     }
-  }, [thisMonthData, view]);
+  }, [thisMonthData, series, view]);
 
   useEffect(() => {
     if (thisYearData && view === 'year') {
@@ -85,27 +82,20 @@ const ChartOne = ({ thisWeekData, thisMonthData, thisYearData }) => {
       setSeries(updatedSeries);
 
       const newCategories = [];
-      let previousYear = null;
-
       thisYearData.forEach(item => {
-        const year = item.report_year;
         const monthIndex = item.report_month - 1; // Adjusting month to zero-based index
         const monthName = monthNames[monthIndex];
-
-        console.log(`Year: ${year}, Month: ${monthName}`);
-
-        // if (previousYear !== null && previousYear !== year) {
-        //   newCategories.push(`Year changed to ${year}`);
-        // }
-
         newCategories.push(monthName);
-        previousYear = year;
       });
 
       const finalCategories = newCategories.slice(0, 12);
       setCategories(finalCategories);
     }
-  }, [thisYearData, view]);
+  }, [thisYearData, monthNames, series, view]);
+
+  const allData = series.flatMap(serie => serie.data);
+  const maxYValue = Math.max(...allData) > 100 ? Math.max(...allData) + 10 : 100;
+  const minYValue = Math.min(...allData) < 0 ? Math.min(...allData) - 10 : 0;
 
   const options = {
     legend: {
@@ -197,8 +187,8 @@ const ChartOne = ({ thisWeekData, thisMonthData, thisYearData }) => {
           fontSize: '0px',
         },
       },
-      min: 0,
-      max: 100,
+      min: minYValue,
+      max: maxYValue,
     },
   };
 

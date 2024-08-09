@@ -16,7 +16,6 @@ const AdminLoginPage = () => {
 
   const isAuthenticated = Cookies.get("token") !== undefined;
 
-  console.log(isAuthenticated);
 
   if (isAuthenticated) {
     return <Navigate to="/dashboard" replace />;
@@ -71,7 +70,6 @@ const AdminLoginPage = () => {
             toast.error("Session expired, please log in again.");
             navigate("/admin-login");
           } else {
-            console.log("Queue data:", statusResult);
 
             let cookieArr = document.cookie.split(";");
           }

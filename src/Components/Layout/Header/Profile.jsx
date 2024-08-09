@@ -1,9 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-
 const Profile = () => {
-
     const UserName = localStorage.getItem("admin_name");
     const navigate = useNavigate();
 
@@ -17,11 +15,11 @@ const Profile = () => {
         <>
             { /* User */}
             <li className="nav-item navbar-dropdown dropdown-user dropdown">
-                <a className="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+                <button className="nav-link dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
                     <div className="avatar avatar-online">
                         <img src="/assets/img/user.png" alt="user-img" className="h-auto rounded-circle" />
                     </div>
-                </a>
+                </button>
                 <ul className="dropdown-menu dropdown-menu-end">
                     <li>
                         <a className="dropdown-item" href="pages-account-settings-account.html">
@@ -66,16 +64,16 @@ const Profile = () => {
                         <div className="dropdown-divider" />
                     </li>
                     <li>
-                        <a className="dropdown-item" href="javascript:void(0)" onClick={handleLogout}>
+                        <button className="dropdown-item" onClick={handleLogout}>
                             <i className="ti ti-logout me-2 ti-sm" />
                             <span className="align-middle">Log Out</span>
-                        </a>
+                        </button>
                     </li>
                 </ul>
             </li>
             { /*/ User */}
         </>
-    )
-}
+    );
+};
 
-export default Profile
+export default Profile;

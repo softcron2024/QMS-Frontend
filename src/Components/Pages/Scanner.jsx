@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { QrReader } from 'react-qr-reader';
+import WrappedQrReader from './QrReader'; // Updated import
 import './QrScanner.css';
 import { VscScreenFull } from 'react-icons/vsc';
 import Cookies from "js-cookie";
@@ -9,14 +9,13 @@ import { showErrorAlert, showSuccessAlert, showWarningAlert } from '../../Toasti
 const Scanner = () => {
   const [scanResult, setScanResult] = useState('');
   const [isFullScreen, setIsFullScreen] = useState(false);
-
   const tableRef = useRef(null);
 
   const handleScan = useCallback(async (result) => {
     if (result?.text) {
       setScanResult(result.text);
       try {
-        const token_no = result.text
+        const token_no = result.text;
 
         const response = await fetch("http://localhost:8000/api/v1/scan-token", {
           method: "POST",
@@ -27,21 +26,19 @@ const Scanner = () => {
           credentials: "include",
         });
         const data = await response.json();
-        
-        if (data?.ResponseCode === 0) {
-          setScanResult("")
-          return showWarningAlert(data?.message)
 
+        if (data?.ResponseCode === 0) {
+          setScanResult("");
+          return showWarningAlert(data?.message);
         }
 
         if (data?.ResponseCode === 1) {
-          setScanResult("")
-          showSuccessAlert(data?.message)
-
+          setScanResult("");
+          showSuccessAlert(data?.message);
         }
       } catch (error) {
         showErrorAlert("Error fetching data:", error);
-        setScanResult("")
+        setScanResult("");
       }
     }
   }, []);
@@ -93,8 +90,6 @@ const Scanner = () => {
 
   const isAuthenticated = Cookies.get("token") !== undefined;
 
-  console.log(isAuthenticated);
-
   if (!isAuthenticated) {
     return <Navigate to="/" replace />;
   }
@@ -111,13 +106,13 @@ const Scanner = () => {
       <div ref={tableRef} className="qr-scanner-container">
         <h2 style={{ color: isFullScreen ? "white" : "" }}>QR Code Scanner</h2>
         <div className="qr-reader" style={{ height: isFullScreen ? "50%" : "100%" }}>
-          <QrReader
+          <WrappedQrReader
             onResult={(result, error) => {
               if (result) {
                 handleScan(result);
               }
             }}
-            style={{ width: '100%', }}
+            style={{ width: '100%' }}
           />
           <div className="scanning-line"></div>
         </div>

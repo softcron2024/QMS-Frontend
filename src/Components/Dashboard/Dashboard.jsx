@@ -6,6 +6,7 @@ import ChartOne from '../charts/ChartOne';
 import ChartThree from '../charts/ChartThree';
 import ChartTwo from '../charts/ChartTwo';
 import { Link } from "react-router-dom";
+import uniqid from 'uniqid';
 
 const Dashboard = () => {
   const [tableData, setTableData] = useState([]);
@@ -33,11 +34,9 @@ const Dashboard = () => {
       if (Array.isArray(result.message[0])) {
         setTableData(result.message[0]);
       } else {
-        console.error("Expected an array but got:", result.message[0]);
         setTableData([]);
       }
     } catch (error) {
-      console.error("Error fetching data:", error);
       setTableData([]);
     }
   };
@@ -177,11 +176,15 @@ const Dashboard = () => {
       options: {
         sort: true,
         filter: true,
-        customHeadRender: ({ label }) => (
-          <th style={{ textAlign: 'left', paddingLeft: "15px" }}>
-            <strong>{label}</strong>
-          </th>
-        ),
+        customHeadRender: ({ label }, index) => {
+          return (
+            <th key={uniqid()} style={{ textAlign: 'left', paddingLeft: "15px" }}>
+              <strong>{label}</strong>
+            </th>
+          );
+        },
+        
+        
         customBodyRender: (value, tableMeta) => {
           const customer = tableData[tableMeta.rowIndex];
           return (
@@ -242,11 +245,13 @@ const Dashboard = () => {
       options: {
         sort: false,
         filter: false,
-        customHeadRender: ({ label }) => (
-          <th style={{ fontWeight: 'bold', textAlign: "center" }}>
-            {label}
-          </th>
-        ),
+        customHeadRender: ({ label }, index) => {
+          return (
+            <th key={uniqid()} style={{ textAlign: 'left', paddingLeft: "15px" }}>
+              <strong>{label}</strong>
+            </th>
+          );
+        },
         customBodyRender: (value, tableMeta) => {
           const customer = tableData[tableMeta.rowIndex];
           const base64Image = customer.qr_b64;

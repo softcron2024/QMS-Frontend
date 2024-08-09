@@ -4,7 +4,7 @@ import { Link, Navigate } from 'react-router-dom';
 import { VscScreenFull } from 'react-icons/vsc';
 import Cookies from "js-cookie";
 import { Typography, CircularProgress } from "@mui/material";
-import { showErrorAlert,showSuccessAlert,showWarningAlert } from '../../Toastify';
+import { showErrorAlert, showSuccessAlert, showWarningAlert } from '../../Toastify';
 import '../../assets/css/DisplayQueue.css'
 
 const ProductList = () => {
@@ -16,7 +16,7 @@ const ProductList = () => {
     const [colorCustomer, setcolorCustomer] = useState([]);
 
     //#region fetch from customer type color and name 
-    useEffect(()=>{
+    useEffect(() => {
         const fetchCustomerColor = async () => {
             try {
                 const response = await fetch('http://localhost:8000/api/v1/get-customer-type', {
@@ -30,7 +30,7 @@ const ProductList = () => {
                 if (Array.isArray(result?.message)) {
                     setcolorCustomer(result?.message);
                 } else {
-                    console.error("Expected an array but got:", result?.message);
+                    showErrorAlert("Error fetching queue")
                     setcolorCustomer([]);
                 }
             } catch (error) {
@@ -65,11 +65,11 @@ const ProductList = () => {
 
                 const result = await response.json();
 
-               if(result.ResponseCode === 1){
+                if (result.ResponseCode === 1) {
                     setTableData(result?.message[0])
-               }
+                }
             } catch (error) {
-                console.error("Error fetching data:", error);
+                showErrorAlert("Error fetching queue")
                 setError(error.message);
                 setTableData([]);
             } finally {
@@ -238,7 +238,7 @@ const ProductList = () => {
             return (
                 <tr key={rowIndex} style={{ backgroundColor: rowColor, margin: "5px 0" }}>
                     {data.map((cell, index) => (
-                        <td key={index} style={{ padding: "8px", border: "1px solid #ccc" }}>{cell}</td>
+                        <td key={customer.customer_type_id} style={{ padding: "8px", border: "1px solid #ccc" }}>{cell}</td>
                     ))}
                 </tr>
             );
@@ -268,7 +268,7 @@ const ProductList = () => {
             <div ref={tableRef} className={`mui-datatables mb-5 ${isFullScreen ? 'fullscreen' : ''}`}>
                 {isLoading ? (
                     <div className="text-center">
-                        <CircularProgress className='circular-progress'/>
+                        <CircularProgress className='circular-progress' />
                     </div>
                 ) : error ? (
                     <div className="text-center text-danger">
@@ -277,23 +277,23 @@ const ProductList = () => {
                 ) : (
                     <MUIDataTable
                         title={
-                            <Typography variant="h5" style={{ fontWeight: 'bold', color: "#2a2a2a", textAlign: "left"  }}>
+                            <Typography variant="h5" style={{ fontWeight: 'bold', color: "#2a2a2a", textAlign: "left" }}>
                                 <h5 className='var_live_queue'>Live Queue</h5>
-                                 <div className='colorT'>
-                                {
-                                    colorCustomer.map((item)=>{
+                                <div className='colorT'>
+                                    {
+                                        colorCustomer.map((item) => {
 
-                                       return (
-                                        <div className="colortype">
-                                        <h6 className='type'>{item.customer_type_name}</h6>
-                                        <p style={{background: item.customer_type_color,  color:item.customer_type_text_color}}></p>
-                                        </div>
-                                       )
-                                    })
-                                }
-                               </div>
-                               
-                              
+                                            return (
+                                                <div key={item?.customer_type_id} className="colortype">
+                                                    <h6 className='type'>{item.customer_type_name}</h6>
+                                                    <p style={{ background: item.customer_type_color, color: item.customer_type_text_color }}></p>
+                                                </div>
+                                            )
+                                        })
+                                    }
+                                </div>
+
+
                             </Typography>
                         }
                         data={tableData}

@@ -18,7 +18,6 @@ const GenerateToken = () => {
   const [receiptData, setReceiptData] = useState(null);
   const [Options, setOptions] = useState([]);
   const [selectedCustomerType, setSelectedCustomerType] = useState("Select Customer type");
-  console.log(Options);
 
   //#region Fetch token for customer Type
   useEffect(() => {
@@ -35,10 +34,10 @@ const GenerateToken = () => {
           setOptions(results.message);
         } else {
           setOptions([]);
-          console.error('Expected an array, but got:', results);
+          showErrorAlert("Error generating token")
         }
       } catch (error) {
-        console.error('Error fetching customer types:', error);
+        showErrorAlert("Error fetching customer type")
         setOptions([]);
       }
     };
@@ -96,7 +95,6 @@ const GenerateToken = () => {
         credentials: "include",
       });
       const result = await response.json();
-      console.log(result);
 
       if (result?.ResponseCode === 0) {
         showWarningAlert(result?.message);

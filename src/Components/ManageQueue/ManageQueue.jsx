@@ -24,7 +24,6 @@ const ManageQueue = () => {
       }
 
       const result = await response.json();
-      console.log(result?.message?.ResponseCode);
       if (result?.message?.ResponseCode === 0) {
         showWarningAlert(result?.message?.ResponseMessage)
         return
@@ -38,7 +37,6 @@ const ManageQueue = () => {
 
 
     } catch (error) {
-      console.error('Error fetching data:', error);
       showErrorAlert(`Error: ${error.message}`, { toastId: 'fetch-error-toast' });
     }
   };
@@ -68,7 +66,7 @@ const ManageQueue = () => {
           setcurrentToken(null);
         }
       } catch (error) {
-        console.error('Error fetching current token:', error);
+        showErrorAlert("Error fetching current token")
       }
     };
     intervalId = setInterval(getCurrntToken, 1000);
@@ -100,7 +98,7 @@ const ManageQueue = () => {
         setwaitingToken(null);
       }
     } catch (error) {
-      console.error('Error fetching waiting token:', error);
+      showErrorAlert("Error fetching waiting token")
     }
   };
 
@@ -162,29 +160,39 @@ const ManageQueue = () => {
         showSuccessAlert(result?.message?.ResponseMessage)
       }
     } catch (error) {
-      console.log(error);
+      showErrorAlert("Something went wrong")
     }
   };
   //#endregion
 
   return (
-    <div className='manage_Queue_main'>
+    <div className='manage_Queue_main col-12'>
       <div className="operate_btn">
         <div className=''>
           <button className='btn custom-button ms-5' onClick={handleNextBtn}>Call Next to Scan</button>
         </div>
       </div>
-      <div className='main_queue_css'>
+      <div className='main_queue_css col-12'>
         <div className="waiting_main_token">
-          <div className="col-xl-10 col-lg-10 card-position">
+          <div className={`${waitingToken ? "col-xl-8 col-lg-8" : "col-xl-8 col-lg-8"} card-position`}>
             <div className="card l-bg-blue-dark">
               <div className="card-statistic-3 p-4">
                 <div className="card-icon card-icon-large"><i className="fas fa-users" /></div>
-                <div className="mb-4 d-flex flex-row">
-                  <h5 className="card-title col-8 fs-4 mb-0 text-white">Current Waiting token</h5>
+                <div className="mb-4 d-flex flex-column flex-md-row  align-items-center">
+                  {
+                    waitingToken ? <div className="col-12 col-sm-10 col-md-8">
+                      <h5 className="card-title col-12 d-md-block ml-0 d-none fs-6 mb-0 text-white">Current Waiting Token</h5>
+                      <h5 className="card-title col-12 d-md-none d-sm-block d-none custom-text ml-0 d-none fs-6 mb-0 text-white">Current Waiting Token</h5>
+                      <h5 className="card-title col-12 d-sm-none d-block custom-text mb-0 text-white">Current Waiting Token</h5>
+                    </div> : <div className="col-10 custom-width">
+                      <h5 className="card-title col-12 d-md-block ml-0 d-none fs-5 mb-0 text-white">Current Waiting Token</h5>
+                      <h5 className="card-title col-12 d-md-none d-sm-block d-none ml-0 d-none fs-6 mb-0 text-white">Current Waiting Token</h5>
+                      <h5 className="card-title col-12 d-sm-none d-block fs-5 mb-0 text-white">Current Waiting Token</h5>
+                    </div>
+                  }
                   {
                     waitingToken ? <div className="col-4">
-                      <button onClick={() => handleSkipBtn(waitingToken?.token_no)} className="btn custom-button-2 w-full">Skip</button>
+                      <button onClick={() => handleSkipBtn(waitingToken?.token_no)} className="btn   mt-md-0 mt-2 custom-button-2 w-full">Skip</button>
                     </div> : ""
                   }
                 </div>
@@ -192,42 +200,32 @@ const ManageQueue = () => {
                   <div className='d-flex w-full justify-content-between'>
 
                     <div className="d-flex flex-column w-full bg-red-900">
-                      <h2 className="d-flex align-items-center text-white mb-0">
-                        Token No.  &nbsp;
+                      <h2 className="d-flex align-items-center fs-6 text-white mb-0">
+                        <span style={{ width: '150px' }}>Token No.</span>
+                        <span>:&nbsp;</span>
+                        <span className="ml-2">{waitingToken?.token_no}</span>
                       </h2>
-                      <h2 className="d-flex align-items-center text-white mb-0">
-                        Customer Name  &nbsp;
+
+                      <h2 className="d-flex align-items-center fs-6 text-white mb-0">
+                        <span style={{ width: '150px' }}>Customer Name</span>
+                        <span>:&nbsp; </span>
+                        <span className="ml-2">{waitingToken?.customer_name}</span>
                       </h2>
-                      <h2 className="d-flex align-items-center text-white mb-0">
-                        Customer Mobile  &nbsp;
+
+                      <h2 className="d-flex align-items-center fs-6 text-white mb-0">
+                        <span style={{ width: '150px' }}>Customer Mobile</span>
+                        <span>:&nbsp;</span>
+                        <span className="ml-2">{waitingToken?.customer_mobile}</span>
                       </h2>
                     </div>
-                    <div>
-                      <div className="row align-items-center mb-1 d-flex">
-                        <div className="col-12">
-                          <h2 className="d-flex align-items-center text-white mb-0">
-                            : &nbsp;{waitingToken.token_no}
-                          </h2>
-                        </div>
-                        <div className="col-12">
-                          <h2 className="d-flex align-items-center text-white mb-0">
-                            : &nbsp;{waitingToken.customer_name}
-                          </h2>
-                        </div>
-                        <div className="col-12">
-                          <h2 className="d-flex align-items-center text-white mb-0">
-                            : &nbsp;{waitingToken.customer_mobile}
-                          </h2>
-                        </div>
-                      </div>
-                    </div>
+
                   </div>
                 ) :
                   <div className="row align-items-center mb-1 d-flex">
                     <div className="col-12">
-                      <h2 className="d-flex align-items-center text-white mb-0">
-                        Nothing to show
-                      </h2>
+                      <h5 className="card-title col-12 d-md-block ml-0 d-none fs-5 mb-0 text-white">Nothing to show</h5>
+                      <h5 className="card-title col-12 d-md-none d-sm-block d-none ml-0 d-none fs-6 mb-0 text-white">Nothing to show</h5>
+                      <h5 className="card-title col-12 d-sm-none d-block fs-6 mb-0 text-white">Nothing to show</h5>
                     </div>
 
                   </div>}
@@ -236,56 +234,60 @@ const ManageQueue = () => {
           </div>
         </div>
         <div className="waiting_main_nexttoken">
-          <div className="col-xl-10 col-lg-10 card-position">
-            <div className="card l-bg-blue-dark-2">
+        <div className={`${currentToken ? "col-xl-8 col-lg-8" : "col-xl-8 col-lg-8"} card-position`}>
+            <div className="card l-bg-blue-dark">
               <div className="card-statistic-3 p-4">
                 <div className="card-icon card-icon-large"><i className="fas fa-users" /></div>
-                <div className="mb-4 d-flex">
-                  <h5 className="card-title col-8 fs-4 mb-0 text-white">In Process</h5>
+                <div className="mb-4 d-flex flex-column flex-md-row  align-items-center">
+                  {
+                    currentToken ? <div className="col-12 col-sm-10 col-md-8">
+                      <h5 className="card-title col-12 d-md-block ml-0 d-none fs-6 mb-0 text-white">In Process Token</h5>
+                      <h5 className="card-title col-12 d-md-none d-sm-block d-none custom-text ml-0 d-none fs-6 mb-0 text-white">In Process Token</h5>
+                      <h5 className="card-title col-12 d-sm-none d-block custom-text mb-0 text-white">In Process Token</h5>
+                    </div> : <div className="col-12 custom-width">
+                      <h5 className="card-title col-12 d-md-block ml-0 d-none fs-5 mb-0 text-white">In Process Token</h5>
+                      <h5 className="card-title col-12 d-md-none d-sm-block d-none ml-0 d-none fs-6 mb-0 text-white">In Process Token</h5>
+                      <h5 className="card-title col-12 d-sm-none d-block fs-5 mb-0 text-white">In Process Token</h5>
+                    </div>
+                  }
                   {
                     currentToken ? <div className="col-4">
-                      <button onClick={() => handleComplete(currentToken?.token_no)} className="btn custom-button-3 w-full">Complete</button>
+                      <button onClick={() => handleComplete(currentToken?.token_no)} className="btn   mt-md-0 mt-2 custom-button-3 w-full">Recall</button>
                     </div> : ""
                   }
                 </div>
                 {currentToken ? (
                   <div className='d-flex w-full justify-content-between'>
-                    <div className="d-flex flex-column w-full bg-red-900">
-                      <h2 className="d-flex align-items-center text-white mb-0">
-                        Token No.  &nbsp;
-                      </h2>
-                      <h2 className="d-flex align-items-center text-white mb-0">
-                        Customer Name  &nbsp;
-                      </h2>
-                      <h2 className="d-flex align-items-center text-white mb-0">
-                        Customer Mobile  &nbsp;
-                      </h2>
-                    </div>
-                    <div>
 
-                      <div className="row align-items-center mb-1 d-flex">
-                        <div className="col-12">
-                          <h2 className="d-flex align-items-center text-white mb-0">
-                            : &nbsp;{currentToken.token_no}
-                          </h2>
-                        </div>
-                        <div className="col-12">
-                          <h2 className="d-flex align-items-center text-white mb-0">
-                            : &nbsp;{currentToken.customer_name}
-                          </h2>
-                        </div>
-                        <div className="col-12">
-                          <h2 className="d-flex align-items-center text-white mb-0">
-                            : &nbsp;{currentToken.customer_mobile}
-                          </h2>
-                        </div>
-                      </div>
+                    <div className="d-flex flex-column w-full bg-red-900">
+                      <h2 className="d-flex align-items-center fs-6 text-white mb-0">
+                        <span style={{ width: '150px' }}>Token No.</span>
+                        <span>:&nbsp;</span>
+                        <span className="ml-2">{currentToken?.token_no}</span>
+                      </h2>
+
+                      <h2 className="d-flex align-items-center fs-6 text-white mb-0">
+                        <span style={{ width: '150px' }}>Customer Name</span>
+                        <span>:&nbsp; </span>
+                        <span className="ml-2">{currentToken?.customer_name}</span>
+                      </h2>
+
+                      <h2 className="d-flex align-items-center fs-6 text-white mb-0">
+                        <span style={{ width: '150px' }}>Customer Mobile</span>
+                        <span>:&nbsp;</span>
+                        <span className="ml-2">{currentToken?.customer_mobile}</span>
+                      </h2>
                     </div>
-                  </div>) :
-                  <div className="col-12">
-                    <h2 className="d-flex align-items-center text-white mb-0">
-                      No token in process
-                    </h2>
+
+                  </div>
+                ) :
+                  <div className="row align-items-center mb-1 d-flex">
+                    <div className="col-12">
+                      <h5 className="card-title col-12 d-md-block ml-0 d-none fs-5 mb-0 text-white">Nothing to show</h5>
+                      <h5 className="card-title col-12 d-md-none d-sm-block d-none ml-0 d-none fs-6 mb-0 text-white">Nothing to show</h5>
+                      <h5 className="card-title col-12 d-sm-none d-block fs-6 mb-0 text-white">Nothing to show</h5>
+                    </div>
+
                   </div>}
               </div>
             </div>
@@ -293,7 +295,7 @@ const ManageQueue = () => {
         </div>
       </div>
 
-      <div className="show_queue_token">
+      <div className="show_queue_token d-flex flex-column flex-sm-row justify-content-around">
         <TokenList />
         <MissedToken />
       </div>

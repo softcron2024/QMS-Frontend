@@ -69,48 +69,48 @@ const ChartThree = () => {
   //#endregion
 
   return (
-    <div class="container_Chart_three">
-      <div class="header">
-        <h5 class="title">Visitors Analytics</h5>
-        <div class="dropdown-container">
-          <select class="dropdown">
+    <div className="container_Chart_three">
+      <div className="header">
+        <h5 className="title">Visitors Analytics</h5>
+        <div className="dropdown-container">
+          <select className="dropdown">
             <option value="">Monthly</option>
             <option value="">Yearly</option>
           </select>
         </div>
       </div>
 
-      <div class="chart-container">
-        <div id="chartThree" class="chart">
+      <div className="chart-container">
+        <div id="chartThree" className="chart">
           <ReactApexChart options={options} series={state.series} type="donut" />
         </div>
       </div>
 
-      <div class="data-container">
-        <div class="data-item">
-          <span class="indicator bg-primary"></span>
-          <p class="data-text">
+      <div className="data-container">
+        <div className="data-item">
+          <span className="indicator bg-primary"></span>
+          <p className="data-text">
             <span>Desktop</span>
             <span>65%</span>
           </p>
         </div>
-        <div class="data-item">
-          <span class="indicator bg-secondary"></span>
-          <p class="data-text">
+        <div className="data-item">
+          <span className="indicator bg-secondary"></span>
+          <p className="data-text">
             <span>Tablet</span>
             <span>34%</span>
           </p>
         </div>
-        <div class="data-item">
-          <span class="indicator bg-tertiary"></span>
-          <p class="data-text">
+        <div className="data-item">
+          <span className="indicator bg-tertiary"></span>
+          <p className="data-text">
             <span>Mobile</span>
             <span>45%</span>
           </p>
         </div>
-        <div class="data-item">
-          <span class="indicator bg-quaternary"></span>
-          <p class="data-text">
+        <div className="data-item">
+          <span className="indicator bg-quaternary"></span>
+          <p className="data-text">
             <span>Unknown</span>
             <span>12%</span>
           </p>

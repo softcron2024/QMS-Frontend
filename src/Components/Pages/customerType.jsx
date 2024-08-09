@@ -83,7 +83,6 @@ const CustomerType = () => {
 
         } catch (error) {
             showErrorAlert('Error: ' + error.message);
-            console.error('Error:', error.message);
         }
     };
     //#endregion
@@ -103,7 +102,6 @@ const CustomerType = () => {
 
             const result = await response.json();
 
-            console.log(result);
 
             if (result?.ResponseCode === 0) {
                 showWarningAlert(result?.message)
@@ -129,7 +127,6 @@ const CustomerType = () => {
 
         } catch (error) {
             showErrorAlert('Error: ' + error.message);
-            console.error('Error:', error.message);
         }
     };
     //#endregion
@@ -148,7 +145,7 @@ const CustomerType = () => {
             if (Array.isArray(result?.message)) {
                 setTableData(result?.message);
             } else {
-                console.error("Expected an array but got:", result?.message);
+                showErrorAlert("Error fetching customer type")
                 setTableData([]);
             }
         } catch (error) {

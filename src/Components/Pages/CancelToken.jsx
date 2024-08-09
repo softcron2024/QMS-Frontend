@@ -25,11 +25,11 @@ const CancelToken = () => {
       if (Array.isArray(result?.message[0])) {
         setCanceltoken(result?.message[0]);
       } else {
-        console.error("Expected an array but got:", result?.message[0]);
+        showErrorAlert("Error fetching queue")
         setCanceltoken([]);
       }
     } catch (error) {
-      console.error('Error fetching queue:', error);
+      showErrorAlert("Error fetching queue")
     }
   };
 
@@ -60,7 +60,7 @@ const CancelToken = () => {
         showSuccessAlert(result.message.ResponseMessage);
       }
     } catch (error) {
-      console.error('Error cancelling token:', error);
+      showErrorAlert("Error cancelling token")
     }
   };
 

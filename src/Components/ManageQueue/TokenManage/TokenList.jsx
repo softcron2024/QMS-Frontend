@@ -26,11 +26,11 @@ const TokenList = () => {
         if (Array.isArray(result?.message[0])) {
           setQueue(result?.message[0]);
         } else {
-          console.error("Expected an array but got:", result?.message[0]);
+          showErrorAlert("Error fetching queue")
           setQueue([]);
         }
       } catch (error) {
-        console.error('Error fetching queue:', error);
+        showErrorAlert("Error fetching queue")
       }
     };
 
@@ -48,7 +48,7 @@ const TokenList = () => {
 
       if (!response.ok) throw new Error('Failed to fetch data');
 
-      const result = await response.json();
+      await response.json();
       showSuccessAlert("Token skipped successfully");
     } catch (error) {
       showErrorAlert(error.message);
@@ -111,11 +111,10 @@ const TokenList = () => {
 
   const handleDrop = (e, index) => {
     e.preventDefault();
-    const draggedIndex = e.dataTransfer.getData("index");
-    if (draggedIndex === index.toString()) return;
+    if (draggedItemIndex === index) return;
 
     const newQueue = [...queue];
-    const [draggedItem] = newQueue.splice(draggedIndex, 1);
+    const [draggedItem] = newQueue.splice(draggedItemIndex, 1);
     newQueue.splice(index, 0, draggedItem);
 
     const droppedItem = newQueue[index];
@@ -127,6 +126,7 @@ const TokenList = () => {
       setQueue([...newQueue]);
     }, 300);
 
+    // Updating the token position with the correct data
     updateTokenPosition(draggedItem.token_no, index + 1);
     cancelAnimationFrame(scrollAnimationRef.current);
   };
@@ -143,7 +143,7 @@ const TokenList = () => {
       if (!response.ok) throw new Error('Failed to update token position');
 
       const result = await response.json();
-      console.log(result);
+      
       showSuccessAlert("Token position updated successfully");
     } catch (error) {
       showErrorAlert(error.message);
@@ -183,8 +183,8 @@ const TokenList = () => {
       <div className="logo_name fs-4 text-center">
         <h2 className="fs-4">Waiting List</h2>
       </div>
-      <div className="queue_list col-12 col-sm-11" ref={containerRef} onDragOver={handleDragOver}>
-        {queue.length > 0? queue.map((item, index) => (
+      <div className="queue_list col-12 col-sm-9" ref={containerRef} onDragOver={handleDragOver}>
+        {queue.length > 0 ? queue.map((item, index) => (
           <div
             key={item.token_no?.toString()}
             className={`draggable-item col-xl-12 col-lg-12 cursor-grab ${draggedItemIndex === index ? 'dragging cursor-grabbing' : ''} ${item.transition ? 'drop-transition' : ''}`}
@@ -198,44 +198,57 @@ const TokenList = () => {
             <div className="card l-bg-blue-dark">
               <div className="card-statistic-3 p-4">
                 <div className="card-icon card-icon-large"><i className="fas fa-users" /></div>
-                <div className="mb-4 d-flex">
-                  <h5 className="card-title col-8 fs-4 mb-0 text-white">Waiting Customer</h5>
-                  <div className="col-4">
-                    <button onClick={() => handleSkipBtn(item.token_no)} className="btn custom-button-2 w-full">Skip</button>
-                  </div>
-                </div>
-                <div className='d-flex w-full justify-content-between'>
-                  <div className="d-flex flex-column w-full bg-red-900">
-                    <h2 className="d-flex align-items-center text-white mb-0">
-                      Token No. &nbsp;
-                    </h2>
-                    <h2 className="d-flex align-items-center text-white mb-0">
-                      Customer Name &nbsp;
-                    </h2>
-                    <h2 className="d-flex align-items-center text-white mb-0">
-                      Customer Mobile &nbsp;
-                    </h2>
-                  </div>
-                  <div>
-                    <div className="row align-items-center mb-1 d-flex">
-                      <div className="col-12">
-                        <h2 className="d-flex align-items-center text-white mb-0">
-                          : &nbsp;{item.token_no}
-                        </h2>
-                      </div>
-                      <div className="col-12">
-                        <h2 className="d-flex align-items-center text-white mb-0">
-                          : &nbsp;{item.customer_name}
-                        </h2>
-                      </div>
-                      <div className="col-12">
-                        <h2 className="d-flex align-items-center text-white mb-0">
-                          : &nbsp;{item.customer_mobile}
-                        </h2>
-                      </div>
+                <div className="mb-4 d-flex flex-column flex-md-row  align-items-center">
+                  {
+                    item ? <div className="col-12 col-sm-10 col-md-8">
+                      <h5 className="card-title col-12 d-md-block ml-0 d-none fs-6 mb-0 text-white">Waiting Customer</h5>
+                      <h5 className="card-title col-12 d-md-none d-sm-block d-none custom-text ml-0 d-none fs-6 mb-0 text-white">Waiting Customer</h5>
+                      <h5 className="card-title col-12 d-sm-none d-block custom-text mb-0 text-white">Waiting Customer</h5>
+                    </div> : <div className="col-10 custom-width">
+                      <h5 className="card-title col-12 d-md-block ml-0 d-none fs-5 mb-0 text-white">Waiting Customer</h5>
+                      <h5 className="card-title col-12 d-md-none d-sm-block d-none ml-0 d-none fs-6 mb-0 text-white">Waiting Customer</h5>
+                      <h5 className="card-title col-12 d-sm-none d-block fs-5 mb-0 text-white">Waiting Customer</h5>
                     </div>
-                  </div>
+                  }
+                  {
+                    item ? <div className="col-4">
+                      <button onClick={() => handleSkipBtn(item?.token_no)} className="btn   mt-md-0 mt-2 custom-button-2 w-full">Skip</button>
+                    </div> : ""
+                  }
                 </div>
+                {item ? (
+                  <div className='d-flex w-full justify-content-between'>
+
+                    <div className="d-flex flex-column w-full bg-red-900">
+                      <h2 className="d-flex align-items-center fs-6 text-white mb-0">
+                        <span style={{ width: '150px' }}>Token No.</span>
+                        <span>:&nbsp;</span>
+                        <span className="ml-2">{item?.token_no}</span>
+                      </h2>
+
+                      <h2 className="d-flex align-items-center fs-6 text-white mb-0">
+                        <span style={{ width: '150px' }}>Customer Name</span>
+                        <span>:&nbsp; </span>
+                        <span className="ml-2">{item?.customer_name}</span>
+                      </h2>
+
+                      <h2 className="d-flex align-items-center fs-6 text-white mb-0">
+                        <span style={{ width: '150px' }}>Customer Mobile</span>
+                        <span>:&nbsp;</span>
+                        <span className="ml-2">{item?.customer_mobile}</span>
+                      </h2>
+                    </div>
+
+                  </div>
+                ) :
+                  <div className="row align-items-center mb-1 d-flex">
+                    <div className="col-12">
+                      <h5 className="card-title col-12 d-md-block ml-0 d-none fs-5 mb-0 text-white">Nothing to show</h5>
+                      <h5 className="card-title col-12 d-md-none d-sm-block d-none ml-0 d-none fs-6 mb-0 text-white">Nothing to show</h5>
+                      <h5 className="card-title col-12 d-sm-none d-block fs-6 mb-0 text-white">Nothing to show</h5>
+                    </div>
+
+                  </div>}
               </div>
             </div>
           </div>
